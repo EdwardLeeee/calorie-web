@@ -13,27 +13,34 @@ USE calorie_db;
 ```
 2.建表
 ```
--- 食物表
-CREATE TABLE foods (
+-- 用戶表
+CREATE TABLE user (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    category VARCHAR(100),
-    brand VARCHAR(100),
-    unit VARCHAR(100)
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(200) NOT NULL
+);
+-- 食物表
+CREATE TABLE food (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) UNIQUE NOT NULL,
+    calories FLOAT NOT NULL,
+    protein FLOAT NOT NULL,
+    fat FLOAT NOT NULL,
+    carbs FLOAT NOT NULL
 );
 
--- 營養資料表
-CREATE TABLE nutrition (
+-- 紀錄表
+CREATE TABLE diet_record (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    food_id INT,
-    calories FLOAT,
-    fat FLOAT,
-    protein FLOAT,
-    carbohydrate FLOAT,
-    sodium FLOAT,
-    FOREIGN KEY (food_id) REFERENCES foods(id) ON DELETE CASCADE
+    user_id INT NOT NULL,
+    food_id INT NOT NULL,
+    quantity FLOAT NOT NULL DEFAULT 1.0,
+    record_date DATE NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
+    FOREIGN KEY (food_id) REFERENCES food(id) ON DELETE CASCADE
 );
 ```
+
 3.測試
 ```
 INSERT INTO foods (name, category, brand, unit)
