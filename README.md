@@ -43,14 +43,27 @@ CREATE TABLE diet_record (
 
 3.測試
 ```
-INSERT INTO foods (name, category, brand, unit)
-VALUES ('薯條', '速食', '麥當勞', '一份');
+-- 插入用戶
+INSERT INTO user (username, password) VALUES 
+('alice', 'hashed_password_123'),
+('bob', 'hashed_password_456');
 
-INSERT INTO nutrition (food_id, calories, fat, protein, carbohydrate, sodium)
-VALUES (1, 320, 17.0, 3.4, 41.0, 210);
+-- 插入食物
+INSERT INTO food (name, calories, protein, fat, carbs) VALUES
+('雞胸肉', 165, 31, 3.6, 0),
+('白飯', 130, 2.7, 0.3, 28),
+('蘋果', 52, 0.3, 0.2, 14);
 
-select * from foods;
-select * from nutrition;
+-- 插入飲食紀錄（假設 alice 的 id 是 1，bob 是 2）
+INSERT INTO diet_record (user_id, food_id, quantity, record_date) VALUES
+(1, 1, 1.0, '2025-05-01'), -- Alice 吃了一份雞胸肉
+(1, 2, 1.5, '2025-05-01'), -- Alice 吃了1.5碗白飯
+(2, 3, 2.0, '2025-05-01'); -- Bob 吃了兩顆蘋果
+
+
+select * from user;
+select * from food;
+select * from diet_record
 ```
 
 ## git branch 用法
