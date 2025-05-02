@@ -1,6 +1,56 @@
 # calorie-web
 ## 簡介
 這是一個給用戶紀錄每日卡路里攝取的網站
+## FOOD API
+### 安裝必要套件
+```
+pip install flask flask-sqlalchemy
+pip install pymysql
+```
+### 環境變數
+你需要自建環境變數設定檔`.env`
+> 記得建立`.gitignore`，然後在裡面加入`.env`
+```
+DB_USER=calorie
+DB_PASSWORD=CvXmcorwWGJMSJ7
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=calorie_db
+```
+### 測試API
+- 取得所有食物
+```
+curl -X GET http://127.0.0.1:1111/foods
+```
+- 取得特定食物
+```
+curl -X GET http://127.0.0.1:1111/foods/1
+```
+- 新增食物
+```
+curl -X POST http://127.0.0.1:1111/foods \
+  -H "Content-Type: application/json" \
+  -d '{
+        "name": "雞胸肉",
+        "calories": 165,
+        "protein": 31,
+        "fat": 3.6,
+        "carbs": 0
+      }'
+```
+- 更新指定食物
+```
+curl -X PUT http://127.0.0.1:1111/foods/1 \
+  -H "Content-Type: application/json" \
+  -d '{
+        "name": "雞胸肉（200g）",
+        "calories": 330
+      }'
+```
+- 刪除指定食物
+```
+curl -X DELETE http://127.0.0.1:1111/foods/1
+```
 ## db 設定
 0. 登入db
 ```
@@ -41,6 +91,8 @@ CREATE TABLE diet_record (
 );
 ```
 
+
+
 3.測試
 ```
 -- 插入用戶
@@ -60,12 +112,19 @@ INSERT INTO diet_record (user_id, food_id, quantity, record_date) VALUES
 (1, 2, 1.5, '2025-05-01'), -- Alice 吃了1.5碗白飯
 (2, 3, 2.0, '2025-05-01'); -- Bob 吃了兩顆蘋果
 
-
 select * from user;
 select * from food;
 select * from diet_record
 ```
-
+4. 建立 MySQL user
+```
+sudo mysql
+CREATE USER 'calorie'@'localhost' IDENTIFIED BY 'your_password';
+GRANT ALL PRIVILEGES ON calorie_db.* TO 'calorie'@'localhost';-- 開calorie_db所有權限給calorie
+FLUSH PRIVILEGES;-- 套用權限變更
+-- 用calorie 登入
+mysql -u calorie -p 
+```
 ## git branch 用法
 1.查看目前branch
 ```
