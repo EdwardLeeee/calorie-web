@@ -89,6 +89,18 @@ CREATE TABLE diet_record (
     FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
     FOREIGN KEY (food_id) REFERENCES food(id) ON DELETE CASCADE
 );
+
+CREATE TABLE customer_food (
+    id        INT AUTO_INCREMENT PRIMARY KEY,
+    user_id   INT NOT NULL,
+    name      VARCHAR(100) NOT NULL,
+    calories  FLOAT NOT NULL,
+    protein   FLOAT NOT NULL,
+    fat       FLOAT NOT NULL,
+    carbs     FLOAT NOT NULL,
+    UNIQUE KEY uq_user_foodname (user_id, name),
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
+);
 ```
 
 
