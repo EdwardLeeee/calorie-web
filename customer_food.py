@@ -21,6 +21,12 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
 # ---------- Model ----------
+class User(db.Model):
+    __tablename__ = "user"
+    id            = db.Column(db.Integer, primary_key=True)
+    username      = db.Column(db.String(50), unique=True, nullable=False)
+    password_hash = db.Column("password", db.String(200), nullable=False)
+
 class CustomerFood(db.Model):
     __tablename__ = "customer_food"
     id       = db.Column(db.Integer, primary_key=True)
