@@ -81,13 +81,23 @@ CREATE TABLE food (
 
 -- 紀錄表
 CREATE TABLE diet_record (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    food_id INT NOT NULL,
-    quantity FLOAT NOT NULL DEFAULT 1.0,
-    record_date DATE NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
-    FOREIGN KEY (food_id) REFERENCES food(id) ON DELETE CASCADE
+  id                INT AUTO_INCREMENT PRIMARY KEY,
+  user_id           INT NOT NULL,
+  record_time       DATETIME NOT NULL,
+  official_food_id  INT NULL,
+  custom_food_id    INT NULL,
+  calorie_sum       FLOAT NOT NULL,
+  carb_sum          FLOAT NOT NULL,
+  protein_sum       FLOAT NOT NULL,
+  fat_sum           FLOAT NOT NULL,
+
+  CONSTRAINT fk_dietrecord_user
+    FOREIGN KEY (user_id)          REFERENCES user(id)          ON DELETE CASCADE,
+  CONSTRAINT fk_dietrecord_official
+    FOREIGN KEY (official_food_id) REFERENCES food(id)          ON DELETE SET NULL,
+  CONSTRAINT fk_dietrecord_custom
+    FOREIGN KEY (custom_food_id)   REFERENCES customer_food(id) ON DELETE SET NULL
+
 );
 
 CREATE TABLE customer_food (
