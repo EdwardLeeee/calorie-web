@@ -1,5 +1,0 @@
-DB_USER=calorie
-DB_PASSWORD=CvXmcorwWGJMSJ7
-DB_HOST=localhost
-DB_PORT=3306
-DB_NAME=customer_food
