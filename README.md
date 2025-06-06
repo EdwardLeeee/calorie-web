@@ -63,6 +63,13 @@ USE calorie_db;
 ```
 2.建表
 ```
+-- Admin
+CREATE TABLE admin (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(200) NOT NULL
+);
+
 -- 用戶表
 CREATE TABLE user (
     id INT AUTO_INCREMENT PRIMARY KEY,
