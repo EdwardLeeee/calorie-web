@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <title>每日卡路里紀錄 (Vue 前端)</title>
+
+  <!-- 載入美化過的 CSS -->
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- 載入 Vue、Vue Router、Axios CDN -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="https://unpkg.com/vue-router@4/dist/vue-router.global.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+  <!-- 防止瀏覽器快取 -->
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+</head>
+<body>
+  <!-- App Header -->
+  <header class="app-header">
+    <h1>每日卡路里紀錄</h1>
+  </header>
+
+  <!-- Vue 掛載點 -->
+  <div id="app"></div>
+
+  <!-- ------------ 以下為三個組件的 HTML 模板 ------------ -->
+
+  <!-- Login 組件模板 -->
+  <template id="login-template">
+    <div class="card">
+      <h2 class="card-title">登入</h2>
+      <p v-if="message" :class="messageClass">{{ message }}</p>
+
+      <!-- 避免瀏覽器自動填入 -->
+      <input type="text" name="fakeusernameremembered" style="display:none" />
+      <input type="password" name="fakepasswordremembered" style="display:none" />
+
+      <form @submit.prevent="doLogin" autocomplete="off">
+        <label for="username">帳號</label>
+        <input
+          type="text"
+          id="username"
+          v-model="username"
+          required
+          autocomplete="new-username"
+          placeholder="請輸入帳號"
+        />
+
+        <label for="password">密碼</label>
+        <input
+          type="password"
+          id="password"
+          v-model="password"
+          required
+          autocomplete="new-password"
+          placeholder="請輸入密碼"
+          readonly
+          @focus="removeReadonly"
+        />
+
+        <button type="submit" class="btn primary">登入</button>
+      </form>
+      <p class="small-text">
+        沒有帳號？
+        <router-link to="/signup">立刻註冊</router-link>
+      </p>
+    </div>
+  </template>
+
+  <!-- Signup 組件模板 -->
+  <template id="signup-template">
+    <div class="card">
+      <h2 class="card-title">註冊</h2>
+      <p v-if="message" class="error">{{ message }}</p>
+
+      <!-- 避免瀏覽器自動填入 -->
+      <input type="text" name="fakeusernameremembered" style="display:none" />
+      <input type="password" name="fakepasswordremembered" style="display:none" />
+
+      <form @submit.prevent="doSignup" autocomplete="off">
+        <label for="username">帳號</label>
+        <input
+          type="text"
+          id="username"
+          v-model="username"
+          required
+          autocomplete="new-username"
+          placeholder="請輸入帳號"
+        />
+
+        <label for="password">密碼</label>
+        <input
+          type="password"
+          id="password"
+          v-model="password"
+          required
+          autocomplete="new-password"
+          placeholder="請輸入密碼"
+          readonly
+          @focus="removeReadonly"
+        />
+
+        <button type="submit" class="btn primary">註冊</button>
+      </form>
+      <p class="small-text">
+        已有帳號？
+        <router-link to="/login">返回登入</router-link>
+      </p>
+    </div>
+  </template>
+
+  <!-- Home 組件模板 -->
+  <template id="home-template">
+    <div>
+      <!-- 顯示歡迎文字 + 登出 -->
+      <div class="home-header">
+        <h2>歡迎，{{ sessionUser }}</h2>
+        <button @click="doLogout" class="btn secondary">登出</button>
+      </div>
+
+      <div v-if="error" class="error">{{ error }}</div>
+
+      <!-- Customer Foods 清單卡片 -->
+      <div class="table-card" v-if="foods.length">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>名稱</th>
+              <th>卡路里 (kcal)</th>
+              <th>蛋白質 (g)</th>
+              <th>脂肪 (g)</th>
+              <th>碳水 (g)</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="f in foods" :key="f.id">
+              <td>{{ f.id }}</td>
+              <td>{{ f.name }}</td>
+              <td>{{ f.calories }}</td>
+              <td>{{ f.protein }}</td>
+              <td>{{ f.fat }}</td>
+              <td>{{ f.carbs }}</td>
+              <td>
+                <button class="btn danger delete-btn" @click="deleteFood(f.id)">刪除</button>
+                <button class="btn info edit-btn" @click="startEdit(f)">更新</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div v-else class="no-data">
+        <p>目前沒有任何自訂食物。</p>
+      </div>
+
+      <!-- 新增 / 更新 表單卡片 -->
+      <div class="form-card">
+        <h3 v-if="!editing">新增自訂食物</h3>
+        <h3 v-else>更新自訂食物 (ID: {{ editId }})</h3>
+        <form @submit.prevent="submitForm" autocomplete="off">
+          <div class="form-group">
+            <label for="name">名稱</label>
+            <input
+              type="text"
+              v-model="form.name"
+              id="name"
+              required
+              autocomplete="off"
+              placeholder="食物名稱"
+            />
+          </div>
+          <div class="form-group">
+            <label for="calories">卡路里 (kcal)</label>
+            <input
+              type="number"
+              step="0.01"
+              v-model.number="form.calories"
+              id="calories"
+              required
+              placeholder="例如：150"
+            />
+          </div>
+          <div class="form-group">
+            <label for="protein">蛋白質 (g)</label>
+            <input
+              type="number"
+              step="0.01"
+              v-model.number="form.protein"
+              id="protein"
+              required
+              placeholder="例如：10"
+            />
+          </div>
+          <div class="form-group">
+            <label for="fat">脂肪 (g)</label>
+            <input
+              type="number"
+              step="0.01"
+              v-model.number="form.fat"
+              id="fat"
+              required
+              placeholder="例如：5"
+            />
+          </div>
+          <div class="form-group">
+            <label for="carbs">碳水 (g)</label>
+            <input
+              type="number"
+              step="0.01"
+              v-model.number="form.carbs"
+              id="carbs"
+              required
+              placeholder="例如：20"
+            />
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn primary" v-if="!editing">新增</button>
+            <button type="submit" class="btn primary" v-else>更新</button>
+            <button type="button" class="btn secondary" v-if="editing" @click="cancelEdit()">取消</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </template>
+
+  <!-- 載入 Vue 邏輯 -->
+  <script src="app.js"></script>
+</body>
+</html>
+

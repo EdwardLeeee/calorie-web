@@ -13,6 +13,18 @@ SECRET_KEY = os.getenv("SECRET_KEY", "dev_secret_key")
 app = Flask(__name__)
 app.config['SECRET_KEY'] = SECRET_KEY
 
+@app.after_request
+def add_no_cache_headers(response):
+    """
+    让浏览器不要缓存所有响应，尤其是需要登录才能访问的页面。
+    这样用户登出后，按返回就会重新向服务器请求，而不是从缓存显示旧页面。
+    """
+    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    return response
+
+
 @app.before_request
 def require_login():
     """

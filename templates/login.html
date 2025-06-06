@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>登入</title>
+    <!-- 防止浏览器缓存 -->
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
 </head>
 <body>
     <h1>登入</h1>
@@ -17,13 +21,34 @@
       {% endif %}
     {% endwith %}
 
-    <form method="post" action="/login">
+    <!-- form 保持 autocomplete="off" -->
+    <form method="post" action="/login" autocomplete="off">
         <label for="username">Username:</label>
-        <input type="text" name="username" id="username" required><br><br>
+        <input 
+            type="text" 
+            name="username" 
+            id="username" 
+            required 
+            autocomplete="off"><br><br>
+
         <label for="password">Password:</label>
-        <input type="password" name="password" id="password" required><br><br>
+        <!-- 
+          這裡一開始加上 readonly，這樣瀏覽器就不會對它做自動填充。
+          在使用者點擊（focus）時，再把 readonly 拿掉，才能讓使用者輸入密碼。
+        -->
+        <input 
+            type="password" 
+            name="password" 
+            id="password" 
+            required 
+            autocomplete="new-password"
+            readonly
+            onfocus="this.removeAttribute('readonly');"><br><br>
+
         <button type="submit">登入</button>
     </form>
     <p>沒有帳號？ <a href="/signup">註冊</a></p>
 </body>
 </html>
+
+

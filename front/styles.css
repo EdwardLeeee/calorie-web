@@ -1,0 +1,223 @@
+/* styles.css */
+
+/* -------------------- */
+/*    全局樣式設定     */
+/* -------------------- */
+* {
+  box-sizing: border-box;
+}
+body {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  margin: 0;
+  background-color: #f5f7fa;
+  color: #333;
+}
+a {
+  color: #409eff;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+/* -------------------- */
+/*      App Header      */
+/* -------------------- */
+.app-header {
+  background-color: #2d3a4b;
+  color: #fff;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.app-header h1 {
+  margin: 0;
+  font-size: 1.75rem;
+}
+
+/* -------------------- */
+/*      共用卡片樣式     */
+/* -------------------- */
+.card,
+.form-card,
+.table-card {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1.5rem auto;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+.card {
+  max-width: 400px;
+}
+.table-card {
+  max-width: 800px;
+}
+.form-card {
+  max-width: 600px;
+}
+
+/* 卡片標題 */
+.card-title {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #2d3a4b;
+}
+
+/* -------------------- */
+/*      按鈕樣式        */
+/* -------------------- */
+.btn {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+  border-radius: 4px;
+  cursor: pointer;
+  border: none;
+  text-align: center;
+  transition: background-color 0.2s ease;
+  margin-top: 1rem;
+}
+
+/* 主要按鈕 (深藍底白字) */
+.btn.primary {
+  background-color: #409eff;
+  color: #fff;
+}
+.btn.primary:hover {
+  background-color: #66b1ff;
+}
+
+/* 次要按鈕 (白底深藍邊框) */
+.btn.secondary {
+  background-color: #fff;
+  color: #409eff;
+  border: 1px solid #409eff;
+}
+.btn.secondary:hover {
+  background-color: #f0f5ff;
+}
+
+/* 資訊按鈕 (淺藍底白字) */
+.btn.info {
+  background-color: #5bc0de;
+  color: #fff;
+}
+.btn.info:hover {
+  background-color: #31b0d5;
+}
+
+/* 危險按鈕 (紅底白字) */
+.btn.danger {
+  background-color: #d9534f;
+  color: #fff;
+}
+.btn.danger:hover {
+  background-color: #c9302c;
+}
+
+/* -------------------- */
+/*      表單元件        */
+/* -------------------- */
+form label {
+  display: block;
+  margin-top: 0.75rem;
+  font-weight: 500;
+  color: #2d3a4b;
+}
+form input[type="text"],
+form input[type="password"],
+form input[type="number"] {
+  width: 100%;
+  padding: 0.6rem;
+  margin-top: 0.25rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+form input:focus {
+  outline: none;
+  border-color: #409eff;
+  box-shadow: 0 0 4px rgba(64,158,255,0.3);
+}
+
+/* 表單群組 (Home 新增/更新區) */
+.form-group {
+  margin-bottom: 1rem;
+}
+.form-actions {
+  margin-top: 1.25rem;
+}
+
+/* 表單提示文字 (置中、間距) */
+.small-text {
+  font-size: 0.9rem;
+  color: #666;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+/* -------------------- */
+/*      錯誤/成功提示    */
+/* -------------------- */
+.error {
+  color: #d9534f;
+  margin-bottom: 0.75rem;
+}
+.success {
+  color: #5cb85c;
+  margin-bottom: 0.75rem;
+}
+
+/* -------------------- */
+/*      Home Header      */
+/* -------------------- */
+.home-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.home-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #2d3a4b;
+}
+
+/* -------------------- */
+/*      表格樣式        */
+/* -------------------- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  font-size: 0.95rem;
+}
+th, td {
+  border: 1px solid #e0e6ed;
+  padding: 0.75rem 0.5rem;
+  text-align: center;
+}
+th {
+  background-color: #f0f5fa;
+  color: #2d3a4b;
+  font-weight: 500;
+}
+tbody tr:nth-child(even) {
+  background-color: #fbfcfe;
+}
+tbody tr:hover {
+  background-color: #eef4fc;
+}
+
+/* -------------------- */
+/*      無資料提示      */
+/* -------------------- */
+.no-data {
+  text-align: center;
+  color: #666;
+  padding: 2rem 0;
+  font-size: 1rem;
+}
+
