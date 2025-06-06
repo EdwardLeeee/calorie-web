@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Food 管理</title>
+  <style>
+    table, th, td { border: 1px solid #ccc; border-collapse: collapse; }
+    th, td { padding: 8px; }
+    input, button { margin: 4px; }
+  </style>
+</head>
+<body>
+  <h1>Food 管理</h1>
+
+  <h2>➕ 新增食物</h2>
+  <form id="addForm">
+    <input type="text" name="name" placeholder="Name" required>
+    <input type="number" step="0.01" name="calories" placeholder="Calories" required>
+    <input type="number" step="0.01" name="protein" placeholder="Protein" required>
+    <input type="number" step="0.01" name="fat" placeholder="Fat" required>
+    <input type="number" step="0.01" name="carbs" placeholder="Carbs" required>
+    <button type="submit">新增</button>
+  </form>
+  
+  <h2>🔍 搜尋食物（依名稱）</h2>
+  <form id="searchForm">
+    <input type="text" id="searchInput" placeholder="輸入食物名稱" required>
+    <button type="submit">搜尋</button>
+    <button type="button" onclick="loadFoods()">顯示全部</button>
+  </form>
+
+  <hr>
+
+  <h2>📋 現有食物資料</h2>
+  <table id="foodsTable">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Calories</th>
+        <th>Protein</th>
+        <th>Fat</th>
+        <th>Carbs</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- JavaScript 動態插入資料 -->
+    </tbody>
+  </table>
+
+  <script>
+    const apiBase = '/foods';
+
+    // 載入所有食物
+    async function loadFoods() {
+      try {
+        const res = await fetch(apiBase);
+        const foods = await res.json();
+        renderTable(foods);
+      } catch (err) {
+        alert('❌ 無法載入資料');
+      }
+    }
+
+    // 渲染表格資料
+    function renderTable(foods) {
+      const tbody = document.querySelector('#foodsTable tbody');
+      tbody.innerHTML = '';
+      foods.forEach(f => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${f.id}</td>
+          <td><input type="text" value="${f.name}" data-field="name" data-id="${f.id}"></td>
+          <td><input type="number" step="0.01" value="${f.calories}" data-field="calories" data-id="${f.id}"></td>
+          <td><input type="number" step="0.01" value="${f.protein}" data-field="protein" data-id="${f.id}"></td>
+          <td><input type="number" step="0.01" value="${f.fat}" data-field="fat" data-id="${f.id}"></td>
+          <td><input type="number" step="0.01" value="${f.carbs}" data-field="carbs" data-id="${f.id}"></td>
+          <td>
+            <button onclick="updateFood(${f.id})">更新</button>
+            <button onclick="deleteFood(${f.id})">刪除</button>
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    // 新增食物
+    document.getElementById('addForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData.entries());
+      data.calories = parseFloat(data.calories);
+      data.protein = parseFloat(data.protein);
+      data.fat = parseFloat(data.fat);
+      data.carbs = parseFloat(data.carbs);
+
+      try {
+        const res = await fetch(apiBase, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        if (res.ok) {
+          alert('✅ 新增成功！');
+          e.target.reset();
+          loadFoods();
+        } else {
+          const error = await res.json().catch(() => ({}));
+          alert(`❌ ${error.message || '新增失敗，請確認資料'}`);
+        }
+      } catch (err) {
+        alert('❌ 發生錯誤，請稍後再試');
+      }
+    });
+
+    // 更新食物
+    async function updateFood(id) {
+      const inputs = document.querySelectorAll(`[data-id="${id}"]`);
+      const data = {};
+      inputs.forEach(input => {
+        const key = input.dataset.field;
+        data[key] = input.value;
+      });
+
+      try {
+        const res = await fetch(`${apiBase}/${id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        if (res.ok) {
+          alert('✅ 更新成功！');
+          loadFoods();
+        } else {
+          alert('❌ 更新失敗');
+        }
+      } catch (err) {
+        alert('❌ 發生錯誤，請稍後再試');
+      }
+    }
+
+    // 刪除食物
+    async function deleteFood(id) {
+      if (!confirm('確定要刪除這筆資料？')) return;
+
+      try {
+        const res = await fetch(`${apiBase}/${id}`, {
+          method: 'DELETE'
+        });
+
+        if (res.ok) {
+          alert('✅ 刪除成功！');
+          loadFoods();
+        } else {
+          alert('❌ 刪除失敗');
+        }
+      } catch (err) {
+        alert('❌ 發生錯誤，請稍後再試');
+      }
+    }
+
+    // 搜尋食物
+    document.getElementById('searchForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('searchInput').value.trim();
+      if (!name) return;
+
+      try {
+        const res = await fetch(`${apiBase}/${encodeURIComponent(name)}`);
+        if (res.ok) {
+          const f = await res.json();
+          renderTable([f]);
+        } else {
+          alert('❌ 找不到該食物名稱');
+        }
+      } catch (err) {
+        alert('❌ 發生錯誤，請稍後再試');
+      }
+    });
+
+    // 初始載入
+    loadFoods();
+  </script>
+</body>
+</html>

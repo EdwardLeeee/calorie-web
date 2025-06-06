@@ -3,6 +3,7 @@ from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
 import os
+from flask import render_template
 
 app = Flask(__name__)
 
@@ -47,6 +48,11 @@ class Food(db.Model):
             'fat': self.fat,
             'carbs': self.carbs
         }
+        
+        
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 # RESTful API endpoints
 @app.route('/foods', methods=['GET'])
@@ -54,9 +60,11 @@ def get_foods():
     foods = Food.query.all()
     return jsonify([f.to_dict() for f in foods])
 
-@app.route('/foods/<int:id>', methods=['GET'])
-def get_food(id):
-    f = Food.query.get_or_404(id)
+@app.route('/foods/<string:name>', methods=['GET'])
+def get_food_by_name(name):
+    f = Food.query.filter_by(name=name).first()
+    if not f:
+        return jsonify({'error': '找不到該食物'}), 404
     return jsonify(f.to_dict())
 
 @app.route('/foods', methods=['POST'])
@@ -69,8 +77,16 @@ def create_food():
         fat=data['fat'],
         carbs=data['carbs']
     )
-    db.session.add(f)
-    db.session.commit()
+    try:
+        db.session.add(f)
+        db.session.commit()
+    except IntegrityError:
+        db.session.rollback()
+        return jsonify({'message': '新增失敗：食物名稱已存在'}), 400
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'message': '新增失敗：伺服器錯誤'}), 500
+
     return jsonify(f.to_dict()), 201
 
 @app.route('/foods/<int:id>', methods=['PUT'])
