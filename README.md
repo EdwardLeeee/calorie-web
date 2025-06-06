@@ -1,6 +1,13 @@
 # calorie-web
 ## 簡介
 這是一個給用戶紀錄每日卡路里攝取的網站
+
+## UI 
+```
+cd front
+python3 -m http.server 5000 --bind 127.0.0.1
+```
+ 
 ## FOOD API
 ### 安裝必要套件
 ```
