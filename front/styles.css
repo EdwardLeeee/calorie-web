@@ -27,7 +27,7 @@ ul {
 /* ------------ 按鈕樣式 ------------ */
 .btn {
   display: inline-block;
-  padding: 0.5rem 1rem;
+  padding: 0.4rem 0.8rem;
   border: none;
   border-radius: 6px;
   font-size: 0.95rem;
@@ -69,7 +69,6 @@ ul {
   font-size: 0.9rem;
   padding: 0.4rem 0.8rem;
   border-radius: 4px;
-  font-family: 'Roboto', sans-serif;
 }
 .btn.logout-btn:hover {
   background-color: #e8f5e9;
@@ -92,8 +91,27 @@ ul {
 .btn.add-btn:hover {
   background-color: #45a046;
 }
+.btn.small-btn {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8rem;
+  margin-left: 0.25rem;
+}
+.btn.info-btn {
+  background-color: #42a5f5;
+  color: #fff;
+}
+.btn.info-btn:hover {
+  background-color: #1e88e5;
+}
+.btn.danger-btn {
+  background-color: #ef5350;
+  color: #fff;
+}
+.btn.danger-btn:hover {
+  background-color: #e53935;
+}
 
-/* ------------ 卡片、表格、輸入框 ------------ */
+/* ------------ 卡片、輸入框 ------------ */
 .auth-container {
   display: flex;
   justify-content: center;
@@ -112,6 +130,7 @@ ul {
   margin-bottom: 1rem;
   text-align: center;
   color: #4caf50;
+  font-weight: 500;
 }
 .message {
   margin-bottom: 0.75rem;
@@ -148,24 +167,6 @@ ul {
   text-align: center;
   color: #666;
 }
-.table-card {
-  background-color: #fff;
-  margin: 1rem 1rem 60px; /* 下方留空給底部導航 */
-  padding: 1rem;
-  border-radius: 8px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-}
-.table-card table {
-  width: 100%;
-  border-collapse: collapse;
-}
-.table-card th,
-.table-card td {
-  padding: 0.5rem;
-  border: 1px solid #e0e0e0;
-  text-align: left;
-  font-size: 0.9rem;
-}
 
 /* ------------ App Header ------------ */
 .app-header {
@@ -196,7 +197,7 @@ ul {
 }
 .bottom-nav .nav-item {
   color: #666;
-  font-size: 1.1rem; /* 放大文字 */
+  font-size: 1.2rem; /* 放大文字 */
   flex: 1;
   text-align: center;
   font-family: 'Roboto', sans-serif;
@@ -204,6 +205,16 @@ ul {
 .bottom-nav .nav-item.active {
   color: #4caf50;
   font-weight: 600;
+}
+
+/* ========== 新增：置中白框 (.centered-card) ========== */
+.centered-card {
+  max-width: 600px;
+  margin: 1rem auto;   /* 上下留白 1rem，水平置中 */
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  padding: 0.5rem 1rem;
 }
 
 /* ------------ Dashboard（首頁） 样式 ------------ */
@@ -263,30 +274,89 @@ ul {
   border-radius: 2px;
 }
 
-/* 2. 水球 (圓形進度條) */
+/* 2. Charts Row */
+.charts-row {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+/* 2a. 水球 (圓形進度條) */
 .waterball-container {
-  margin: 1rem auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.waterball-svg {
   width: 120px;
   height: 120px;
 }
-.waterball-svg {
-  width: 100%;
-  height: 100%;
-}
 .waterball-text {
-  fill: #fff; /* 中心數字改白色 */
+  fill: #333; /* 黑色 */
   font-size: 0.9rem;
   font-weight: 600;
   font-family: 'Roboto', sans-serif;
 }
+.black-text {
+  fill: #333;
+}
+.target-input-group {
+  margin-top: 0.5rem;
+  text-align: center;
+}
+.target-input-group label {
+  font-size: 0.9rem;
+  margin-right: 0.25rem;
+}
+.target-input {
+  width: 70px;
+  padding: 0.25rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-family: 'Roboto', sans-serif;
+}
 
-/* 3. 今日紀錄 Card */
+/* 2b. 三大營養素圓餅圖 */
+.macro-chart-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.macro-chart-container svg {
+  width: 120px;
+  height: 120px;
+}
+.macro-legend {
+  margin-top: 0.5rem;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  font-size: 0.85rem;
+  margin: 0.2rem 0;
+  font-family: 'Roboto', sans-serif;
+}
+.legend-color {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-right: 0.4rem;
+  border-radius: 2px;
+}
+.carbs-color {
+  background-color: #42a5f5; /* 藍 */
+}
+.protein-color {
+  background-color: #ef5350; /* 紅 */
+}
+.fat-color {
+  background-color: #ffca28; /* 黃 */
+
+/* 3. 今日紀錄 Card 內部 */
 .today-records-card {
-  background-color: #fff;
-  margin: 1rem;
-  border-radius: 8px;
-  padding: 1rem;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  /* 內部不需額外陰影，外層 .centered-card 已經有 */
+  padding: 0.5rem;
 }
 .today-records-card .card-header {
   display: flex;
@@ -298,12 +368,15 @@ ul {
   font-size: 1.1rem;
 }
 .record-list {
-  max-height: 220px;
+  max-height: 180px;
   overflow-y: auto;
   margin-bottom: 0.5rem;
 }
 .record-item {
-  padding: 0.5rem 0;
+  display: flex;
+  justify-content: space-between; /* 讓按鈕靠右 */
+  align-items: center;
+  padding: 0.4rem 0;
   border-bottom: 1px solid #f0f0f0;
 }
 .record-label {
@@ -311,8 +384,11 @@ ul {
   font-size: 0.95rem;
   color: #333;
 }
+.record-actions {
+  display: flex;
+}
 
-/* ------------ Add Record 表單 ------------ */
+/* 4. Add/Edit Record 表單 */
 .add-record-container {
   padding-bottom: 60px;
 }
@@ -338,26 +414,36 @@ ul {
   box-shadow: 0 1px 4px rgba(0,0,0,0.1);
 }
 
-/* ------------ 全部紀錄（All Records） ------------ */
+/* 5. All Records（完整列表） */
 .all-records-container {
   padding-bottom: 60px;
 }
+.record-group {
+  margin: 0 1rem 1rem;
+}
+.group-header {
+  font-weight: 500;
+  font-size: 1rem;
+  margin: 0.5rem 0;
+  font-family: 'Roboto', sans-serif;
+}
 .all-records-list {
-  margin: 0 1rem;
-  max-height: 65vh;
+  max-height: 50vh;
   overflow-y: auto;
 }
 .all-records-list .record-item {
-  padding: 0.5rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.4rem 0;
   border-bottom: 1px solid #f0f0f0;
 }
 .all-records-list .record-label {
-  font-family: 'Roboto', sans-serif;
   font-size: 0.95rem;
-  color: #333;
+  font-family: 'Roboto', sans-serif;
 }
 
-/* ------------ 自訂食物（Custom Foods） ------------ */
+/* 6. Custom Foods（自訂食物） */
 .custom-foods-container {
   padding-bottom: 60px;
 }
@@ -367,17 +453,24 @@ ul {
   padding: 1rem;
 }
 .custom-food-list {
-  margin: 0 1rem;
-  max-height: 65vh;
-  overflow-y: auto;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 .custom-food-list .food-item {
-  padding: 0.5rem 0;
+  display: flex;
+  justify-content: space-between; /* 讓按鈕靠右 */
+  align-items: center;
+  padding: 0.5rem 1rem;
   border-bottom: 1px solid #f0f0f0;
 }
 .custom-food-list .record-label {
-  font-family: 'Roboto', sans-serif;
   font-size: 0.95rem;
-  color: #333;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* 7. Add/Edit Food 表單 */
+.custom-foods-container .form-card {
+  margin-top: 0;
 }
 
