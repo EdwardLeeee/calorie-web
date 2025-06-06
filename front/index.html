@@ -226,7 +226,162 @@
       </div>
     </div>
   </template>
+  
+  <!-- 飲食 組件模板 -->
+  <template id="records-template">
+    <div>
+      <div class="home-header">
+        <h2>飲食紀錄 ({{ sessionUsername }})</h2>
+        <button @click="doLogout" class="btn secondary">登出</button>
+      </div>
 
+      <div v-if="error" class="error">{{ error }}</div>
+
+      <!-- 飲食紀錄列表 -->
+      <div class="table-card" v-if="records.length">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>時間</th>
+              <th>熱量 (kcal)</th>
+              <th>碳水 (g)</th>
+              <th>蛋白 (g)</th>
+              <th>脂肪 (g)</th>
+              <th>自訂食物 ID</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="r in records" :key="r.id">
+              <td>{{ r.id }}</td>
+              <td>{{ formatDateTime(r.record_time) }}</td>
+              <td>{{ r.calorie_sum }}</td>
+              <td>{{ r.carb_sum }}</td>
+              <td>{{ r.protein_sum }}</td>
+              <td>{{ r.fat_sum }}</td>
+              <td>{{ r.custom_food_id || '-' }}</td>
+              <td>
+                <button class="btn danger" @click="deleteRecord(r.id)">刪除</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div v-else class="no-data">
+        <p>目前沒有任何飲食紀錄。</p>
+      </div>
+
+      <!-- 新增／更新飲食紀錄表單 -->
+      <div class="form-card">
+        <h3 v-if="!editing">新增飲食紀錄</h3>
+        <h3 v-else>更新飲食紀錄 (ID: {{ editId }})</h3>
+        <form @submit.prevent="submitForm" autocomplete="off">
+          <!-- 1. 選擇方式：官方、自訂、手動 -->
+          <div class="form-group">
+            <label>選擇輸入方式：</label>
+            <select v-model="inputMode" required>
+              <option value="official">官方食物</option>
+              <option value="custom">自訂食物</option>
+              <option value="manual">手動輸入</option>
+            </select>
+          </div>
+
+          <!-- 2a. 官方食物下拉 -->
+          <div v-if="inputMode==='official'" class="form-group">
+            <label for="official_food_id">官方食物</label>
+            <select id="official_food_id" v-model.number="form.official_food_id" @change="onOfficialChange" required>
+              <option disabled value="">請選擇</option>
+              <option v-for="of in officialFoods" :key="of.id" :value="of.id">
+                {{ of.name }} ({{ of.calories }} kcal)
+              </option>
+            </select>
+          </div>
+
+          <!-- 2b. 自訂食物下拉 -->
+          <div v-if="inputMode==='custom'" class="form-group">
+            <label for="custom_food_id">自訂食物</label>
+            <select id="custom_food_id" v-model.number="form.custom_food_id" @change="onCustomChange" required>
+              <option disabled value="">請選擇</option>
+              <option v-for="cf in customFoods" :key="cf.id" :value="cf.id">
+                {{ cf.name }} ({{ cf.calories }} kcal)
+              </option>
+            </select>
+          </div>
+
+          <!-- 2c. 手動輸入各數值 -->
+          <div v-if="inputMode==='manual'" class="form-group">
+            <label for="manual_name">食物名稱</label>
+            <input type="text" id="manual_name" v-model="form.manual_name" placeholder="自訂名稱" required />
+          </div>
+
+          <!-- 3. record_time -->
+          <div class="form-group">
+            <label for="record_time">時間</label>
+            <input
+              type="datetime-local"
+              v-model="form.record_time"
+              id="record_time"
+              required
+            />
+          </div>
+
+          <!-- 4. 各營養數值欄位：若為官方或自訂則自動填入 -->
+          <div class="form-group">
+            <label for="calorie_sum">熱量 (kcal)</label>
+            <input
+              type="number"
+              step="0.01"
+              v-model.number="form.calorie_sum"
+              id="calorie_sum"
+              :readonly="inputMode!=='manual'"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="carb_sum">碳水 (g)</label>
+            <input
+              type="number"
+              step="0.01"
+              v-model.number="form.carb_sum"
+              id="carb_sum"
+              :readonly="inputMode!=='manual'"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="protein_sum">蛋白 (g)</label>
+            <input
+              type="number"
+              step="0.01"
+              v-model.number="form.protein_sum"
+              id="protein_sum"
+              :readonly="inputMode!=='manual'"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="fat_sum">脂肪 (g)</label>
+            <input
+              type="number"
+              step="0.01"
+              v-model.number="form.fat_sum"
+              id="fat_sum"
+              :readonly="inputMode!=='manual'"
+              required
+            />
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn primary" v-if="!editing">新增</button>
+            <button type="submit" class="btn primary" v-else>更新</button>
+            <button type="button" class="btn secondary" v-if="editing" @click="cancelEdit()">取消</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </template>
+  
   <!-- 載入 Vue 邏輯 -->
   <script src="app.js"></script>
 </body>
