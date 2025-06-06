@@ -1,223 +1,311 @@
-/* styles.css */
-
-/* -------------------- */
-/*    全局樣式設定     */
-/* -------------------- */
+/* ------------ 通用 reset / 基本設定 ------------ */
 * {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 body {
-  font-family: 'Helvetica Neue', Arial, sans-serif;
-  margin: 0;
-  background-color: #f5f7fa;
+  font-family: "Noto Sans TC", sans-serif;
+  background-color: #f5f5f5;
   color: #333;
+  line-height: 1.5;
+}
+h1, h2, h3 {
+  color: #333;
+  margin-bottom: 0.5rem;
 }
 a {
-  color: #409eff;
   text-decoration: none;
+  color: inherit;
 }
-a:hover {
+ul {
+  list-style: none;
+}
+
+/* ------------ 按鈕樣式 ------------ */
+.btn {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.btn.primary {
+  background-color: #4caf50;
+  color: #fff;
+}
+.btn.primary:hover {
+  background-color: #45a046;
+}
+.btn.secondary {
+  background-color: #fff;
+  color: #4caf50;
+  border: 1px solid #4caf50;
+}
+.btn.secondary:hover {
+  background-color: #f0f0f0;
+}
+.btn.link-btn {
+  background: none;
+  color: #4caf50;
+  padding: 0;
+  font-size: 0.9rem;
+}
+.btn.link-btn:hover {
   text-decoration: underline;
 }
 
-/* -------------------- */
-/*      App Header      */
-/* -------------------- */
+/* ------------ 卡片、表格、輸入框 ------------ */
+.card {
+  max-width: 360px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+.card-title {
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.form-group {
+  margin-bottom: 0.75rem;
+  display: flex;
+  flex-direction: column;
+}
+.form-group label {
+  margin-bottom: 0.25rem;
+  font-weight: 500;
+}
+.form-group input,
+.form-group select {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.form-actions {
+  margin-top: 1rem;
+  text-align: right;
+}
+.error {
+  color: #d9534f;
+  margin-top: 0.5rem;
+}
+.no-data {
+  padding: 1rem;
+  text-align: center;
+  color: #666;
+}
+.table-card {
+  background-color: #fff;
+  margin: 1rem 1rem 60px; /* 下方留空給底部導航 */
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+.table-card table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.table-card th,
+.table-card td {
+  padding: 0.5rem;
+  border: 1px solid #e0e0e0;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+/* ------------ App Header ------------ */
 .app-header {
-  background-color: #2d3a4b;
+  background-color: #4caf50;
   color: #fff;
   padding: 1rem;
   text-align: center;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
-.app-header h1 {
-  margin: 0;
-  font-size: 1.75rem;
-}
 
-/* -------------------- */
-/*      共用卡片樣式     */
-/* -------------------- */
-.card,
-.form-card,
-.table-card {
-  background-color: #fff;
-  border-radius: 8px;
-  padding: 1.5rem;
-  margin: 1.5rem auto;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-.card {
-  max-width: 400px;
-}
-.table-card {
-  max-width: 800px;
-}
-.form-card {
-  max-width: 600px;
-}
-
-/* 卡片標題 */
-.card-title {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-  color: #2d3a4b;
-}
-
-/* -------------------- */
-/*      按鈕樣式        */
-/* -------------------- */
-.btn {
-  display: inline-block;
-  padding: 0.5rem 1rem;
-  font-size: 0.95rem;
-  border-radius: 4px;
-  cursor: pointer;
-  border: none;
-  text-align: center;
-  transition: background-color 0.2s ease;
-  margin-top: 1rem;
-}
-
-/* 主要按鈕 (深藍底白字) */
-.btn.primary {
-  background-color: #409eff;
-  color: #fff;
-}
-.btn.primary:hover {
-  background-color: #66b1ff;
-}
-
-/* 次要按鈕 (白底深藍邊框) */
-.btn.secondary {
-  background-color: #fff;
-  color: #409eff;
-  border: 1px solid #409eff;
-}
-.btn.secondary:hover {
-  background-color: #f0f5ff;
-}
-
-/* 資訊按鈕 (淺藍底白字) */
-.btn.info {
-  background-color: #5bc0de;
-  color: #fff;
-}
-.btn.info:hover {
-  background-color: #31b0d5;
-}
-
-/* 危險按鈕 (紅底白字) */
-.btn.danger {
-  background-color: #d9534f;
-  color: #fff;
-}
-.btn.danger:hover {
-  background-color: #c9302c;
-}
-
-/* -------------------- */
-/*      表單元件        */
-/* -------------------- */
-form label {
-  display: block;
-  margin-top: 0.75rem;
-  font-weight: 500;
-  color: #2d3a4b;
-}
-form input[type="text"],
-form input[type="password"],
-form input[type="number"] {
+/* ------------ 公用底部導航 ------------ */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
   width: 100%;
-  padding: 0.6rem;
-  margin-top: 0.25rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 0.95rem;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  background-color: #fff;
+  border-top: 1px solid #ddd;
+  display: flex;
+  justify-content: space-around;
+  padding: 0.5rem 0;
 }
-form input:focus {
-  outline: none;
-  border-color: #409eff;
-  box-shadow: 0 0 4px rgba(64,158,255,0.3);
-}
-
-/* 表單群組 (Home 新增/更新區) */
-.form-group {
-  margin-bottom: 1rem;
-}
-.form-actions {
-  margin-top: 1.25rem;
-}
-
-/* 表單提示文字 (置中、間距) */
-.small-text {
-  font-size: 0.9rem;
+.bottom-nav .nav-item {
   color: #666;
+  font-size: 0.9rem;
+  flex: 1;
   text-align: center;
-  margin-top: 1rem;
+}
+.bottom-nav .nav-item.active {
+  color: #4caf50;
+  font-weight: 600;
 }
 
-/* -------------------- */
-/*      錯誤/成功提示    */
-/* -------------------- */
-.error {
-  color: #d9534f;
-  margin-bottom: 0.75rem;
-}
-.success {
-  color: #5cb85c;
-  margin-bottom: 0.75rem;
+/* ------------ Dashboard（首頁） 样式 ------------ */
+.dashboard-container {
+  padding-bottom: 60px; /* 留空給底部導航 */
 }
 
-/* -------------------- */
-/*      Home Header      */
-/* -------------------- */
-.home-header {
+/* 1. 日期 Header */
+.date-header {
+  background-color: #a5d6a7; /* 淺綠色 */
+  color: #fff;
+  padding: 1rem;
+  text-align: center;
+}
+.today-date {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+.weekday-row {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
 }
-.home-header h2 {
-  margin: 0;
-  font-size: 1.25rem;
-  color: #2d3a4b;
+.weekday-item {
+  position: relative;
+  width: calc(100%/7);
+  text-align: center;
+}
+.weekday-text {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+.weekday-text.is-today {
+  opacity: 1;
+  font-weight: 600;
+}
+.weekday-item .dot {
+  position: absolute;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 6px;
+  background-color: #fff;
+  border-radius: 50%;
+}
+.weekday-item .underline {
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 3px;
+  background-color: #fff;
+  border-radius: 2px;
 }
 
-/* -------------------- */
-/*      表格樣式        */
-/* -------------------- */
-table {
+/* 2. 水球 (圓形進度條) */
+.waterball-container {
+  margin: 1rem auto;
+  width: 120px;
+  height: 120px;
+}
+.waterball-svg {
   width: 100%;
-  border-collapse: collapse;
-  margin-top: 1rem;
-  font-size: 0.95rem;
+  height: 100%;
 }
-th, td {
-  border: 1px solid #e0e6ed;
-  padding: 0.75rem 0.5rem;
-  text-align: center;
-}
-th {
-  background-color: #f0f5fa;
-  color: #2d3a4b;
-  font-weight: 500;
-}
-tbody tr:nth-child(even) {
-  background-color: #fbfcfe;
-}
-tbody tr:hover {
-  background-color: #eef4fc;
+.waterball-text {
+  fill: #4caf50;
+  font-size: 0.9rem;
+  font-weight: 600;
 }
 
-/* -------------------- */
-/*      無資料提示      */
-/* -------------------- */
-.no-data {
+/* 3. 今日紀錄 Card */
+.today-records-card {
+  background-color: #fff;
+  margin: 1rem;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+.record-list {
+  max-height: 220px;
+  overflow-y: auto;
+  margin-bottom: 0.5rem;
+}
+.record-item {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+.record-time {
+  font-size: 0.85rem;
+  color: #888;
+  margin-bottom: 0.25rem;
+}
+.record-detail {
+  font-size: 0.9rem;
+}
+.today-records-card .link-btn {
+  margin-top: 0.5rem;
+  text-align: right;
+  width: 100%;
+}
+
+/* ------------ 全部紀錄（All Records） ------------ */
+.all-records-container {
+  padding-bottom: 60px;
+}
+.all-records-header {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+}
+.all-records-header h2 {
+  flex: 1;
   text-align: center;
+}
+.all-records-header .link-btn {
+  margin-right: auto;
+}
+.all-records-list {
+  margin: 0 1rem;
+  max-height: 65vh;
+  overflow-y: auto;
+}
+.all-records-list .record-item {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+/* ------------ 自訂食物（Custom Foods） ------------ */
+.custom-foods-container {
+  padding-bottom: 60px;
+}
+.custom-foods-container .all-records-header {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+}
+.custom-food-list {
+  margin: 0 1rem;
+  max-height: 65vh;
+  overflow-y: auto;
+}
+.custom-food-list .food-item {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+.food-name {
+  font-weight: 600;
+}
+.food-detail {
+  font-size: 0.9rem;
   color: #666;
-  padding: 2rem 0;
-  font-size: 1rem;
 }
 
