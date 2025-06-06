@@ -2,25 +2,21 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8" />
-  <title>每日卡路里紀錄 </title>
+  <title>每日卡路里紀錄</title>
 
-  <!-- 1. 載入 Google 字體 Roboto -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link 
-    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" 
-    rel="stylesheet" 
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+    rel="stylesheet"
   />
 
-  <!-- 2. 載入自訂 CSS -->
   <link rel="stylesheet" href="styles.css" />
 
-  <!-- 3. 載入 Vue 3、Vue Router 4、Axios -->
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
   <script src="https://unpkg.com/vue-router@4/dist/vue-router.global.js"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
-  <!-- 4. 防止瀏覽器快取 -->
   <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
@@ -36,16 +32,12 @@
     <router-view></router-view>
   </div>
 
-  <!-- -------------------- 以下為各組件模板 -------------------- -->
-
-  <!-- A. Login 組件模板 -->
   <template id="login-template">
     <div class="auth-container">
       <div class="auth-card">
         <h2 class="card-title">登入</h2>
         <p v-if="message" class="message">{{ message }}</p>
 
-        <!-- 避免瀏覽器自動填入 -->
         <input type="text" name="fakeusernameremembered" style="display:none" />
         <input type="password" name="fakepasswordremembered" style="display:none" />
 
@@ -84,14 +76,12 @@
     </div>
   </template>
 
-  <!-- B. Signup 組件模板 -->
   <template id="signup-template">
     <div class="auth-container">
       <div class="auth-card">
         <h2 class="card-title">註冊</h2>
         <p v-if="message" class="message">{{ message }}</p>
 
-        <!-- 避免瀏覽器自動填入 -->
         <input type="text" name="fakeusernameremembered" style="display:none" />
         <input type="password" name="fakepasswordremembered" style="display:none" />
 
@@ -130,156 +120,109 @@
     </div>
   </template>
 
-  <!-- C. Dashboard（首頁）組件模板 -->
   <template id="dashboard-template">
-    <div class="dashboard-container">
-      <!-- 1. 日期與星期列 -->
-      <div class="date-header">
-        <div class="today-date">{{ todayFormatted }}</div>
-        <div class="weekday-row">
-          <div
-            v-for="(d, idx) in weekdays"
-            :key="idx"
-            class="weekday-item"
-          >
-            <span 
-              :class="['weekday-text', { 'is-today': idx === todayIndex }]"
-            >
-              {{ d }}
-            </span>
-            <span v-if="idx === todayIndex" class="dot"></span>
-            <div v-if="idx === todayIndex" class="underline"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 2. 左側水球（顯示當日 kcal） + 右側三大營養素圓餅圖 -->
-      <div class="charts-row">
-        <!-- 2a. 水球：progress 圓圈 -->
-        <div class="waterball-container">
+    <div class="main-content">
+      <div class="dashboard-charts">
+        <div class="chart-container">
           <svg viewBox="0 0 120 120" class="waterball-svg">
-            <!-- 底圈 -->
+            <circle cx="60" cy="60" r="54" fill="#eee"/>
             <circle
-              cx="60" cy="60" r="54"
-              stroke="#e0f0e0" stroke-width="12" fill="none"
-            />
-            <!-- 進度圈 (黑色中心文字) -->
-            <circle
-              cx="60" cy="60" r="54"
-              :stroke="circleColor"
+              cx="60"
+              cy="60"
+              r="54"
+              fill="transparent"
               stroke-width="12"
-              fill="none"
+              :stroke="circleColor"
               stroke-linecap="round"
-              :stroke-dasharray="circumference"
-              :stroke-dashoffset="circumference - (kcalRatio * circumference)"
               transform="rotate(-90 60 60)"
+              :stroke-dasharray="circumference"
+              :stroke-dashoffset="circumference * (1 - kcalRatio)"
             />
-            <!-- 中心文字 (黑色) -->
-            <text x="60" y="68" text-anchor="middle" class="waterball-text black-text">
-              {{ todayCalories }} kcal
+            <text x="60" y="60" text-anchor="middle" dominant-baseline="middle" class="chart-text-lg">
+              {{ todayCalories.toFixed(0) }}
+            </text>
+            <text x="60" y="80" text-anchor="middle" dominant-baseline="middle" class="chart-text-sm">
+              / {{ targetKcal }} kcal
             </text>
           </svg>
-          <!-- 2b. 下方輸入目標大卡 -->
           <div class="target-input-group">
             <label for="target-kcal">目標大卡：</label>
-            <input 
-              id="target-kcal" 
-              type="number" 
-              v-model.number="targetKcal" 
-              min="0" 
-              class="target-input" 
-            /> 
+            <input id="target-kcal" type="number" v-model.number="targetKcal" class="target-input" />
           </div>
         </div>
-
-        <!-- 3. 右側：三大營養素圓餅圖 -->
-        <div class="macro-chart-container">
+        <div class="chart-container">
           <svg width="120" height="120" viewBox="0 0 120 120">
-            <!-- 計算三大營養素比例 -->
-            <!-- carbs 角度 -->
-            <path 
-              v-if="totalMacro > 0"
-              :d="pieSlicePath(0, macroAngles.carbs, 54)" 
-              fill="#42a5f5"
+            <circle cx="60" cy="60" r="54" fill="#eee"/>
+            <path
+              v-if="macroAngles.carbs > 0"
+              :d="pieSlicePath(0, macroAngles.carbs, 54)"
+              fill="#8BC34A"
             />
-            <!-- protein 角度 -->
-            <path 
-              v-if="totalMacro > 0"
-              :d="pieSlicePath(macroAngles.carbs, macroAngles.carbs + macroAngles.protein, 54)" 
-              fill="#ef5350"
+            <path
+              v-if="macroAngles.protein > 0"
+              :d="pieSlicePath(macroAngles.carbs, macroAngles.carbs + macroAngles.protein, 54)"
+              fill="#2196F3"
             />
-            <!-- fat 角度 -->
-            <path 
-              v-if="totalMacro > 0"
-              :d="pieSlicePath(macroAngles.carbs + macroAngles.protein, 360, 54)" 
-              fill="#ffca28"
+            <path
+              v-if="macroAngles.fat > 0"
+              :d="pieSlicePath(macroAngles.carbs + macroAngles.protein, 360, 54)"
+              fill="#FFC107"
             />
-            <!-- 中心空洞，做成 donut -->
-            <circle cx="60" cy="60" r="30" fill="#fff" />
+            <circle cx="60" cy="60" r="30" fill="#fff"/>
           </svg>
-          <!-- 資訊列：標示三大營養素數值與比例 -->
           <div class="macro-legend">
             <div class="legend-item">
-              <span class="legend-color carbs-color"></span>
-              <span>碳水 {{ todayCarbs }}g ({{ macroPercents.carbs }}%)</span>
+              <span class="legend-color carb-color"></span> 碳水 ({{ macroPercents.carbs }}%)
             </div>
             <div class="legend-item">
-              <span class="legend-color protein-color"></span>
-              <span>蛋白 {{ todayProtein }}g ({{ macroPercents.protein }}%)</span>
+              <span class="legend-color protein-color"></span> 蛋白 ({{ macroPercents.protein }}%)
             </div>
             <div class="legend-item">
-              <span class="legend-color fat-color"></span>
-              <span>脂肪 {{ todayFat }}g ({{ macroPercents.fat }}%)</span>
+              <span class="legend-color fat-color"></span> 脂肪 ({{ macroPercents.fat }}%)
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 4. 今天的飲食紀錄卡片：外層加 .centered-card 白框置中 -->
-      <div class="centered-card">
-        <div class="today-records-card">
-          <div class="card-header">
-            <h3>今天的飲食紀錄</h3>
-            <button class="btn add-btn" @click="goToAddRecord">＋</button>
-          </div>
-          <div v-if="todayRecords.length">
-            <ul class="record-list">
-              <li v-for="r in todayRecords" :key="r.id" class="record-item">
-                <span class="record-label">
-                  {{ getRecordLabel(r) }} ({{ formatTime(r.record_time) }})
-                </span>
-                <div class="record-actions">
-                  <button class="btn small-btn info-btn" @click="editRecord(r)">編輯</button>
-                  <button class="btn small-btn danger-btn" @click="deleteRecord(r.id)">刪除</button>
-                </div>
-              </li>
-            </ul>
-          </div>
-          <div v-else class="no-data">
-            <p>今天尚無紀錄</p>
-          </div>
+      <div class="list-container">
+        <div class="list-header">
+          <h3>今天的飲食紀錄</h3>
           <button class="btn link-btn" @click="goToAllRecords">查看更多</button>
         </div>
+        <div v-if="todayRecords.length > 0" class="data-table">
+          <div class="table-header">
+            <div class="table-cell cell-name">食物名稱 (熱量)</div>
+            <div class="table-cell cell-info">時間</div>
+            <div class="table-cell cell-actions">操作</div>
+          </div>
+          <div v-for="r in todayRecords" :key="r.id" class="table-row">
+            <div class="table-cell cell-name">{{ getRecordLabel(r) }}</div>
+            <div class="table-cell cell-info">{{ formatTime(r.record_time) }}</div>
+            <div class="table-cell cell-actions">
+              <button class="btn small-btn info-btn" @click="editRecord(r)">編輯</button>
+              <button class="btn small-btn danger-btn" @click="deleteRecord(r.id)">刪除</button>
+            </div>
+          </div>
+        </div>
+        <div v-else class="no-data"><p>今天尚無紀錄，點此新增</p></div>
       </div>
-
-      <!-- 5. 底部導航 -->
+      
       <nav class="bottom-nav">
-        <div class="nav-item active">飲食紀錄</div>
-        <div class="nav-item" @click="goToCustomFoods">自訂食物</div>
+        <div class="nav-item active" @click="$router.push('/')">飲食紀錄</div>
+        <div class="nav-item" @click="$router.push('/add-record')">新增紀錄</div>
+        <div class="nav-item" @click="$router.push('/custom-foods')">自訂食物</div>
       </nav>
     </div>
   </template>
 
-  <!-- D. Add/Edit Record（新增或編輯飲食紀錄）組件模板 -->
   <template id="add-record-template">
     <div class="add-record-container">
-      <div class="all-records-header">
+      <div class="page-header">
         <button class="btn link-btn" @click="$router.back()">← 返回</button>
         <h2>{{ editing ? '編輯飲食紀錄' : '新增飲食紀錄' }}</h2>
       </div>
       <div class="form-card">
         <form @submit.prevent="submitRecord" autocomplete="off">
-          <!-- 1. 模式選擇 -->
           <div class="form-group">
             <label>模式：</label>
             <select v-model="inputMode" required>
@@ -288,7 +231,6 @@
               <option value="manual">手動輸入</option>
             </select>
           </div>
-          <!-- 2a. 官方食物 -->
           <div v-if="inputMode==='official'" class="form-group">
             <label for="official_food_id">官方食物</label>
             <select
@@ -303,7 +245,6 @@
               </option>
             </select>
           </div>
-          <!-- 2b. 自訂食物 -->
           <div v-if="inputMode==='custom'" class="form-group">
             <label for="custom_food_id">自訂食物</label>
             <select
@@ -318,7 +259,6 @@
               </option>
             </select>
           </div>
-          <!-- 2c. 手動 -->
           <div v-if="inputMode==='manual'" class="form-group">
             <label for="manual_name">食物名稱</label>
             <input
@@ -329,7 +269,6 @@
               required
             />
           </div>
-          <!-- 3. 時間 -->
           <div class="form-group">
             <label for="record_time">時間</label>
             <input
@@ -339,7 +278,6 @@
               required
             />
           </div>
-          <!-- 4. 各營養值 -->
           <div class="form-group">
             <label for="calorie_sum">熱量 (kcal)</label>
             <input
@@ -385,7 +323,7 @@
             />
           </div>
           <div class="form-actions">
-            <button class="btn primary full-width">
+            <button type="submit" class="btn primary full-width">
               {{ editing ? '更新' : '新增' }}
             </button>
           </div>
@@ -394,77 +332,88 @@
       <div v-if="error" class="error">{{ error }}</div>
       <nav class="bottom-nav">
         <div class="nav-item" @click="$router.push('/')">飲食紀錄</div>
+        <div class="nav-item active">新增紀錄</div>
         <div class="nav-item" @click="$router.push('/custom-foods')">自訂食物</div>
       </nav>
     </div>
   </template>
 
-  <!-- E. All Records（完整列表）組件模板 -->
   <template id="all-records-template">
-    <div class="all-records-container">
-      <div class="all-records-header">
-        <button class="btn link-btn" @click="$router.back()">← 返回</button>
-        <h2>全部飲食紀錄</h2>
-      </div>
-      <div v-if="records.length">
-        <!-- 依「日期 + 星期」分區 -->
-        <div v-for="(group, date) in groupedRecords" :key="date" class="record-group">
-          <div class="group-header">{{ date }} （{{ weekdayOf(date) }}）</div>
-          <ul class="all-records-list">
-            <li v-for="r in group" :key="r.id" class="record-item">
-              <span class="record-label">
-                {{ getRecordLabel(r) }} ({{ formatTime(r.record_time) }})
-              </span>
-              <div class="record-actions">
-                <button class="btn small-btn info-btn" @click="editRecord(r)">編輯</button>
-                <button class="btn small-btn danger-btn" @click="deleteRecord(r.id)">刪除</button>
-              </div>
-            </li>
-          </ul>
+  <div class="main-content">
+    <div class="page-header">
+      <router-link to="/" class="back-btn">←</router-link>
+      <h2>全部飲食紀錄</h2>
+    </div>
+
+    <div v-if="records.length > 0">
+      <div v-for="(group, date) in groupedRecords" :key="date" class="list-container all-records-group">
+        <div class="group-header">{{ date }} ({{ weekdayOf(date) }})</div>
+        <div class="data-table">
+          <div class="table-header">
+            <div class="table-cell cell-name">食物名稱 (熱量)</div>
+            <div class="table-cell cell-info">時間</div>
+            <div class="table-cell cell-actions">操作</div>
+          </div>
+          <div v-for="r in group" :key="r.id" class="table-row">
+            <div class="table-cell cell-name">{{ getRecordLabel(r) }}</div>
+            <div class="table-cell cell-info">{{ formatTime(r.record_time) }}</div>
+            <div class="table-cell cell-actions">
+              <button class="btn small-btn info-btn" @click="editRecord(r)">編輯</button>
+              <button class="btn small-btn danger-btn" @click="deleteRecord(r.id)">刪除</button>
+            </div>
+          </div>
         </div>
       </div>
-      <div v-else class="no-data"><p>目前沒有任何紀錄</p></div>
-      <nav class="bottom-nav">
-        <div class="nav-item" @click="$router.push('/')">飲食紀錄</div>
-        <div class="nav-item" @click="$router.push('/custom-foods')">自訂食物</div>
-      </nav>
     </div>
-  </template>
+    
+    <div v-else class="no-data"><p>目前沒有任何紀錄</p></div>
 
-  <!-- F. Custom Foods（自訂食物）組件模板 -->
+    <nav class="bottom-nav">
+      <div class="nav-item" @click="$router.push('/')">飲食紀錄</div>
+      <div class="nav-item" @click="$router.push('/add-record')">新增紀錄</div>
+      <div class="nav-item" @click="$router.push('/custom-foods')">自訂食物</div>
+    </nav>
+  </div>
+</template>
+
   <template id="custom-foods-template">
-    <div class="custom-foods-container">
-      <div class="all-records-header">
-        <button class="btn link-btn" @click="$router.back()">← 返回</button>
-        <h2>自訂食物</h2>
-        <button class="btn primary" @click="goToAddFood">新增食物</button>
-      </div>
-      <!-- 外層加 .centered-card 白框置中 -->
-      <div class="centered-card">
-        <ul class="custom-food-list">
-          <li v-for="f in foods" :key="f.id" class="food-item">
-            <span class="record-label">
-              {{ getFoodLabel(f) }}
-            </span>
-            <div class="record-actions">
-              <button class="btn small-btn info-btn" @click="editFood(f)">編輯</button>
-              <button class="btn small-btn danger-btn" @click="deleteFood(f.id)">刪除</button>
-            </div>
-          </li>
-        </ul>
-        <div v-if="foods.length === 0" class="no-data"><p>目前尚無自訂食物</p></div>
-      </div>
-      <nav class="bottom-nav">
-        <div class="nav-item" @click="$router.push('/')">飲食紀錄</div>
-        <div class="nav-item active">自訂食物</div>
-      </nav>
+  <div class="main-content">
+    <div class="page-header">
+      <router-link to="/" class="back-btn">←</router-link>
+      <h2>自訂食物</h2>
+      <button class="btn add-btn" @click="goToAddFood">+</button>
     </div>
-  </template>
 
-  <!-- G. Add/Edit Food（新增或編輯自訂食物）組件模板 -->
+    <div v-if="foods.length > 0" class="list-container custom-foods-table">
+      <div class="data-table">
+        <div class="table-header">
+          <div class="table-cell cell-name">食物名稱 (熱量)</div>
+          <div class="table-cell cell-actions">操作</div>
+        </div>
+        <div v-for="f in foods" :key="f.id" class="table-row">
+          <div class="table-cell cell-name">{{ getFoodLabel(f) }}</div>
+          <div class="table-cell cell-actions">
+            <button class="btn small-btn info-btn" @click="editFood(f)">編輯</button>
+            <button class="btn small-btn danger-btn" @click="deleteFood(f.id)">刪除</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div v-else class="no-data"><p>目前尚無自訂食物</p></div>
+
+    <nav class="bottom-nav">
+      <div class="nav-item" @click="$router.push('/')">飲食紀錄</div>
+      <div class="nav-item" @click="$router.push('/add-record')">新增紀錄</div>
+      <div class="nav-item active">自訂食物</div>
+    </nav>
+  </div>
+  </template>
+  
+
   <template id="add-food-template">
     <div class="custom-foods-container">
-      <div class="all-records-header">
+      <div class="page-header">
         <button class="btn link-btn" @click="$router.back()">← 返回</button>
         <h2>{{ editing ? '編輯自訂食物' : '新增自訂食物' }}</h2>
       </div>
@@ -532,13 +481,12 @@
       <div v-if="error" class="error">{{ error }}</div>
       <nav class="bottom-nav">
         <div class="nav-item" @click="$router.push('/')">飲食紀錄</div>
+        <div class="nav-item" @click="$router.push('/add-record')">新增紀錄</div>
         <div class="nav-item active">自訂食物</div>
       </nav>
     </div>
   </template>
 
-  <!-- 最後載入 Vue 邏輯 -->
   <script src="app.js"></script>
 </body>
 </html>
-

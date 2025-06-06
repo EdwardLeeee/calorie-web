@@ -1,6 +1,22 @@
 /* ------------ 載入 Roboto 字體 ------------ */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
+/* ------------ CSS 變數：方便統一管理風格 ------------ */
+:root {
+  --primary-color: #4caf50;
+  --primary-color-dark: #45a046;
+  --primary-color-light: #e8f5e9;
+  --text-color-dark: #333;
+  --text-color-light: #666;
+  --text-color-white: #fff;
+  --border-color: #e0e0e0;
+  --background-color: #f7f9fc;
+  --card-background: #fff;
+  --danger-color: #ef5350;
+  --info-color: #42a5f5;
+  --warning-color: #ffc107; /* 統一為橙色，與圖表脂肪色一致 */
+}
+
 /* ------------ 通用 reset / 基本設定 ------------ */
 * {
   margin: 0;
@@ -9,12 +25,9 @@
 }
 body {
   font-family: 'Roboto', sans-serif;
-  background-color: #f5f5f5;
-  color: #333;
+  background-color: var(--background-color);
+  color: var(--text-color-dark);
   line-height: 1.5;
-}
-h1, h2, h3 {
-  margin-bottom: 0.5rem;
 }
 a {
   text-decoration: none;
@@ -23,164 +36,174 @@ a {
 ul {
   list-style: none;
 }
+/* 主內容區域，避免被底部導航遮擋 */
+.main-content {
+  padding-bottom: 70px; /* 預留底部導航高度 */
+}
 
-/* ------------ 按鈕樣式 ------------ */
+/* ------------ 按鈕通用樣式 ------------ */
 .btn {
-  display: inline-block;
-  padding: 0.4rem 0.8rem;
-  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  border: 1px solid transparent;
   border-radius: 6px;
   font-size: 0.95rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.2s;
-  font-family: 'Roboto', sans-serif;
+  transition: all 0.2s ease;
+  white-space: nowrap;
 }
 .btn.primary {
-  background-color: #4caf50; /* 主色系淺綠 */
-  color: #fff;
+  background-color: var(--primary-color);
+  color: var(--text-color-white);
 }
 .btn.primary:hover {
-  background-color: #45a046;
-}
-.btn.secondary {
-  background-color: #fff;
-  color: #4caf50;
-  border: 1px solid #4caf50;
-}
-.btn.secondary:hover {
-  background-color: #f0f0f0;
+  background-color: var(--primary-color-dark);
 }
 .btn.link-btn {
   background: none;
-  color: #4caf50;
+  color: var(--primary-color);
   padding: 0;
-  font-size: 0.95rem;
-}
-.btn.link-btn:hover {
-  text-decoration: underline;
 }
 .btn.logout-btn {
   position: absolute;
-  top: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
   right: 1rem;
-  background-color: #fff;
-  color: #4caf50;
-  border: 1px solid #fff;
+  background-color: var(--text-color-white);
+  color: var(--primary-color);
   font-size: 0.9rem;
   padding: 0.4rem 0.8rem;
-  border-radius: 4px;
+  border: 1px solid var(--primary-color); /* 增加邊框讓其更明顯 */
 }
 .btn.logout-btn:hover {
-  background-color: #e8f5e9;
+  background-color: var(--primary-color-light);
 }
 .btn.full-width {
   width: 100%;
 }
+.btn.small-btn {
+  padding: 0.2rem 0.5rem;
+  font-size: 0.8rem;
+  margin-left: 0.5rem;
+}
+.btn.info-btn {
+  background-color: var(--info-color);
+  color: var(--text-color-white);
+}
+.btn.danger-btn {
+  background-color: var(--danger-color);
+  color: var(--text-color-white);
+}
+/* 新增按鈕 (+) */
 .btn.add-btn {
-  background-color: #4caf50;
-  color: #fff;
+  background-color: var(--primary-color);
+  color: var(--text-color-white);
   border-radius: 50%;
-  width: 32px;
-  height: 32px;
-  font-size: 1.2rem;
-  line-height: 0;
-  display: flex;
+  width: 36px;
+  height: 36px;
+  font-size: 1.5rem;
+  line-height: 1; /* 垂直居中 "+" 符號 */
+  padding: 0;
+  display: flex; /* 使用flexbox居中內容 */
   justify-content: center;
   align-items: center;
 }
 .btn.add-btn:hover {
-  background-color: #45a046;
-}
-.btn.small-btn {
-  padding: 0.25rem 0.5rem;
-  font-size: 0.8rem;
-  margin-left: 0.25rem;
-}
-.btn.info-btn {
-  background-color: #42a5f5;
-  color: #fff;
-}
-.btn.info-btn:hover {
-  background-color: #1e88e5;
-}
-.btn.danger-btn {
-  background-color: #ef5350;
-  color: #fff;
-}
-.btn.danger-btn:hover {
-  background-color: #e53935;
+  background-color: var(--primary-color-dark);
 }
 
-/* ------------ 卡片、輸入框 ------------ */
-.auth-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: calc(100vh - 64px); /* 扣掉 header 高度 */
-}
-.auth-card {
-  width: 320px;
-  padding: 1.5rem;
-  background-color: #fff;
+
+/* ------------ 卡片、輸入框、表單 ------------ */
+.form-card {
+  background-color: var(--card-background);
+  margin: 1rem;
+  padding: 1.5rem; /* 增加內邊距 */
   border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  position: relative;
-}
-.card-title {
-  margin-bottom: 1rem;
-  text-align: center;
-  color: #4caf50;
-  font-weight: 500;
-}
-.message {
-  margin-bottom: 0.75rem;
-  text-align: center;
-  color: #d9534f;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 .form-group {
-  margin-bottom: 0.75rem;
-  display: flex;
-  flex-direction: column;
+  margin-bottom: 1rem;
 }
 .form-group label {
-  margin-bottom: 0.25rem;
+  display: block;
+  margin-bottom: 0.35rem;
   font-weight: 500;
+  font-size: 0.9rem;
 }
 .form-group input,
 .form-group select {
-  padding: 0.5rem;
-  border: 1px solid #ccc;
+  width: 100%;
+  padding: 0.75rem; /* 增加輸入框內邊距 */
+  border: 1px solid var(--border-color);
   border-radius: 4px;
   font-family: 'Roboto', sans-serif;
+  font-size: 1rem;
+  box-sizing: border-box; /* 確保 padding 不增加寬度 */
 }
 .form-actions {
-  margin-top: 1rem;
-  text-align: right;
+  margin-top: 1.5rem;
+}
+.error, .message {
+  padding: 0.75rem;
+  margin: 0 1rem 1rem;
+  border-radius: 6px;
+  text-align: center;
+  font-weight: 500; /* 讓訊息更清晰 */
 }
 .error {
-  color: #d9534f;
-  margin-top: 0.5rem;
-  text-align: center;
+  color: var(--danger-color);
+  background-color: #fdecea;
+}
+.message {
+  color: #31708f;
+  background-color: #d9edf7;
 }
 .no-data {
-  padding: 1rem;
+  padding: 2rem;
   text-align: center;
-  color: #666;
+  color: var(--text-color-light);
 }
 
-/* ------------ App Header ------------ */
+
+/* ------------ 通用頁面標題 ------------ */
+.page-header {
+  display: flex;
+  align-items: center; /* 垂直居中對齊項目 */
+  padding: 1rem;
+  background-color: var(--card-background);
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* 增加輕微陰影 */
+}
+.page-header h2 {
+  font-size: 1.2rem;
+  margin: 0;
+  flex-grow: 1; /* 讓標題佔據剩餘空間 */
+  text-align: center; /* 標題居中 */
+}
+.page-header .back-btn {
+  color: var(--text-color-light);
+  font-size: 1.5rem;
+  margin-right: 1rem;
+  padding: 5px; /* 增加點擊區域 */
+}
+
+
+/* ------------ App 頂部 Header ------------ */
 .app-header {
-  background-color: #4caf50; /* 主色系淺綠 */
-  color: #fff;
+  background-color: var(--primary-color);
+  color: var(--text-color-white);
   padding: 1rem;
   text-align: center;
   position: relative;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 增加陰影 */
 }
 .app-header h1 {
   font-size: 1.4rem;
   font-weight: 500;
-  font-family: 'Roboto', sans-serif;
+  margin: 0;
 }
 
 /* ------------ 底部導航 ------------ */
@@ -189,288 +212,232 @@ ul {
   bottom: 0;
   left: 0;
   width: 100%;
-  background-color: #fff;
-  border-top: 1px solid #ddd;
+  background-color: var(--card-background);
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.05);
   display: flex;
   justify-content: space-around;
   padding: 0.5rem 0;
+  z-index: 100;
+  height: 60px; /* 固定高度，與 main-content 的 padding-bottom 配合 */
+  align-items: center; /* 垂直居中內容 */
 }
 .bottom-nav .nav-item {
-  color: #666;
-  font-size: 1.2rem; /* 放大文字 */
+  color: var(--text-color-light);
+  font-size: 1rem;
   flex: 1;
   text-align: center;
-  font-family: 'Roboto', sans-serif;
+  padding: 0.25rem 0;
+  display: flex; /* 使用 flex 讓文字居中 */
+  justify-content: center;
+  align-items: center;
+  height: 100%; /* 讓點擊區域填滿 nav-item */
+}
+.bottom-nav .nav-item:hover {
+  background-color: #f0f0f0; /* 懸停效果 */
+  color: var(--primary-color);
 }
 .bottom-nav .nav-item.active {
-  color: #4caf50;
-  font-weight: 600;
+  color: var(--primary-color);
+  font-weight: 700;
 }
 
-/* ========== 新增：置中白框 (.centered-card) ========== */
-.centered-card {
-  max-width: 600px;
-  margin: 1rem auto;   /* 上下留白 1rem，水平置中 */
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-  padding: 0.5rem 1rem;
-}
 
-/* ------------ Dashboard（首頁） 样式 ------------ */
-.dashboard-container {
-  padding-bottom: 60px; /* 保留底部導航空間 */
-}
-
-/* 1. 日期 Header */
-.date-header {
-  background-color: #a5d6a7; /* 淺綠色 */
-  color: #fff;
-  padding: 1rem;
-  text-align: center;
-}
-.today-date {
-  font-size: 1.2rem;
-  font-weight: 600;
-  margin-bottom: 0.75rem;
-  font-family: 'Roboto', sans-serif;
-}
-.weekday-row {
+/* ------------ 登入/註冊頁面樣式 ------------ */
+.auth-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: center; /* 水平居中 */
+  align-items: center; /* 垂直居中 */
+  min-height: calc(100vh - 60px); /* 減去 header 和可能的 footer 高度 */
+  background-color: var(--background-color);
+  padding: 1rem; /* 確保小螢幕有邊距 */
 }
-.weekday-item {
-  position: relative;
-  width: calc(100%/7);
-  text-align: center;
+.auth-card {
+  background-color: var(--card-background);
+  padding: 2rem; /* 增加內邊距 */
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* 增加陰影深度 */
+  width: 100%;
+  max-width: 400px; /* 固定最大寬度 */
+  box-sizing: border-box; /* 確保 padding 不會使寬度溢出 */
+  text-align: center; /* 內容居中 */
 }
-.weekday-text {
-  font-size: 0.9rem;
-  opacity: 0.8;
-  font-family: 'Roboto', sans-serif;
+.card-title {
+  font-size: 1.8rem; /* 標題大一點 */
+  margin-bottom: 1.5rem;
+  color: var(--primary-color);
+  font-weight: 700;
 }
-.weekday-text.is-today {
-  opacity: 1;
-  font-weight: 600;
+.auth-container .small-text {
+  margin-top: 1.5rem;
+  font-size: 0.85rem;
+  color: var(--text-color-light);
 }
-.weekday-item .dot {
-  position: absolute;
-  top: 24px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 6px;
-  height: 6px;
-  background-color: #fff;
-  border-radius: 50%;
-}
-.weekday-item .underline {
-  position: absolute;
-  bottom: -4px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 20px;
-  height: 3px;
-  background-color: #fff;
-  border-radius: 2px;
+.auth-container .small-text a {
+  color: var(--primary-color);
+  font-weight: 500;
 }
 
-/* 2. Charts Row */
-.charts-row {
+
+/* ------------ Dashboard（首頁） 樣式 ------------ */
+/* 圓形圖表容器 */
+.dashboard-charts {
   display: flex;
   justify-content: space-around;
-  align-items: center;
-  margin: 1rem 0;
+  align-items: flex-start; /* 讓圖表從頂部對齊 */
+  padding: 1.5rem 1rem;
+  background-color: var(--card-background);
+  margin: 1rem; /* 與列表保持一致的邊距 */
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  flex-wrap: wrap; /* 小螢幕時換行 */
 }
-
-/* 2a. 水球 (圓形進度條) */
-.waterball-container {
+.chart-container {
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex-basis: 50%; /* 各佔一半空間 */
+  min-width: 150px; /* 避免圖表過小 */
+  padding: 10px 0; /* 內部間距 */
 }
-.waterball-svg {
+.chart-container svg {
   width: 120px;
-  height: 120px;
+  height: 120px; /* 確保兩個圖表一樣高 */
 }
-.waterball-text {
-  fill: #333; /* 黑色 */
-  font-size: 0.9rem;
-  font-weight: 600;
-  font-family: 'Roboto', sans-serif;
+
+/* 圖表內的文字樣式 */
+.chart-text-lg {
+  font-size: 24px;
+  font-weight: 700;
+  fill: var(--text-color-dark); /* 確保文字顏色可見 */
 }
-.black-text {
-  fill: #333;
+.chart-text-sm {
+  font-size: 14px;
+  fill: var(--text-color-light); /* 確保文字顏色可見 */
 }
+
 .target-input-group {
-  margin-top: 0.5rem;
-  text-align: center;
-}
-.target-input-group label {
+  margin-top: 0.75rem;
   font-size: 0.9rem;
-  margin-right: 0.25rem;
+  display: flex; /* 讓標籤和輸入框在同一行 */
+  align-items: center;
 }
 .target-input {
-  width: 70px;
-  padding: 0.25rem;
+  width: 80px; /* 稍微加大輸入框寬度 */
+  padding: 0.25rem 0.5rem;
   border-radius: 4px;
   border: 1px solid #ccc;
-  font-family: 'Roboto', sans-serif;
-}
-
-/* 2b. 三大營養素圓餅圖 */
-.macro-chart-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.macro-chart-container svg {
-  width: 120px;
-  height: 120px;
+  text-align: center;
+  margin-left: 5px; /* 與標籤間距 */
+  font-size: 1rem;
 }
 .macro-legend {
-  margin-top: 0.5rem;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  text-align: left; /* 讓圖例左對齊 */
+  width: 100%; /* 佔滿空間，避免換行問題 */
+  padding-left: 20px; /* 與圖表對齊 */
 }
 .legend-item {
   display: flex;
   align-items: center;
-  font-size: 0.85rem;
-  margin: 0.2rem 0;
-  font-family: 'Roboto', sans-serif;
+  margin-bottom: 0.2rem;
 }
 .legend-color {
-  display: inline-block;
   width: 12px;
   height: 12px;
-  margin-right: 0.4rem;
-  border-radius: 2px;
+  margin-right: 0.5rem;
+  border-radius: 3px;
 }
-.carbs-color {
-  background-color: #42a5f5; /* 藍 */
-}
-.protein-color {
-  background-color: #ef5350; /* 紅 */
-}
-.fat-color {
-  background-color: #ffca28; /* 黃 */
+/* 更新圖例顏色，與 HTML SVG 內顏色保持一致 */
+.carb-color { background-color: #8BC34A; } /* 綠色 */
+.protein-color { background-color: #2196F3; } /* 藍色 */
+.fat-color { background-color: #FFC107; } /* 橙色 */
 
-/* 3. 今日紀錄 Card 內部 */
-.today-records-card {
-  /* 內部不需額外陰影，外層 .centered-card 已經有 */
-  padding: 0.5rem;
+
+/* ------------ 全局表格化列表樣式 (核心設計) ------------ */
+.list-container {
+  margin: 1rem;
+  background-color: var(--card-background);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  overflow: hidden; /* 確保圓角效果 */
 }
-.today-records-card .card-header {
+.list-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0.75rem 1rem;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid var(--border-color);
 }
-.today-records-card h3 {
-  font-family: 'Roboto', sans-serif;
+.list-header h3 {
+  margin: 0;
   font-size: 1.1rem;
 }
-.record-list {
-  max-height: 180px;
-  overflow-y: auto;
-  margin-bottom: 0.5rem;
+.data-table {
+  width: 100%;
 }
-.record-item {
+.table-header {
   display: flex;
-  justify-content: space-between; /* 讓按鈕靠右 */
-  align-items: center;
-  padding: 0.4rem 0;
-  border-bottom: 1px solid #f0f0f0;
-}
-.record-label {
-  font-family: 'Roboto', sans-serif;
-  font-size: 0.95rem;
-  color: #333;
-}
-.record-actions {
-  display: flex;
-}
-
-/* 4. Add/Edit Record 表單 */
-.add-record-container {
-  padding-bottom: 60px;
-}
-.all-records-header {
-  display: flex;
-  align-items: center;
-  padding: 1rem;
-}
-.all-records-header h2 {
-  flex: 1;
-  text-align: center;
-  font-family: 'Roboto', sans-serif;
-  font-size: 1.2rem;
-}
-.all-records-header .link-btn {
-  margin-right: auto;
-}
-.form-card {
-  background-color: #fff;
-  margin: 1rem;
-  padding: 1rem;
-  border-radius: 8px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-}
-
-/* 5. All Records（完整列表） */
-.all-records-container {
-  padding-bottom: 60px;
-}
-.record-group {
-  margin: 0 1rem 1rem;
-}
-.group-header {
+  font-size: 0.8rem;
   font-weight: 500;
-  font-size: 1rem;
-  margin: 0.5rem 0;
-  font-family: 'Roboto', sans-serif;
-}
-.all-records-list {
-  max-height: 50vh;
-  overflow-y: auto;
-}
-.all-records-list .record-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.4rem 0;
-  border-bottom: 1px solid #f0f0f0;
-}
-.all-records-list .record-label {
-  font-size: 0.95rem;
-  font-family: 'Roboto', sans-serif;
-}
-
-/* 6. Custom Foods（自訂食物） */
-.custom-foods-container {
-  padding-bottom: 60px;
-}
-.custom-foods-container .all-records-header {
-  display: flex;
-  align-items: center;
-  padding: 1rem;
-}
-.custom-food-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.custom-food-list .food-item {
-  display: flex;
-  justify-content: space-between; /* 讓按鈕靠右 */
-  align-items: center;
+  color: var(--text-color-light);
   padding: 0.5rem 1rem;
-  border-bottom: 1px solid #f0f0f0;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid var(--border-color);
 }
-.custom-food-list .record-label {
+.table-row {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border-color);
+}
+.table-row:last-child {
+  border-bottom: none;
+}
+.table-cell {
   font-size: 0.95rem;
-  font-family: 'Roboto', sans-serif;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* 調整欄位寬度 */
+.cell-name { flex: 4; min-width: 100px; font-weight: 500; }
+.cell-info { flex: 3; text-align: right; color: var(--text-color-light); font-size: 0.9rem;}
+.cell-actions { flex: 2; display: flex; justify-content: flex-end; }
+
+/* 針對不同列表的微調 */
+.custom-foods-table .cell-info { display: none; } /* 自訂食物列表不需要時間 */
+.custom-foods-table .cell-name { flex: 6; } /* 讓名稱欄位更寬 */
+.all-records-group .group-header {
+  padding: 0.5rem 1rem;
+  font-weight: 700;
+  background-color: var(--primary-color-light);
+  color: var(--primary-color-dark);
 }
 
-/* 7. Add/Edit Food 表單 */
-.custom-foods-container .form-card {
-  margin-top: 0;
+/* 針對行動裝置的響應式設計 */
+@media (max-width: 600px) {
+  .dashboard-charts {
+    flex-direction: column; /* 在小螢幕上垂直堆疊 */
+    align-items: center;
+  }
+  .chart-container {
+    flex-basis: 100%; /* 每個圖表佔滿一行 */
+  }
+  .app-header .logout-btn {
+    font-size: 0.8rem;
+    padding: 0.3rem 0.6rem;
+    right: 0.5rem;
+  }
+  .page-header h2 {
+    font-size: 1.1rem;
+  }
+  .form-card {
+    margin: 0.5rem;
+    padding: 1rem;
+  }
+  .bottom-nav .nav-item {
+    font-size: 0.9rem;
+  }
 }
-
