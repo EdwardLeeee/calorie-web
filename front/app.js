@@ -9,7 +9,25 @@ const httpAuth   = axios.create({ baseURL: AUTH_BASE,   withCredentials: true })
 const httpFood   = axios.create({ baseURL: API_BASE,    withCredentials: true });
 const httpRecord = axios.create({ baseURL: RECORD_BASE, withCredentials: true });
 
-// ------- 1. Login 組件 (template 看上面 index.html) -------
+// 1. 公共 Mixin：判斷目前是否登入，用在 header 登出按鈕顯示
+const globalMixin = {
+  data() {
+    return {
+      isLoggedIn: !!localStorage.getItem('username')
+    };
+  },
+  methods: {
+    async doLogout() {
+      await httpAuth.post('/logout').catch(() => {});
+      localStorage.removeItem('userId');
+      localStorage.removeItem('username');
+      this.isLoggedIn = false;
+      this.$router.replace('/login');
+    }
+  }
+};
+
+// ------- 2. Login 組件 -------
 const Login = {
   template: '#login-template',
   data() {
@@ -18,11 +36,6 @@ const Login = {
       password: '',
       message: ''
     };
-  },
-  computed: {
-    messageClass() {
-      return this.message.startsWith('已') ? 'success' : 'error';
-    }
   },
   methods: {
     removeReadonly(e) {
@@ -39,11 +52,12 @@ const Login = {
           password: this.password
         });
         if (resp.data.message === '登入成功') {
-          // 拿 user_id + username
+          // 取得 whoami（user_id + username）
           const who = await httpAuth.get('/whoami');
           if (who.data.logged_in) {
             localStorage.setItem('userId', who.data.user_id);
             localStorage.setItem('username', who.data.username);
+            this.$root.isLoggedIn = true;
             this.$router.replace('/');
             return;
           }
@@ -53,14 +67,10 @@ const Login = {
         this.message = err.response?.data?.error || '網路錯誤，請稍後再試。';
       }
     }
-  },
-  mounted() {
-    const msg = this.$route.query.msg;
-    if (msg) this.message = msg;
   }
 };
 
-// ------- 2. Signup 組件 -------
+// ------- 3. Signup 組件 -------
 const Signup = {
   template: '#signup-template',
   data() {
@@ -69,11 +79,6 @@ const Signup = {
       password: '',
       message: ''
     };
-  },
-  computed: {
-    messageClass() {
-      return 'error';
-    }
   },
   methods: {
     removeReadonly(e) {
@@ -90,7 +95,6 @@ const Signup = {
           password: this.password
         });
         if (resp.status === 201) {
-          // 註冊成功，跳回 login 並顯示訊息
           this.$router.replace({ path: '/login', query: { msg: '已註冊，請重新登入。' } });
           return;
         }
@@ -102,11 +106,16 @@ const Signup = {
         }
       }
     }
+  },
+  mounted() {
+    const msg = this.$route.query.msg;
+    if (msg) this.message = msg;
   }
 };
 
-// ------- 3. Dashboard（首頁）組件 -------
+// ------- 4. Dashboard（首頁）組件 -------
 const Dashboard = {
+  mixins: [globalMixin],
   template: '#dashboard-template',
   data() {
     return {
@@ -119,12 +128,15 @@ const Dashboard = {
       todayCalories: 0,
       calorieRatio: 0,    // 用於畫圓形進度 (0～1)
       progressColor: '#4caf50',
-      error: ''
+      error: '',
+
+      // 加上：官方食物和自訂食物的 map，以便顯示「食物名稱」
+      officialFoods: [],
+      customFoods: []
     };
   },
   methods: {
     formatDateTime(dtStr) {
-      // "YYYY-MM-DD HH:MM:SS" → "HH:MM"
       const dt = new Date(dtStr.replace(' ', 'T'));
       const hh = String(dt.getHours()).padStart(2, '0');
       const mi = String(dt.getMinutes()).padStart(2, '0');
@@ -132,42 +144,50 @@ const Dashboard = {
     },
     async fetchData() {
       try {
-        // 1. whoami 確認登入
+        // 1. 確認登入
         const who = await httpAuth.get('/whoami');
         if (!who.data.logged_in) {
           this.$router.replace('/login');
           return;
         }
-        // 2. 先撈全部今日（與全部）飲食紀錄
-        const allResp = await httpRecord.get('/diet-records');
-        this.records = allResp.data.sort((a,b) => (new Date(b.record_time)) - (new Date(a.record_time)));
+        const uid = who.data.user_id;
 
-        // 3. 計算「今天範圍」(YYYY-MM-DD)
+        // 2. 同步撈官方、自訂食物列表（用於顯示名稱）
+        const [ofResp, cfResp] = await Promise.all([
+          httpRecord.get('/official-foods'),
+          httpFood.get('/customer-foods', { params: { user_id: uid } })
+        ]);
+        this.officialFoods = ofResp.data;
+        this.customFoods = cfResp.data;
+
+        // 3. 拿全部紀錄並排序
+        const recResp = await httpRecord.get('/diet-records');
+        this.records = recResp.data.sort((a,b) => (new Date(b.record_time)) - (new Date(a.record_time)));
+
+        // 4. 計算「今天範圍」(YYYY-MM-DD)
         const yyyy = this.today.getFullYear();
         const mm = String(this.today.getMonth()+1).padStart(2,'0');
         const dd = String(this.today.getDate()).padStart(2,'0');
         const todayPrefix = `${yyyy}-${mm}-${dd}`;
 
-        // 4. 篩出 todayRecords
+        // 5. 篩出 todayRecords
         this.todayRecords = this.records.filter(r => r.record_time.startsWith(todayPrefix));
 
-        // 5. 計算 todayCalories 總和
+        // 6. 計算 todayCalories
         this.todayCalories = this.todayRecords.reduce((sum,r) => sum + r.calorie_sum, 0);
 
-        // 6. 進度 (假設每日目標 2000kcal，可自行修改)
+        // 7. 進度 (目標 2000kcal，可自行調整)
         const goal = 2000;
         this.calorieRatio = Math.min(this.todayCalories / goal, 1);
 
-        // 7. 今天星期幾 (0 = 星期日 … 6 = 星期六)，要轉成我們 array 索引(0=MON…6=SUN)
+        // 8. 計算今天星期索引
         let dow = this.today.getDay(); // 0 ~ 6, Sunday=0
-        // our weekdays[0] = MON … [6] = SUN
-        // 所以 (dow=1→週一→index=0, dow=0→週日→index=6)
         this.todayIndex = (dow === 0) ? 6 : (dow - 1);
 
-        // 8. 格式化今天日期 "2025-06-06"
+        // 9. 格式化今天日期 "YYYY-MM-DD"
         this.todayFormatted = `${yyyy}-${mm}-${dd}`;
 
-      } catch (err) {
+      } catch {
         this.error = '讀取資料失敗，請重新登入。';
         this.$router.replace('/login');
       }
@@ -178,9 +198,32 @@ const Dashboard = {
     goToCustomFoods() {
       this.$router.push('/custom-foods');
     },
+    goToAddRecord() {
+      this.$router.push('/add-record');
+    },
+    // 用來顯示「食物名稱: X kcal, Y g 碳水, Z g 蛋白, W g 脂肪」
+    getRecordLabel(r) {
+      let name = '未知';
+      let cal = r.calorie_sum;
+      let carb = r.carb_sum;
+      let pro = r.protein_sum;
+      let fat = r.fat_sum;
+
+      if (r.official_food_id) {
+        const of = this.officialFoods.find(x => x.id === r.official_food_id);
+        if (of) name = of.name;
+      } else if (r.custom_food_id) {
+        const cf = this.customFoods.find(x => x.id === r.custom_food_id);
+        if (cf) name = cf.name;
+      } else if (r.manual_name) {
+        name = r.manual_name;
+      }
+
+      return `${name}：${cal} kcal, ${carb} g 碳水, ${pro} g 蛋白, ${fat} g 脂肪`;
+    }
   },
-  async mounted() {
-    await this.fetchData();
+  mounted() {
+    this.fetchData();
   },
   computed: {
     // 計算圓圈周長，用來 stroke-dasharray
@@ -191,12 +234,115 @@ const Dashboard = {
   }
 };
 
-// ------- 4. All Records（完整列表）組件 -------
+// ------- 5. Add Record（新增飲食紀錄）組件 -------
+const AddRecord = {
+  mixins: [globalMixin],
+  template: '#add-record-template',
+  data() {
+    return {
+      officialFoods: [],
+      customFoods: [],
+      inputMode: 'official',
+      form: {
+        official_food_id: null,
+        custom_food_id: null,
+        manual_name: '',
+        record_time: '',
+        calorie_sum: 0,
+        carb_sum: 0,
+        protein_sum: 0,
+        fat_sum: 0
+      },
+      error: ''
+    };
+  },
+  methods: {
+    async fetchFoods() {
+      try {
+        const who = await httpAuth.get('/whoami');
+        if (!who.data.logged_in) {
+          this.$router.replace('/login');
+          return;
+        }
+        const uid = who.data.user_id;
+        const [ofResp, cfResp] = await Promise.all([
+          httpRecord.get('/official-foods'),
+          httpFood.get('/customer-foods', { params: { user_id: uid } })
+        ]);
+        this.officialFoods = ofResp.data;
+        this.customFoods = cfResp.data;
+      } catch {
+        this.error = '讀取食物列表失敗，請重新登入。';
+        this.$router.replace('/login');
+      }
+    },
+    onOfficialChange() {
+      const of = this.officialFoods.find(x => x.id === this.form.official_food_id);
+      if (of) {
+        this.form.calorie_sum = of.calories;
+        this.form.carb_sum = of.carbs;
+        this.form.protein_sum = of.protein;
+        this.form.fat_sum = of.fat;
+      }
+      this.form.custom_food_id = null;
+      this.form.manual_name = '';
+    },
+    onCustomChange() {
+      const cf = this.customFoods.find(x => x.id === this.form.custom_food_id);
+      if (cf) {
+        this.form.calorie_sum = cf.calories;
+        this.form.carb_sum = cf.carbs;
+        this.form.protein_sum = cf.protein;
+        this.form.fat_sum = cf.fat;
+      }
+      this.form.official_food_id = null;
+      this.form.manual_name = '';
+    },
+    async submitRecord() {
+      if (!this.form.record_time) {
+        this.error = '請選擇時間';
+        return;
+      }
+      // 轉成 "YYYY-MM-DD HH:MM:SS"
+      const dtFormatted = this.form.record_time.replace('T', ' ') + ':00';
+      const payload = {
+        record_time: dtFormatted,
+        calorie_sum: this.form.calorie_sum,
+        carb_sum: this.form.carb_sum,
+        protein_sum: this.form.protein_sum,
+        fat_sum: this.form.fat_sum
+      };
+      if (this.inputMode === 'official') {
+        payload.official_food_id = this.form.official_food_id;
+      } else if (this.inputMode === 'custom') {
+        payload.custom_food_id = this.form.custom_food_id;
+      } else if (this.inputMode === 'manual') {
+        payload.official_food_id = null;
+        payload.custom_food_id = null;
+        payload.manual_name = this.form.manual_name;
+      }
+      try {
+        await httpRecord.post('/diet-records', payload);
+        this.$router.replace('/');
+      } catch {
+        this.error = '新增失敗，請稍後再試。';
+      }
+    }
+  },
+  mounted() {
+    this.fetchFoods();
+  }
+};
+
+// ------- 6. All Records（完整列表）組件 -------
 const AllRecords = {
+  mixins: [globalMixin],
   template: '#all-records-template',
   data() {
     return {
       records: [],
+      officialFoods: [],
+      customFoods: [],
       error: ''
     };
   },
@@ -212,27 +358,53 @@ const AllRecords = {
     },
     async fetchAll() {
       try {
-        // 檢查登入
         const who = await httpAuth.get('/whoami');
         if (!who.data.logged_in) {
           this.$router.replace('/login');
           return;
         }
-        const resp = await httpRecord.get('/diet-records');
-        this.records = resp.data.sort((a,b) => (new Date(b.record_time)) - (new Date(a.record_time)));
+        const uid = who.data.user_id;
+        const [ofResp, cfResp, recResp] = await Promise.all([
+          httpRecord.get('/official-foods'),
+          httpFood.get('/customer-foods', { params: { user_id: uid } }),
+          httpRecord.get('/diet-records')
+        ]);
+        this.officialFoods = ofResp.data;
+        this.customFoods = cfResp.data;
+        this.records = recResp.data.sort((a,b) => (new Date(b.record_time)) - (new Date(a.record_time)));
       } catch {
         this.error = '讀取失敗，請重新登入。';
         this.$router.replace('/login');
       }
+    },
+    getRecordLabel(r) {
+      let name = '未知';
+      let cal = r.calorie_sum;
+      let carb = r.carb_sum;
+      let pro = r.protein_sum;
+      let fat = r.fat_sum;
+
+      if (r.official_food_id) {
+        const of = this.officialFoods.find(x => x.id === r.official_food_id);
+        if (of) name = of.name;
+      } else if (r.custom_food_id) {
+        const cf = this.customFoods.find(x => x.id === r.custom_food_id);
+        if (cf) name = cf.name;
+      } else if (r.manual_name) {
+        name = r.manual_name;
+      }
+
+      return `${name}：${cal} kcal, ${carb} g 碳水, ${pro} g 蛋白, ${fat} g 脂肪`;
     }
   },
-  async mounted() {
-    await this.fetchAll();
+  mounted() {
+    this.fetchAll();
   }
 };
 
-// ------- 5. Custom Foods（自訂食物）組件 -------
+// ------- 7. Custom Foods（自訂食物）組件 -------
 const CustomFoods = {
+  mixins: [globalMixin],
   template: '#custom-foods-template',
   data() {
     return {
@@ -256,17 +428,26 @@ const CustomFoods = {
         this.$router.replace('/login');
       }
     },
+    getFoodLabel(f) {
+      const name = f.name;
+      const cal = f.calories;
+      const pro = f.protein;
+      const fat = f.fat;
+      const carb = f.carbs;
+      return `${name}：${cal} kcal, ${carb} g 碳水, ${pro} g 蛋白, ${fat} g 脂肪`;
+    },
     goToAddFood() {
       this.$router.push('/add-food');
     }
   },
-  async mounted() {
-    await this.fetchFoods();
+  mounted() {
+    this.fetchFoods();
   }
 };
 
-// ------- 6. Add Food（新增自訂食物）組件 -------
+// ------- 8. Add Food（新增自訂食物）組件 -------
 const AddFood = {
+  mixins: [globalMixin],
   template: '#add-food-template',
   data() {
     return {
@@ -309,11 +490,12 @@ const AddFood = {
   }
 };
 
-// ------- 7. Vue Router 設定 -------
+// ------- 9. Vue Router 設定 -------
 const routes = [
   { path: '/login',        component: Login },
   { path: '/signup',       component: Signup },
   { path: '/',             component: Dashboard },
+  { path: '/add-record',   component: AddRecord },
   { path: '/all-records',  component: AllRecords },
   { path: '/custom-foods', component: CustomFoods },
   { path: '/add-food',     component: AddFood }
@@ -327,15 +509,16 @@ router.beforeEach((to, from, next) => {
   if (to.path === '/login' || to.path === '/signup') {
     return next();
   }
-  // 其他頁面都要先檢查 localStorage 內有無 username
+  // 其他路由，若 localStorage 裡沒有 username，就跳到 /login
   if (!localStorage.getItem('username')) {
     return next('/login');
   }
   next();
 });
 
-// ------- 8. 建立 Vue App 並掛載 -------
+// ------- 10. 建立 Vue App 並掛載 -------
 const app = Vue.createApp({});
+app.mixin(globalMixin);
 app.use(router);
 app.mount('#app');
 

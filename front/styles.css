@@ -1,3 +1,6 @@
+/* ------------ 載入 Roboto 字體 ------------ */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
 /* ------------ 通用 reset / 基本設定 ------------ */
 * {
   margin: 0;
@@ -5,13 +8,12 @@
   box-sizing: border-box;
 }
 body {
-  font-family: "Noto Sans TC", sans-serif;
+  font-family: 'Roboto', sans-serif;
   background-color: #f5f5f5;
   color: #333;
   line-height: 1.5;
 }
 h1, h2, h3 {
-  color: #333;
   margin-bottom: 0.5rem;
 }
 a {
@@ -28,12 +30,13 @@ ul {
   padding: 0.5rem 1rem;
   border: none;
   border-radius: 6px;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   cursor: pointer;
   transition: background-color 0.2s;
+  font-family: 'Roboto', sans-serif;
 }
 .btn.primary {
-  background-color: #4caf50;
+  background-color: #4caf50; /* 主色系淺綠 */
   color: #fff;
 }
 .btn.primary:hover {
@@ -51,24 +54,69 @@ ul {
   background: none;
   color: #4caf50;
   padding: 0;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
 }
 .btn.link-btn:hover {
   text-decoration: underline;
 }
+.btn.logout-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: #fff;
+  color: #4caf50;
+  border: 1px solid #fff;
+  font-size: 0.9rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  font-family: 'Roboto', sans-serif;
+}
+.btn.logout-btn:hover {
+  background-color: #e8f5e9;
+}
+.btn.full-width {
+  width: 100%;
+}
+.btn.add-btn {
+  background-color: #4caf50;
+  color: #fff;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  font-size: 1.2rem;
+  line-height: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.btn.add-btn:hover {
+  background-color: #45a046;
+}
 
 /* ------------ 卡片、表格、輸入框 ------------ */
-.card {
-  max-width: 360px;
-  margin: 2rem auto;
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 64px); /* 扣掉 header 高度 */
+}
+.auth-card {
+  width: 320px;
   padding: 1.5rem;
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  position: relative;
 }
 .card-title {
   margin-bottom: 1rem;
   text-align: center;
+  color: #4caf50;
+}
+.message {
+  margin-bottom: 0.75rem;
+  text-align: center;
+  color: #d9534f;
 }
 .form-group {
   margin-bottom: 0.75rem;
@@ -84,6 +132,7 @@ ul {
   padding: 0.5rem;
   border: 1px solid #ccc;
   border-radius: 4px;
+  font-family: 'Roboto', sans-serif;
 }
 .form-actions {
   margin-top: 1rem;
@@ -92,6 +141,7 @@ ul {
 .error {
   color: #d9534f;
   margin-top: 0.5rem;
+  text-align: center;
 }
 .no-data {
   padding: 1rem;
@@ -119,14 +169,20 @@ ul {
 
 /* ------------ App Header ------------ */
 .app-header {
-  background-color: #4caf50;
+  background-color: #4caf50; /* 主色系淺綠 */
   color: #fff;
   padding: 1rem;
   text-align: center;
+  position: relative;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
+.app-header h1 {
+  font-size: 1.4rem;
+  font-weight: 500;
+  font-family: 'Roboto', sans-serif;
+}
 
-/* ------------ 公用底部導航 ------------ */
+/* ------------ 底部導航 ------------ */
 .bottom-nav {
   position: fixed;
   bottom: 0;
@@ -140,9 +196,10 @@ ul {
 }
 .bottom-nav .nav-item {
   color: #666;
-  font-size: 0.9rem;
+  font-size: 1.1rem; /* 放大文字 */
   flex: 1;
   text-align: center;
+  font-family: 'Roboto', sans-serif;
 }
 .bottom-nav .nav-item.active {
   color: #4caf50;
@@ -151,7 +208,7 @@ ul {
 
 /* ------------ Dashboard（首頁） 样式 ------------ */
 .dashboard-container {
-  padding-bottom: 60px; /* 留空給底部導航 */
+  padding-bottom: 60px; /* 保留底部導航空間 */
 }
 
 /* 1. 日期 Header */
@@ -165,6 +222,7 @@ ul {
   font-size: 1.2rem;
   font-weight: 600;
   margin-bottom: 0.75rem;
+  font-family: 'Roboto', sans-serif;
 }
 .weekday-row {
   display: flex;
@@ -178,6 +236,7 @@ ul {
 .weekday-text {
   font-size: 0.9rem;
   opacity: 0.8;
+  font-family: 'Roboto', sans-serif;
 }
 .weekday-text.is-today {
   opacity: 1;
@@ -215,9 +274,10 @@ ul {
   height: 100%;
 }
 .waterball-text {
-  fill: #4caf50;
+  fill: #fff; /* 中心數字改白色 */
   font-size: 0.9rem;
   font-weight: 600;
+  font-family: 'Roboto', sans-serif;
 }
 
 /* 3. 今日紀錄 Card */
@@ -228,33 +288,32 @@ ul {
   padding: 1rem;
   box-shadow: 0 1px 4px rgba(0,0,0,0.1);
 }
+.today-records-card .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.today-records-card h3 {
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.1rem;
+}
 .record-list {
   max-height: 220px;
   overflow-y: auto;
   margin-bottom: 0.5rem;
 }
 .record-item {
-  display: flex;
-  flex-direction: column;
   padding: 0.5rem 0;
   border-bottom: 1px solid #f0f0f0;
 }
-.record-time {
-  font-size: 0.85rem;
-  color: #888;
-  margin-bottom: 0.25rem;
-}
-.record-detail {
-  font-size: 0.9rem;
-}
-.today-records-card .link-btn {
-  margin-top: 0.5rem;
-  text-align: right;
-  width: 100%;
+.record-label {
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.95rem;
+  color: #333;
 }
 
-/* ------------ 全部紀錄（All Records） ------------ */
-.all-records-container {
+/* ------------ Add Record 表單 ------------ */
+.add-record-container {
   padding-bottom: 60px;
 }
 .all-records-header {
@@ -265,9 +324,23 @@ ul {
 .all-records-header h2 {
   flex: 1;
   text-align: center;
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.2rem;
 }
 .all-records-header .link-btn {
   margin-right: auto;
+}
+.form-card {
+  background-color: #fff;
+  margin: 1rem;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+/* ------------ 全部紀錄（All Records） ------------ */
+.all-records-container {
+  padding-bottom: 60px;
 }
 .all-records-list {
   margin: 0 1rem;
@@ -275,10 +348,13 @@ ul {
   overflow-y: auto;
 }
 .all-records-list .record-item {
-  display: flex;
-  flex-direction: column;
   padding: 0.5rem 0;
   border-bottom: 1px solid #f0f0f0;
+}
+.all-records-list .record-label {
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.95rem;
+  color: #333;
 }
 
 /* ------------ 自訂食物（Custom Foods） ------------ */
@@ -296,16 +372,12 @@ ul {
   overflow-y: auto;
 }
 .custom-food-list .food-item {
-  display: flex;
-  flex-direction: column;
   padding: 0.5rem 0;
   border-bottom: 1px solid #f0f0f0;
 }
-.food-name {
-  font-weight: 600;
-}
-.food-detail {
-  font-size: 0.9rem;
-  color: #666;
+.custom-food-list .record-label {
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.95rem;
+  color: #333;
 }
 
