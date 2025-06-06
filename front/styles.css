@@ -194,38 +194,55 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
   font-size: 1.1rem; /* 增大無資料訊息 */
 }
 
+/* 新增：用於新增/編輯頁面的表單置中容器 */
+.form-page-container {
+  display: flex;
+  justify-content: center;
+  padding: 0 1rem;
+}
+.form-page-container .form-card {
+  width: 100%;
+  max-width: 500px; /* 限制表單最大寬度 */
+  margin-top: 0;
+}
+
 
 /* ------------ 通用頁面標題 ------------ */
 .page-header {
   display: flex;
-  align-items: center; /* 垂直居中對齊項目 */
+  align-items: center;
+  justify-content: center; /* 預設居中標題 */
   padding: 1rem;
   background-color: var(--card-background);
   border-bottom: 1px solid var(--border-color);
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* 增加輕微陰影 */
-  position: sticky; /* 在滾動時固定標題 */
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  position: sticky;
   top: 0;
-  z-index: 10; /* 確保在列表內容之上 */
+  z-index: 10;
 }
 .page-header h2 {
-  font-size: 1.3rem; /* 標題大一點 */
+  font-size: 1.3rem;
   margin: 0;
-  flex-grow: 1; /* 讓標題佔據剩餘空間 */
-  text-align: center; /* 標題居中 */
+  text-align: center;
 }
 .page-header .back-btn {
   color: var(--text-color-light);
-  font-size: 1.6rem; /* 增大返回箭頭 */
-  margin-right: 1rem;
-  padding: 5px; /* 增加點擊區域 */
+  font-size: 1.6rem;
+  position: absolute; /* 絕對定位，不影響標題居中 */
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 5px;
 }
 .page-header .btn.add-btn {
-    position: static; /* 在 header 裡的加號按鈕不再浮動 */
-    margin-left: auto; /* 推到最右邊 */
-    width: 36px;
-    height: 36px;
-    font-size: 1.5rem;
-    box-shadow: none;
+  position: absolute; /* 絕對定位，不影響標題居中 */
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  font-size: 1.5rem;
+  box-shadow: none;
 }
 
 
@@ -236,10 +253,10 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
   padding: 1rem;
   text-align: center;
   position: relative;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 增加陰影 */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 .app-header h1 {
-  font-size: 1.5rem; /* 稍微增大標題 */
+  font-size: 1.5rem;
   font-weight: 500;
   margin: 0;
 }
@@ -251,36 +268,35 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
   left: 0;
   width: 100%;
   background-color: var(--card-background);
-  box-shadow: 0 -4px 10px rgba(0,0,0,0.1); /* 更明顯的陰影 */
+  box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
   display: flex;
   justify-content: space-around;
   padding: 0.5rem 0;
   z-index: 100;
-  height: 60px; /* 固定高度，與 main-content 的 padding-bottom 配合 */
-  align-items: center; /* 垂直居中內容 */
+  height: 60px;
+  align-items: center;
 }
 .bottom-nav .nav-item {
   color: var(--text-color-light);
-  font-size: 0.9rem; /* 稍微縮小文字避免過長 */
+  font-size: 0.9rem;
   flex: 1;
   text-align: center;
   padding: 0.25rem 0;
-  display: flex; /* 使用 flex 讓文字居中 */
-  flex-direction: column; /* 文字和圖示可以垂直排列 */
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100%; /* 讓點擊區域填滿 nav-item */
-  font-weight: 500; /* 讓文字更清晰 */
+  height: 100%;
+  font-weight: 500;
 }
 .bottom-nav .nav-item:hover {
-  background-color: #f0f0f0; /* 懸停效果 */
+  background-color: #f0f0f0;
   color: var(--primary-color);
 }
 .bottom-nav .nav-item.active {
   color: var(--primary-color);
   font-weight: 700;
 }
-/* 可以為導航項添加圖標，這裡只預留樣式 */
 .bottom-nav .nav-item .icon {
   font-size: 1.2rem;
   margin-bottom: 3px;
@@ -290,31 +306,31 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
 /* ------------ 登入/註冊頁面樣式 ------------ */
 .auth-container {
   display: flex;
-  justify-content: center; /* 水平居中 */
-  align-items: center; /* 垂直居中 */
-  min-height: calc(100vh - 60px); /* 減去 header 高度 */
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 60px);
   background-color: var(--background-color);
-  padding: 1rem; /* 確保小螢幕有邊距 */
+  padding: 1rem;
 }
 .auth-card {
   background-color: var(--card-background);
-  padding: 2rem; /* 增加內邊距 */
+  padding: 2rem;
   border-radius: 8px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* 增加陰影深度 */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 400px; /* 固定最大寬度 */
-  box-sizing: border-box; /* 確保 padding 不會使寬度溢出 */
-  text-align: center; /* 內容居中 */
+  max-width: 400px;
+  box-sizing: border-box;
+  text-align: center;
 }
 .card-title {
-  font-size: 2rem; /* 標題大一點 */
+  font-size: 2rem;
   margin-bottom: 1.5rem;
   color: var(--primary-color);
   font-weight: 700;
 }
 .auth-container .small-text {
   margin-top: 1.5rem;
-  font-size: 0.9rem; /* 稍微增大文字 */
+  font-size: 0.9rem;
   color: var(--text-color-light);
 }
 .auth-container .small-text a {
@@ -324,80 +340,78 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
 
 
 /* ------------ Dashboard（首頁） 樣式 ------------ */
-/* 圓形圖表容器 */
 .dashboard-charts {
   display: flex;
   justify-content: space-around;
-  align-items: flex-start; /* 讓圖表從頂部對齊 */
+  align-items: flex-start;
   padding: 1.5rem 1rem;
   background-color: var(--card-background);
-  margin: 1rem; /* 與列表保持一致的邊距 */
+  margin: 1rem;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  flex-wrap: wrap; /* 小螢幕時換行 */
+  flex-wrap: wrap;
 }
 .chart-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  flex-basis: 50%; /* 各佔一半空間 */
-  min-width: 160px; /* 避免圖表過小，給 iPhone Pro Max 留足空間 */
-  padding: 10px 0; /* 內部間距 */
+  flex-basis: 50%;
+  min-width: 160px;
+  padding: 10px 0;
 }
 .chart-container svg {
-  width: 130px; /* 稍微增大圖表尺寸 */
-  height: 130px; /* 確保兩個圖表一樣高 */
+  width: 130px;
+  height: 130px;
 }
 
-/* 圖表內的文字樣式 */
 .chart-text-lg {
-  font-size: 28px; /* 增大主熱量數字 */
+  font-size: 28px;
   font-weight: 700;
-  fill: var(--text-color-dark); /* 確保文字顏色可見 */
+  fill: var(--text-color-dark);
 }
 .chart-text-sm {
-  font-size: 16px; /* 增大次要文字 */
-  fill: var(--text-color-light); /* 確保文字顏色可見 */
+  font-size: 16px;
+  fill: var(--text-color-light);
 }
 
 .target-input-group {
   margin-top: 0.75rem;
-  font-size: 1rem; /* 增大文字 */
-  display: flex; /* 讓標籤和輸入框在同一行 */
+  font-size: 1rem;
+  display: flex;
   align-items: center;
 }
 .target-input {
-  width: 90px; /* 稍微加大輸入框寬度 */
+  width: 90px;
   padding: 0.3rem 0.6rem;
   border-radius: 4px;
   border: 1px solid #ccc;
   text-align: center;
-  margin-left: 5px; /* 與標籤間距 */
-  font-size: 1.1rem; /* 增大輸入文字 */
-  min-height: 40px; /* 讓輸入框更易點擊 */
+  margin-left: 5px;
+  font-size: 1.1rem;
+  min-height: 40px;
 }
 .macro-legend {
   margin-top: 0.75rem;
-  font-size: 0.9rem; /* 增大圖例文字 */
-  text-align: left; /* 讓圖例左對齊 */
-  width: 100%; /* 佔滿空間，避免換行問題 */
-  padding-left: 20px; /* 與圖表對齊 */
+  font-size: 0.85rem; /* 稍微調整字體以容納更多內容 */
+  text-align: left;
+  width: 100%;
+  padding-left: 15px; /* 調整對齊 */
 }
 .legend-item {
   display: flex;
   align-items: center;
-  margin-bottom: 0.3rem; /* 增大圖例間距 */
+  margin-bottom: 0.3rem;
 }
 .legend-color {
-  width: 14px; /* 增大色塊 */
+  width: 14px;
   height: 14px;
-  margin-right: 0.6rem; /* 增大間距 */
+  margin-right: 0.6rem;
   border-radius: 4px;
+  flex-shrink: 0; /* 防止色塊被壓縮 */
 }
-/* 更新圖例顏色，與 HTML SVG 內顏色保持一致 */
-.carb-color { background-color: #8BC34A; } /* 綠色 */
-.protein-color { background-color: #2196F3; } /* 藍色 */
-.fat-color { background-color: #FFC107; } /* 橙色 */
+.carb-color { background-color: #8BC34A; }
+.protein-color { background-color: #2196F3; }
+.fat-color { background-color: #FFC107; }
 
 
 /* ------------ 全局表格化列表樣式 (核心設計) ------------ */
@@ -406,7 +420,7 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
   background-color: var(--card-background);
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  overflow: hidden; /* 確保圓角效果 */
+  overflow: hidden;
 }
 .list-header {
   display: flex;
@@ -418,49 +432,133 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
 }
 .list-header h3 {
   margin: 0;
-  font-size: 1.2rem; /* 增大列表標題 */
+  font-size: 1.2rem;
 }
 .data-table {
   width: 100%;
 }
 .table-header {
   display: flex;
-  font-size: 0.85rem; /* 增大表頭文字 */
+  font-size: 0.85rem;
   font-weight: 500;
   color: var(--text-color-light);
-  padding: 0.6rem 1rem; /* 增大內邊距 */
+  padding: 0.6rem 1rem;
   background-color: #f8f9fa;
   border-bottom: 1px solid var(--border-color);
 }
 .table-row {
   display: flex;
   align-items: center;
-  padding: 0.85rem 1rem; /* 增大行高 */
+  padding: 0.85rem 1rem;
   border-bottom: 1px solid var(--border-color);
 }
 .table-row:last-child {
   border-bottom: none;
 }
 .table-cell {
-  font-size: 1rem; /* 增大單元格文字 */
+  font-size: 1rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  padding: 0 5px; /* 增加左右間距避免內容擠在一起 */
 }
-/* 調整欄位寬度 */
-.cell-name { flex: 4; min-width: 100px; font-weight: 500; }
-.cell-info { flex: 3; text-align: right; color: var(--text-color-light); font-size: 0.95rem;}
-.cell-actions { flex: 2; display: flex; justify-content: flex-end; }
+
+/* 調整欄位寬度與對齊 */
+.cell-name { flex: 5; min-width: 100px; font-weight: 500; }
+.cell-info { flex: 2; text-align: center; color: var(--text-color-light); font-size: 0.95rem; }
+.cell-actions { flex: 3; display: flex; justify-content: center; }
+
+/* 讓表頭與內容對齊 */
+.table-header .cell-info,
+.table-header .cell-actions {
+  text-align: center;
+}
+
+.food-name-clickable {
+  cursor: pointer;
+  color: var(--primary-color-dark);
+  font-weight: 700;
+}
+.food-name-clickable:hover {
+  text-decoration: underline;
+}
 
 /* 針對不同列表的微調 */
-.custom-foods-table .cell-info { display: none; } /* 自訂食物列表不需要時間 */
-.custom-foods-table .cell-name { flex: 6; } /* 讓名稱欄位更寬 */
+.custom-foods-table .cell-info { display: none; }
+.custom-foods-table .cell-name { flex: 6; }
 .all-records-group .group-header {
-  padding: 0.6rem 1rem; /* 增大組標題內邊距 */
+  padding: 0.6rem 1rem;
   font-weight: 700;
   background-color: var(--primary-color-light);
   color: var(--primary-color-dark);
-  font-size: 1.1rem; /* 增大組標題字體 */
+  font-size: 1.1rem;
+}
+
+/* ------------ 新增：Modal (彈出視窗) 樣式 ------------ */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+.modal-card {
+  background-color: var(--card-background);
+  border-radius: 8px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+  width: 100%;
+  max-width: 400px;
+  animation: modal-fade-in 0.3s ease;
+}
+@keyframes modal-fade-in {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1.25rem;
+  border-bottom: 1px solid var(--border-color);
+}
+.modal-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  font-weight: 300;
+  color: var(--text-color-light);
+  cursor: pointer;
+  line-height: 1;
+}
+.modal-body {
+  padding: 1.25rem;
+}
+.details-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.details-table td {
+  padding: 0.75rem 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+  font-size: 1rem;
+}
+.details-table tr:last-child td {
+  border-bottom: none;
+}
+.details-table td:first-child {
+  font-weight: 500;
+  color: var(--text-color-light);
+  width: 40%;
 }
 
 
@@ -468,100 +566,9 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
 /* ------------ 響應式設計 (Media Queries) ------------ */
 /* -------------------------------------- */
 
-/* 針對平板 (iPad, Pro Max 橫向) 和較大手機 (iPhone Pro Max, Samsung Galaxy) 的優化 */
-/* 螢幕寬度介於 601px 和 991px 之間 */
-@media (min-width: 601px) and (max-width: 991px) {
-  body {
-    font-size: 17px; /* 增大基礎字體 */
-  }
-  .app-header h1 {
-    font-size: 1.8rem;
-  }
-  .page-header h2 {
-    font-size: 1.5rem;
-  }
-  .auth-card, .form-card, .list-container {
-    max-width: 600px; /* 限制寬度，避免過寬 */
-    margin-left: auto;
-    margin-right: auto;
-    padding: 2rem;
-  }
-  .dashboard-charts {
-    flex-wrap: nowrap; /* 平板上可能不需要換行 */
-    justify-content: center;
-    padding: 2rem;
-  }
-  .chart-container {
-    flex-basis: auto; /* 不強制一半，讓內容決定寬度 */
-    margin: 0 1rem; /* 圖表間距 */
-  }
-  .chart-container svg {
-    width: 150px; /* 平板上增大圖表 */
-    height: 150px;
-  }
-  .chart-text-lg {
-    font-size: 32px;
-  }
-  .chart-text-sm {
-    font-size: 18px;
-  }
-  .target-input-group {
-    font-size: 1.1rem;
-  }
-  .target-input {
-    width: 100px;
-    font-size: 1.2rem;
-  }
-  .macro-legend {
-    font-size: 1rem;
-    padding-left: 30px;
-  }
-  .legend-color {
-    width: 16px;
-    height: 16px;
-  }
-  .bottom-nav .nav-item {
-    font-size: 1rem;
-  }
-  .btn {
-    font-size: 1rem;
-    padding: 0.6rem 1.2rem;
-  }
-  .btn.add-btn {
-    width: 56px; /* 平板上更大的浮動按鈕 */
-    height: 56px;
-    font-size: 2.5rem;
-    bottom: 90px;
-    right: 1.5rem;
-  }
-  .form-group label {
-    font-size: 1rem;
-  }
-  .form-group input,
-  .form-group select {
-    font-size: 1.1rem;
-    padding: 0.8rem;
-  }
-  .table-header, .table-row {
-    padding: 1rem 1.2rem;
-  }
-  .table-cell {
-    font-size: 1.05rem;
-  }
-  .all-records-group .group-header {
-    font-size: 1.2rem;
-  }
-  .no-data {
-    font-size: 1.2rem;
-  }
-}
-
-
-/* 針對一般手機 (iPhone 14 Pro Max 豎向, iPhone SE 等) */
-/* 螢幕寬度最大 600px */
 @media (max-width: 600px) {
   body {
-    font-size: 16px; /* 基礎字體 */
+    font-size: 16px;
   }
   .app-header {
     padding: 0.8rem;
@@ -582,7 +589,7 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
   }
   .page-header .back-btn {
     font-size: 1.4rem;
-    margin-right: 0.8rem;
+    left: 0.8rem;
   }
   .form-card {
     margin: 0.5rem;
@@ -595,7 +602,7 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
   .btn {
     padding: 0.4rem 0.8rem;
     font-size: 0.9rem;
-    min-height: 40px; /* 手機按鈕最小高度 */
+    min-height: 40px;
   }
   .btn.small-btn {
     padding: 0.2rem 0.4rem;
@@ -603,30 +610,30 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
     min-height: 32px;
   }
   .btn.add-btn {
-    width: 44px; /* 手機上浮動按鈕尺寸 */
+    width: 44px;
     height: 44px;
     font-size: 1.8rem;
-    bottom: 75px; /* 稍微縮小距離 */
+    bottom: 75px;
     right: 0.8rem;
   }
   .bottom-nav {
-    height: 55px; /* 稍微縮小底部導航高度 */
+    height: 55px;
   }
   .bottom-nav .nav-item {
     font-size: 0.8rem;
   }
   .dashboard-charts {
-    flex-direction: column; /* 在小螢幕上垂直堆疊 */
+    flex-direction: column;
     align-items: center;
     padding: 1rem 0.5rem;
     margin: 0.5rem;
   }
   .chart-container {
-    flex-basis: 100%; /* 每個圖表佔滿一行 */
-    padding: 5px 0;
+    flex-basis: 100%;
+    padding: 15px 0;
   }
   .chart-container svg {
-    width: 110px; /* 稍微縮小圖表 */
+    width: 110px;
     height: 110px;
   }
   .chart-text-lg {
@@ -667,48 +674,10 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
     font-size: 0.9rem;
   }
   .cell-actions .btn {
-    margin-left: 0.3rem; /* 縮小按鈕間距 */
+    margin-left: 0.3rem;
   }
   .no-data {
     padding: 1.5rem;
     font-size: 1rem;
-  }
-}
-
-/* 針對更小的螢幕 (例如 iPhone SE, 但 iPhone 14 Pro Max 不會到這尺寸) */
-@media (max-width: 375px) {
-  .btn.add-btn {
-    width: 40px;
-    height: 40px;
-    font-size: 1.6rem;
-    bottom: 70px;
-    right: 0.5rem;
-  }
-  .bottom-nav {
-    height: 50px;
-  }
-  .bottom-nav .nav-item {
-    font-size: 0.75rem;
-  }
-  .chart-container svg {
-    width: 100px;
-    height: 100px;
-  }
-  .chart-text-lg {
-    font-size: 22px;
-  }
-  .chart-text-sm {
-    font-size: 12px;
-  }
-}
-
-/* 為了更好的可訪問性，可以考慮增加 hover 效果只在非觸控裝置上 */
-@media (hover: hover) {
-  .btn:hover:not(.link-btn):not(.add-btn) {
-    opacity: 0.9;
-  }
-  .form-group input:hover,
-  .form-group select:hover {
-    border-color: var(--primary-color);
   }
 }

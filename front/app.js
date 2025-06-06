@@ -169,7 +169,6 @@ const Dashboard = {
   data() {
     return {
       today: new Date(),
-      // weekdays: ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'], // 這個在模板中沒有直接使用，可以移除
       targetKcal: 2000,
       error: ''
     };
@@ -199,7 +198,6 @@ const Dashboard = {
     },
     kcalRatio() {
       if (this.targetKcal === 0) return 0;
-      // 確保比例不會超過 1，但在顯示時可以顯示實際值
       return Math.min(this.todayCalories / this.targetKcal, 1); 
     },
     circleColor() {
@@ -212,7 +210,6 @@ const Dashboard = {
         if (this.totalMacro <= 0) return { carbs: 0, protein: 0, fat: 0 };
         const pCarbs = (this.todayCarbs / this.totalMacro) * 360;
         const pProtein = (this.todayProtein / this.totalMacro) * 360;
-        // 確保總和為 360，避免浮點數誤差
         const pFat = 360 - pCarbs - pProtein; 
         return { carbs: pCarbs, protein: pProtein, fat: pFat };
     },
@@ -223,10 +220,6 @@ const Dashboard = {
         const pFat = 100 - pCarbs - pProtein; // 確保總和為 100
         return { carbs: pCarbs, protein: pProtein, fat: pFat };
     },
-    // todayIndex() { // 未使用，可以移除
-    //   let dow = this.today.getDay(); // 0 = Sunday
-    //   return (dow === 0) ? 6 : (dow - 1);
-    // },
     circumference() {
       return 2 * Math.PI * 54; // 半徑 54
     }
@@ -238,9 +231,8 @@ const Dashboard = {
       const mi = String(dt.getMinutes()).padStart(2, '0');
       return `${hh}:${mi}`;
     },
-    // 繪製圓餅圖扇形的 SVG 路徑
     pieSlicePath(startAngle, endAngle, radius) {
-      const convert = (deg) => (Math.PI * (deg - 90) / 180); // Offset by -90 to start from top
+      const convert = (deg) => (Math.PI * (deg - 90) / 180);
       const x1 = 60 + radius * Math.cos(convert(startAngle));
       const y1 = 60 + radius * Math.sin(convert(startAngle));
       const x2 = 60 + radius * Math.cos(convert(endAngle));
@@ -249,8 +241,6 @@ const Dashboard = {
       return `M60,60 L${x1},${y1} A${radius},${radius} 0 ${largeArc} 1 ${x2},${y2} Z`;
     },
     goToAllRecords() { this.$router.push('/all-records'); },
-    goToAddRecord() { this.$router.push('/add-record'); }, // 新增這行，讓儀表板底部導航可以點擊新增紀錄
-    goToCustomFoods() { this.$router.push('/custom-foods'); }, // 新增這行，讓儀表板底部導航可以點擊自訂食物
     getRecordLabel(r) {
       let name = '未知';
       if (r.official_food_id) {
@@ -262,7 +252,7 @@ const Dashboard = {
       } else if (r.manual_name) {
         name = r.manual_name;
       }
-      return `${name}：${r.calorie_sum.toFixed(0)} kcal`;
+      return `${name} (${r.calorie_sum.toFixed(0)} kcal)`;
     },
     editRecord(r) {
       this.$router.push({ path: '/add-record', query: { id: r.id } });
@@ -271,15 +261,46 @@ const Dashboard = {
       if (!confirm('確定要刪除此筆紀錄？')) return;
       try {
         await httpRecord.delete(`/diet-records/${id}`);
-        // 直接更新 store
         this.store.records = this.store.records.filter(r => r.id !== id);
       } catch {
         alert('刪除失敗');
       }
+    },
+    showFoodDetails(r) {
+      let details = {
+        name: '未知',
+        calories: r.calorie_sum,
+        carbs: r.carb_sum,
+        protein: r.protein_sum,
+        fat: r.fat_sum,
+      };
+
+      if (r.official_food_id) {
+        const of = this.store.officialFoods.find(x => x.id === r.official_food_id);
+        if (of) {
+            details.name = of.name;
+            details.calories = of.calories;
+            details.carbs = of.carbs;
+            details.protein = of.protein;
+            details.fat = of.fat;
+        }
+      } else if (r.custom_food_id) {
+        const cf = this.store.customFoods.find(x => x.id === r.custom_food_id);
+        if (cf) {
+            details.name = cf.name;
+            details.calories = cf.calories;
+            details.carbs = cf.carbs;
+            details.protein = cf.protein;
+            details.fat = cf.fat;
+        }
+      } else if (r.manual_name) {
+        details.name = r.manual_name;
+      }
+      
+      this.$root.showModal(details);
     }
   },
   async mounted() {
-    // 讓 store 統一載入資料
     await this.store.fetchAllSharedData();
   }
 };
@@ -310,7 +331,6 @@ const AddRecord = {
     };
   },
   computed: {
-    // 從 store 獲取資料
     officialFoods() { return this.store.officialFoods; },
     customFoods() { return this.store.customFoods; }
   },
@@ -320,7 +340,6 @@ const AddRecord = {
         this.editing = !!this.editId;
 
         if (this.editing) {
-            // 直接從 store 找紀錄
             const r = this.store.records.find(rec => rec.id === this.editId);
             if (r) {
                 if (r.official_food_id) {
@@ -337,15 +356,11 @@ const AddRecord = {
                 this.form.carb_sum = r.carb_sum;
                 this.form.protein_sum = r.protein_sum;
                 this.form.fat_sum = r.fat_sum;
-                // 處理時間格式，使其適合 datetime-local
                 this.form.record_time = r.record_time.replace(' ', 'T').slice(0, 16);
             }
         } else {
-            // 新增模式，設定預設時間為當前時間
             const now = new Date();
-            // 由於 datetime-local 需要 ISO 格式，且不含秒和毫秒，
-            // 且需要考慮時區偏移以確保顯示的是本地時間
-            now.setMinutes(now.getMinutes() - now.getTimezoneOffset()); // 調整到 UTC+0 的時間
+            now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
             this.form.record_time = now.toISOString().slice(0, 16);
         }
     },
@@ -376,7 +391,6 @@ const AddRecord = {
         this.error = '請選擇時間';
         return;
       }
-      // 將時間格式轉為後端需要的 'YYYY-MM-DD HH:MM:SS'
       const dtFormatted = this.form.record_time.replace('T', ' ') + ':00';
       const payload = {
         record_time: dtFormatted,
@@ -396,7 +410,6 @@ const AddRecord = {
         payload.manual_name = this.form.manual_name;
       }
 
-      // 檢查必填欄位 (雖然 HTML 已有 required，但後端檢查也重要)
       if (
         (this.inputMode === 'official' && !payload.official_food_id) ||
         (this.inputMode === 'custom' && !payload.custom_food_id) ||
@@ -416,7 +429,7 @@ const AddRecord = {
         } else {
           await httpRecord.put(`/diet-records/${this.editId}`, payload);
         }
-        this.store.dataLoaded = false; // 讓下次回到首頁時強制刷新資料
+        this.store.dataLoaded = false;
         this.$router.replace('/');
       } catch (err) {
         console.error("提交紀錄失敗:", err);
@@ -425,7 +438,6 @@ const AddRecord = {
     }
   },
   async mounted() {
-    // 確保 store 資料已載入，再初始化表單
     await this.store.fetchAllSharedData();
     this.initializeForm();
   }
@@ -439,7 +451,6 @@ const AllRecords = {
   template: '#all-records-template',
   inject: ['store'], // 注入 store
   computed: {
-    // 直接從 store 計算分組後的紀錄
     groupedRecords() {
       const groups = {};
       this.store.records.forEach(r => {
@@ -449,13 +460,11 @@ const AllRecords = {
         }
         groups[datePart].push(r);
       });
-      // 依日期降序排序 (最新日期在前)
       return Object.keys(groups).sort((a, b) => new Date(b) - new Date(a)).reduce((obj, key) => {
-        obj[key] = groups[key].sort((a,b) => new Date(b.record_time) - new Date(a.record_time)); // 組內依時間降序
+        obj[key] = groups[key].sort((a,b) => new Date(b.record_time) - new Date(a.record_time));
         return obj;
       }, {});
     },
-    // 確保有紀錄可以顯示
     records() {
       return this.store.records;
     }
@@ -483,7 +492,7 @@ const AllRecords = {
       } else if (r.manual_name) {
         name = r.manual_name;
       }
-      return `${name}：${r.calorie_sum.toFixed(0)} kcal`;
+      return `${name} (${r.calorie_sum.toFixed(0)} kcal)`;
     },
     editRecord(r) {
       this.$router.push({ path: '/add-record', query: { id: r.id } });
@@ -492,15 +501,46 @@ const AllRecords = {
       if (!confirm('確定要刪除此筆紀錄？')) return;
       try {
         await httpRecord.delete(`/diet-records/${id}`);
-        // 直接更新 store
         this.store.records = this.store.records.filter(r => r.id !== id);
       } catch {
         alert('刪除失敗');
       }
+    },
+    showFoodDetails(r) {
+      let details = {
+        name: '未知',
+        calories: r.calorie_sum,
+        carbs: r.carb_sum,
+        protein: r.protein_sum,
+        fat: r.fat_sum,
+      };
+
+      if (r.official_food_id) {
+        const of = this.store.officialFoods.find(x => x.id === r.official_food_id);
+        if (of) {
+            details.name = of.name;
+            details.calories = of.calories;
+            details.carbs = of.carbs;
+            details.protein = of.protein;
+            details.fat = of.fat;
+        }
+      } else if (r.custom_food_id) {
+        const cf = this.store.customFoods.find(x => x.id === r.custom_food_id);
+        if (cf) {
+            details.name = cf.name;
+            details.calories = cf.calories;
+            details.carbs = cf.carbs;
+            details.protein = cf.protein;
+            details.fat = cf.fat;
+        }
+      } else if (r.manual_name) {
+        details.name = r.manual_name;
+      }
+      
+      this.$root.showModal(details);
     }
   },
   async mounted() {
-    // 確保 store 資料已載入
     await this.store.fetchAllSharedData();
   }
 };
@@ -511,18 +551,15 @@ const AllRecords = {
 // ------------------------------
 const CustomFoods = {
   template: '#custom-foods-template',
-  inject: ['store'], // 注入 store
+  inject: ['store'],
   computed: {
-    // 從 store 獲取資料
     foods() {
       return this.store.customFoods;
     }
   },
   methods: {
     getFoodLabel(f) {
-    // 只回傳名稱和卡路里
-      return `${f.name}：${f.calories} kcal`;
-      //return `${f.name} (${f.calories.toFixed(0)} kcal)`; // 原始格式，也可用
+      return `${f.name} (${f.calories.toFixed(0)} kcal)`;
     },
     goToAddFood() { this.$router.push('/add-food'); },
     editFood(f) { this.$router.push({ path: '/add-food', query: { id: f.id } }); },
@@ -530,7 +567,6 @@ const CustomFoods = {
       if (!confirm('確定要刪除此筆自訂食物？')) return;
       try {
         await httpFood.delete(`/customer-foods/${id}`);
-        // 直接更新 store
         this.store.customFoods = this.store.customFoods.filter(f => f.id !== id);
       } catch {
         alert('刪除失敗');
@@ -538,7 +574,6 @@ const CustomFoods = {
     }
   },
   async mounted() {
-    // 確保 store 資料已載入
     await this.store.fetchAllSharedData();
   }
 };
@@ -549,7 +584,7 @@ const CustomFoods = {
 // ------------------------------
 const AddFood = {
   template: '#add-food-template',
-  inject: ['store'], // 注入 store
+  inject: ['store'],
   data() {
     return {
       form: {
@@ -566,10 +601,9 @@ const AddFood = {
         this.editing = !!this.editId;
 
         if (this.editing) {
-            // 從 store 獲取資料
             const f = this.store.customFoods.find(food => food.id === this.editId);
             if (f) {
-                this.form = { ...f }; // 複製一份來編輯
+                this.form = { ...f };
             }
         }
     },
@@ -587,14 +621,13 @@ const AddFood = {
           carbs: this.form.carbs
         };
         
-        // 新增時不再傳 user_id，由後端 session 判斷
         if (!this.editing) {
           await httpFood.post('/customer-foods', payload);
         } else {
           await httpFood.put(`/customer-foods/${this.editId}`, payload);
         }
         
-        this.store.dataLoaded = false; // 讓下次回到列表時強制刷新
+        this.store.dataLoaded = false;
         this.$router.replace('/custom-foods');
       } catch (err) {
         console.error("提交自訂食物失敗:", err);
@@ -607,7 +640,6 @@ const AddFood = {
     }
   },
   async mounted() {
-    // 確保 store 資料已載入
     await this.store.fetchAllSharedData();
     this.initializeForm();
   }
@@ -632,29 +664,25 @@ const router = VueRouter.createRouter({
   routes
 });
 
-router.beforeEach(async (to, from, next) => { // 這裡加上 async
-  // 登入或註冊頁面直接放行
+router.beforeEach(async (to, from, next) => {
   if (to.path === '/login' || to.path === '/signup') {
     return next();
   }
 
-  // 檢查登入狀態
   const isLoggedIn = localStorage.getItem('username');
   if (!isLoggedIn) {
-    store.logoutCleanup(); // 確保登出時清理 store
+    store.logoutCleanup();
     return next('/login');
   }
 
-  // 每次路由切換時，如果 store 尚未載入資料，就強制載入
   if (!store.dataLoaded) {
     await store.fetchAllSharedData();
-    // 確保資料載入後，如果仍未登入 (例如 API 驗證失敗)，則導向登入頁
     if (!store.isLoggedIn) {
       return next('/login');
     }
   }
   
-  next(); // 繼續導航
+  next();
 });
 
 
@@ -662,10 +690,11 @@ router.beforeEach(async (to, from, next) => { // 這裡加上 async
 // 10. 建立 Vue App 並掛載
 // ------------------------------
 const app = Vue.createApp({
-  // 將 store 的狀態提供給根元件模板 (header)
   data() {
     return {
-      sharedState: store
+      sharedState: store,
+      isModalVisible: false,
+      modalFoodDetails: null
     }
   },
   computed: {
@@ -674,20 +703,26 @@ const app = Vue.createApp({
     }
   },
   methods: {
-    // 登出方法，現在由根元件處理
     async doLogout() {
       try {
         await httpAuth.post('/logout');
       } catch(e) { 
         console.error("登出請求失敗 (可能已登出):", e);
-        /* 忽略錯誤，因為使用者可能已經登出，或網路問題 */ 
       }
       
-      this.sharedState.logoutCleanup(); // 清理 store
-      router.replace('/login'); // 使用 router 實例跳轉
+      this.sharedState.logoutCleanup();
+      this.closeModal(); // 確保登出時關閉 modal
+      router.replace('/login');
+    },
+    showModal(details) {
+        this.modalFoodDetails = details;
+        this.isModalVisible = true;
+    },
+    closeModal() {
+        this.isModalVisible = false;
+        this.modalFoodDetails = null;
     }
   },
-  // 將 store 提供給所有子元件
   provide() {
     return {
       store

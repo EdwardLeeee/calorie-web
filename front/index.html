@@ -34,6 +34,41 @@
     </header>
 
     <router-view></router-view>
+
+    <div v-if="$root.isModalVisible" class="modal-overlay" @click.self="$root.closeModal">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>食物詳細資訊</h3>
+          <button @click="$root.closeModal" class="close-btn">&times;</button>
+        </div>
+        <div class="modal-body" v-if="$root.modalFoodDetails">
+           <table class="details-table">
+              <tbody>
+                <tr>
+                    <td>食物名稱</td>
+                    <td>{{ $root.modalFoodDetails.name }}</td>
+                </tr>
+                <tr>
+                    <td>熱量</td>
+                    <td>{{ $root.modalFoodDetails.calories.toFixed(0) }} kcal</td>
+                </tr>
+                <tr>
+                    <td>碳水化合物</td>
+                    <td>{{ $root.modalFoodDetails.carbs.toFixed(1) }} g</td>
+                </tr>
+                <tr>
+                    <td>蛋白質</td>
+                    <td>{{ $root.modalFoodDetails.protein.toFixed(1) }} g</td>
+                </tr>
+                <tr>
+                    <td>脂肪</td>
+                    <td>{{ $root.modalFoodDetails.fat.toFixed(1) }} g</td>
+                </tr>
+              </tbody>
+           </table>
+        </div>
+      </div>
+    </div>
   </div>
 
   <template id="login-template">
@@ -176,13 +211,13 @@
           </svg>
           <div class="macro-legend">
             <div class="legend-item">
-              <span class="legend-color carb-color"></span> 碳水 ({{ macroPercents.carbs }}%)
+              <span class="legend-color carb-color"></span> 碳水 ({{ macroPercents.carbs }}%) {{ todayCarbs.toFixed(1) }}g
             </div>
             <div class="legend-item">
-              <span class="legend-color protein-color"></span> 蛋白 ({{ macroPercents.protein }}%)
+              <span class="legend-color protein-color"></span> 蛋白 ({{ macroPercents.protein }}%) {{ todayProtein.toFixed(1) }}g
             </div>
             <div class="legend-item">
-              <span class="legend-color fat-color"></span> 脂肪 ({{ macroPercents.fat }}%)
+              <span class="legend-color fat-color"></span> 脂肪 ({{ macroPercents.fat }}%) {{ todayFat.toFixed(1) }}g
             </div>
           </div>
         </div>
@@ -200,7 +235,7 @@
             <div class="table-cell cell-actions">操作</div>
           </div>
           <div v-for="r in todayRecords" :key="r.id" class="table-row">
-            <div class="table-cell cell-name">{{ getRecordLabel(r) }}</div>
+            <div class="table-cell cell-name food-name-clickable" @click="showFoodDetails(r)">{{ getRecordLabel(r) }}</div>
             <div class="table-cell cell-info">{{ formatTime(r.record_time) }}</div>
             <div class="table-cell cell-actions">
               <button class="btn small-btn info-btn" @click="editRecord(r)">編輯</button>
@@ -233,116 +268,118 @@
   <template id="add-record-template">
     <div class="add-record-container">
       <div class="page-header">
-        <button class="btn link-btn" @click="$router.back()">← 返回</button>
+        <button class="btn link-btn back-btn" @click="$router.back()">←</button>
         <h2>{{ editing ? '編輯飲食紀錄' : '新增飲食紀錄' }}</h2>
       </div>
-      <div class="form-card">
-        <form @submit.prevent="submitRecord" autocomplete="off">
-          <div class="form-group">
-            <label>模式：</label>
-            <select v-model="inputMode" required>
-              <option value="official">官方食物</option>
-              <option value="custom">自訂食物</option>
-              <option value="manual">手動輸入</option>
-            </select>
-          </div>
-          <div v-if="inputMode==='official'" class="form-group">
-            <label for="official_food_id">官方食物</label>
-            <select
-              id="official_food_id"
-              v-model.number="form.official_food_id"
-              @change="onOfficialChange"
-              required
-            >
-              <option disabled value="">請選擇</option>
-              <option v-for="of in officialFoods" :key="of.id" :value="of.id">
-                {{ of.name }} ({{ of.calories }} kcal)
-              </option>
-            </select>
-          </div>
-          <div v-if="inputMode==='custom'" class="form-group">
-            <label for="custom_food_id">自訂食物</label>
-            <select
-              id="custom_food_id"
-              v-model.number="form.custom_food_id"
-              @change="onCustomChange"
-              required
-            >
-              <option disabled value="">請選擇</option>
-              <option v-for="cf in customFoods" :key="cf.id" :value="cf.id">
-                {{ cf.name }} ({{ cf.calories }} kcal)
-              </option>
-            </select>
-          </div>
-          <div v-if="inputMode==='manual'" class="form-group">
-            <label for="manual_name">食物名稱</label>
-            <input
-              type="text"
-              id="manual_name"
-              v-model="form.manual_name"
-              placeholder="自訂名稱"
-              required
-            />
-          </div>
-          <div class="form-group">
-            <label for="record_time">時間</label>
-            <input
-              type="datetime-local"
-              v-model="form.record_time"
-              id="record_time"
-              required
-            />
-          </div>
-          <div class="form-group">
-            <label for="calorie_sum">熱量 (kcal)</label>
-            <input
-              type="number"
-              step="0.01"
-              v-model.number="form.calorie_sum"
-              id="calorie_sum"
-              :readonly="inputMode!=='manual'"
-              required
-            />
-          </div>
-          <div class="form-group">
-            <label for="carb_sum">碳水 (g)</label>
-            <input
-              type="number"
-              step="0.01"
-              v-model.number="form.carb_sum"
-              id="carb_sum"
-              :readonly="inputMode!=='manual'"
-              required
-            />
-          </div>
-          <div class="form-group">
-            <label for="protein_sum">蛋白 (g)</label>
-            <input
-              type="number"
-              step="0.01"
-              v-model.number="form.protein_sum"
-              id="protein_sum"
-              :readonly="inputMode!=='manual'"
-              required
-            />
-          </div>
-          <div class="form-group">
-            <label for="fat_sum">脂肪 (g)</label>
-            <input
-              type="number"
-              step="0.01"
-              v-model.number="form.fat_sum"
-              id="fat_sum"
-              :readonly="inputMode!=='manual'"
-              required
-            />
-          </div>
-          <div class="form-actions">
-            <button type="submit" class="btn primary full-width">
-              {{ editing ? '更新' : '新增' }}
-            </button>
-          </div>
-        </form>
+      <div class="form-page-container">
+        <div class="form-card">
+          <form @submit.prevent="submitRecord" autocomplete="off">
+            <div class="form-group">
+              <label>模式：</label>
+              <select v-model="inputMode" required>
+                <option value="official">官方食物</option>
+                <option value="custom">自訂食物</option>
+                <option value="manual">手動輸入</option>
+              </select>
+            </div>
+            <div v-if="inputMode==='official'" class="form-group">
+              <label for="official_food_id">官方食物</label>
+              <select
+                id="official_food_id"
+                v-model.number="form.official_food_id"
+                @change="onOfficialChange"
+                required
+              >
+                <option disabled value="">請選擇</option>
+                <option v-for="of in officialFoods" :key="of.id" :value="of.id">
+                  {{ of.name }} ({{ of.calories }} kcal)
+                </option>
+              </select>
+            </div>
+            <div v-if="inputMode==='custom'" class="form-group">
+              <label for="custom_food_id">自訂食物</label>
+              <select
+                id="custom_food_id"
+                v-model.number="form.custom_food_id"
+                @change="onCustomChange"
+                required
+              >
+                <option disabled value="">請選擇</option>
+                <option v-for="cf in customFoods" :key="cf.id" :value="cf.id">
+                  {{ cf.name }} ({{ cf.calories }} kcal)
+                </option>
+              </select>
+            </div>
+            <div v-if="inputMode==='manual'" class="form-group">
+              <label for="manual_name">食物名稱</label>
+              <input
+                type="text"
+                id="manual_name"
+                v-model="form.manual_name"
+                placeholder="自訂名稱"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="record_time">時間</label>
+              <input
+                type="datetime-local"
+                v-model="form.record_time"
+                id="record_time"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="calorie_sum">熱量 (kcal)</label>
+              <input
+                type="number"
+                step="0.01"
+                v-model.number="form.calorie_sum"
+                id="calorie_sum"
+                :readonly="inputMode!=='manual'"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="carb_sum">碳水 (g)</label>
+              <input
+                type="number"
+                step="0.01"
+                v-model.number="form.carb_sum"
+                id="carb_sum"
+                :readonly="inputMode!=='manual'"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="protein_sum">蛋白 (g)</label>
+              <input
+                type="number"
+                step="0.01"
+                v-model.number="form.protein_sum"
+                id="protein_sum"
+                :readonly="inputMode!=='manual'"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="fat_sum">脂肪 (g)</label>
+              <input
+                type="number"
+                step="0.01"
+                v-model.number="form.fat_sum"
+                id="fat_sum"
+                :readonly="inputMode!=='manual'"
+                required
+              />
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn primary full-width">
+                {{ editing ? '更新' : '新增' }}
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
       <div v-if="error" class="error">{{ error }}</div>
       <nav class="bottom-nav">
@@ -379,7 +416,7 @@
             <div class="table-cell cell-actions">操作</div>
           </div>
           <div v-for="r in group" :key="r.id" class="table-row">
-            <div class="table-cell cell-name">{{ getRecordLabel(r) }}</div>
+            <div class="table-cell cell-name food-name-clickable" @click="showFoodDetails(r)">{{ getRecordLabel(r) }}</div>
             <div class="table-cell cell-info">{{ formatTime(r.record_time) }}</div>
             <div class="table-cell cell-actions">
               <button class="btn small-btn info-btn" @click="editRecord(r)">編輯</button>
@@ -414,7 +451,7 @@
     <div class="page-header">
       <router-link to="/" class="back-btn">←</router-link>
       <h2>自訂食物</h2>
-      <button class="btn add-btn" @click="goToAddFood">+</button> </div>
+    </div>
 
     <div v-if="foods.length > 0" class="list-container custom-foods-table">
       <div class="data-table">
@@ -433,6 +470,8 @@
     </div>
 
     <div v-else class="no-data"><p>目前尚無自訂食物</p></div>
+
+    <button class="btn add-btn" @click="goToAddFood">+</button>
     
     <nav class="bottom-nav">
       <div class="nav-item" :class="{ active: $route.path === '/' }" @click="$router.push('/')">
@@ -451,73 +490,74 @@
   </div>
   </template>
   
-
   <template id="add-food-template">
     <div class="custom-foods-container">
       <div class="page-header">
-        <button class="btn link-btn" @click="$router.back()">← 返回</button>
+        <button class="btn link-btn back-btn" @click="$router.back()">←</button>
         <h2>{{ editing ? '編輯自訂食物' : '新增自訂食物' }}</h2>
       </div>
-      <div class="form-card">
-        <form @submit.prevent="submitFood" autocomplete="off">
-          <div class="form-group">
-            <label for="name">名稱</label>
-            <input 
-              id="name" 
-              v-model="form.name" 
-              type="text" 
-              required 
-              placeholder="食物名稱" 
-            />
-          </div>
-          <div class="form-group">
-            <label for="calories">卡路里 (kcal)</label>
-            <input 
-              id="calories" 
-              v-model.number="form.calories" 
-              type="number" 
-              step="0.01" 
-              required 
-              placeholder="例如：165" 
-            />
-          </div>
-          <div class="form-group">
-            <label for="protein">蛋白質 (g)</label>
-            <input 
-              id="protein" 
-              v-model.number="form.protein" 
-              type="number" 
-              step="0.01" 
-              required 
-              placeholder="例如：31" 
-            />
-          </div>
-          <div class="form-group">
-            <label for="fat">脂肪 (g)</label>
-            <input 
-              id="fat" 
-              v-model.number="form.fat" 
-              type="number" 
-              step="0.01" 
-              required 
-              placeholder="例如：3.6" 
-            />
-          </div>
-          <div class="form-group">
-            <label for="carbs">碳水 (g)</label>
-            <input 
-              id="carbs" 
-              v-model.number="form.carbs" 
-              type="number" 
-              step="0.01" 
-              required 
-              placeholder="例如：6.6" 
-            />
-          </div>
-          <div class="form-actions">
-            <button class="btn primary full-width">{{ editing ? '更新' : '送出' }}</button>
-          </div>
-        </form>
+      <div class="form-page-container">
+        <div class="form-card">
+          <form @submit.prevent="submitFood" autocomplete="off">
+            <div class="form-group">
+              <label for="name">名稱</label>
+              <input 
+                id="name" 
+                v-model="form.name" 
+                type="text" 
+                required 
+                placeholder="食物名稱" 
+              />
+            </div>
+            <div class="form-group">
+              <label for="calories">卡路里 (kcal)</label>
+              <input 
+                id="calories" 
+                v-model.number="form.calories" 
+                type="number" 
+                step="0.01" 
+                required 
+                placeholder="例如：165" 
+              />
+            </div>
+            <div class="form-group">
+              <label for="carbs">碳水 (g)</label>
+              <input 
+                id="carbs" 
+                v-model.number="form.carbs" 
+                type="number" 
+                step="0.01" 
+                required 
+                placeholder="例如：6.6" 
+              />
+            </div>
+            <div class="form-group">
+              <label for="protein">蛋白質 (g)</label>
+              <input 
+                id="protein" 
+                v-model.number="form.protein" 
+                type="number" 
+                step="0.01" 
+                required 
+                placeholder="例如：31" 
+              />
+            </div>
+            <div class="form-group">
+              <label for="fat">脂肪 (g)</label>
+              <input 
+                id="fat" 
+                v-model.number="form.fat" 
+                type="number" 
+                step="0.01" 
+                required 
+                placeholder="例如：3.6" 
+              />
+            </div>
+            <div class="form-actions">
+              <button class="btn primary full-width">{{ editing ? '更新' : '送出' }}</button>
+            </div>
+          </form>
+        </div>
       </div>
       <div v-if="error" class="error">{{ error }}</div>
       <nav class="bottom-nav">
