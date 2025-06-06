@@ -11,11 +11,11 @@ pip install pymysql
 你需要自建環境變數設定檔`.env`
 > 記得建立`.gitignore`，然後在裡面加入`.env`
 ```
-DB_USER=calorie
+DB_USER=calorie_db
 DB_PASSWORD=CvXmcorwWGJMSJ7
 DB_HOST=localhost
 DB_PORT=3306
-DB_NAME=calorie_db
+DB_NAME=calorie
 ```
 ### 測試API
 - 取得所有食物
@@ -59,7 +59,7 @@ sudo mysql
 1.建立db
 ```
 CREATE DATABASE calorie_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE calorie_db;
+USE calorie;
 ```
 2.建表
 ```
@@ -77,6 +77,19 @@ CREATE TABLE food (
     protein FLOAT NOT NULL,
     fat FLOAT NOT NULL,
     carbs FLOAT NOT NULL
+);
+
+--用戶自訂食物表
+CREATE TABLE customer_food (
+    id        INT AUTO_INCREMENT PRIMARY KEY,
+    user_id   INT NOT NULL,
+    name      VARCHAR(100) NOT NULL,
+    calories  FLOAT NOT NULL,
+    protein   FLOAT NOT NULL,
+    fat       FLOAT NOT NULL,
+    carbs     FLOAT NOT NULL,
+    UNIQUE KEY uq_user_foodname (user_id, name),
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
 );
 
 -- 紀錄表
@@ -100,17 +113,6 @@ CREATE TABLE diet_record (
 
 );
 
-CREATE TABLE customer_food (
-    id        INT AUTO_INCREMENT PRIMARY KEY,
-    user_id   INT NOT NULL,
-    name      VARCHAR(100) NOT NULL,
-    calories  FLOAT NOT NULL,
-    protein   FLOAT NOT NULL,
-    fat       FLOAT NOT NULL,
-    carbs     FLOAT NOT NULL,
-    UNIQUE KEY uq_user_foodname (user_id, name),
-    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
-);
 ```
 
 
@@ -128,14 +130,33 @@ INSERT INTO food (name, calories, protein, fat, carbs) VALUES
 ('白飯', 130, 2.7, 0.3, 28),
 ('蘋果', 52, 0.3, 0.2, 14);
 
--- 插入飲食紀錄（假設 alice 的 id 是 1，bob 是 2）
-INSERT INTO diet_record (user_id, food_id, quantity, record_date) VALUES
-(1, 1, 1.0, '2025-05-01'), -- Alice 吃了一份雞胸肉
-(1, 2, 1.5, '2025-05-01'), -- Alice 吃了1.5碗白飯
-(2, 3, 2.0, '2025-05-01'); -- Bob 吃了兩顆蘋果
+-- 新增自訂食物
+INSERT INTO customer_food (
+    user_id, name, calories, protein, fat, carbs
+) VALUES (
+    1, '自製蛋餅', 150, 5, 2, 25
+);
+
+-- 新增紀錄
+INSERT INTO diet_record (
+  user_id, record_time, official_food_id,
+  calorie_sum, carb_sum, protein_sum, fat_sum
+) VALUES (
+  1, NOW(), 1,
+  300, 40, 20, 10
+);
+
+INSERT INTO diet_record (
+  user_id, record_time, custom_food_id,
+  calorie_sum, carb_sum, protein_sum, fat_sum
+) VALUES (
+  1, NOW(), 1,
+  150, 25, 5, 2
+);
 
 select * from user;
 select * from food;
+select * from customer_food;
 select * from diet_record
 ```
 4. 建立 MySQL user

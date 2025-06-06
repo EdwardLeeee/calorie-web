@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Customer Foods 管理</title>
+    <style>
+        table, th, td { border: 1px solid #ccc; border-collapse: collapse; }
+        th, td { padding: 8px; }
+    </style>
+</head>
+<body>
+    <h1>Customer Foods 管理</h1>
+
+    <!-- 篩選 user_id -->
+    <form method="get" action="/">
+        <label for="user_id">User ID:</label>
+        <input type="number" name="user_id" id="user_id" value="{{ user_id or '' }}">
+        <button type="submit">篩選</button>
+        <button type="button" onclick="window.location='/'">清除篩選</button>
+    </form>
+    <hr>
+
+    <!-- 顯示現有資料 -->
+    {% if foods %}
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>User ID</th>
+                <th>Name</th>
+                <th>Calories</th>
+                <th>Protein</th>
+                <th>Fat</th>
+                <th>Carbs</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for f in foods %}
+            <tr>
+                <td>{{ f.id }}</td>
+                <td>{{ f.user_id }}</td>
+                <td>{{ f.name }}</td>
+                <td>{{ f.calories }}</td>
+                <td>{{ f.protein }}</td>
+                <td>{{ f.fat }}</td>
+                <td>{{ f.carbs }}</td>
+                <td>
+                    <!-- 刪除按鈕 -->
+                    <form method="post" action="/delete/{{ f.id }}" style="display:inline">
+                        <button type="submit" onclick="return confirm('確定刪除？')">刪除</button>
+                    </form>
+                    <!-- 更新表單（隱藏在 <details> 裡）-->
+                    <details>
+                        <summary>更新</summary>
+                        <form method="post" action="/update/{{ f.id }}">
+                            <input type="text" name="name" placeholder="Name" value="{{ f.name }}" required>
+                            <input type="number" step="0.01" name="calories" placeholder="Calories" value="{{ f.calories }}" required>
+                            <input type="number" step="0.01" name="protein" placeholder="Protein" value="{{ f.protein }}" required>
+                            <input type="number" step="0.01" name="fat" placeholder="Fat" value="{{ f.fat }}" required>
+                            <input type="number" step="0.01" name="carbs" placeholder="Carbs" value="{{ f.carbs }}" required>
+                            <button type="submit">送出</button>
+                        </form>
+                    </details>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p>沒有資料。</p>
+    {% endif %}
+
+    <hr>
+
+    <!-- 新增表單 -->
+    <h2>新增自訂食物</h2>
+    <form method="post" action="/add">
+        <label for="user_id_input">User ID:</label>
+        <input type="number" name="user_id" id="user_id_input" value="{{ user_id or '' }}" required><br><br>
+        <label for="name_input">Name:</label>
+        <input type="text" name="name" id="name_input" required><br><br>
+        <label for="calories_input">Calories:</label>
+        <input type="number" step="0.01" name="calories" id="calories_input" required><br><br>
+        <label for="protein_input">Protein:</label>
+        <input type="number" step="0.01" name="protein" id="protein_input" required><br><br>
+        <label for="fat_input">Fat:</label>
+        <input type="number" step="0.01" name="fat" id="fat_input" required><br><br>
+        <label for="carbs_input">Carbs:</label>
+        <input type="number" step="0.01" name="carbs" id="carbs_input" required><br><br>
+        <button type="submit">新增</button>
+    </form>
+</body>
+</html>
+
