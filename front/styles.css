@@ -28,6 +28,7 @@ body {
   background-color: var(--background-color);
   color: var(--text-color-dark);
   line-height: 1.5;
+  -webkit-text-size-adjust: 100%; /* 防止 iOS 橫向模式下文字放大 */
 }
 a {
   text-decoration: none;
@@ -54,6 +55,9 @@ ul {
   cursor: pointer;
   transition: all 0.2s ease;
   white-space: nowrap;
+  /* 確保在觸控裝置上點擊區域足夠大 */
+  min-height: 44px; /* 根據 Apple 和 Google 的建議，最小觸控目標尺寸 */
+  line-height: 1; /* 確保文字垂直居中 */
 }
 .btn.primary {
   background-color: var(--primary-color);
@@ -66,6 +70,7 @@ ul {
   background: none;
   color: var(--primary-color);
   padding: 0;
+  min-height: auto; /* 連結按鈕不需要強制最小高度 */
 }
 .btn.logout-btn {
   position: absolute;
@@ -77,6 +82,7 @@ ul {
   font-size: 0.9rem;
   padding: 0.4rem 0.8rem;
   border: 1px solid var(--primary-color); /* 增加邊框讓其更明顯 */
+  min-height: auto; /* 這個按鈕尺寸較小 */
 }
 .btn.logout-btn:hover {
   background-color: var(--primary-color-light);
@@ -88,6 +94,7 @@ ul {
   padding: 0.2rem 0.5rem;
   font-size: 0.8rem;
   margin-left: 0.5rem;
+  min-height: 36px; /* 小按鈕也給個最小高度 */
 }
 .btn.info-btn {
   background-color: var(--info-color);
@@ -102,14 +109,19 @@ ul {
   background-color: var(--primary-color);
   color: var(--text-color-white);
   border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  font-size: 1.5rem;
+  width: 48px; /* 調整為更大的觸控目標 */
+  height: 48px;
+  font-size: 2rem; /* 增大加號 */
   line-height: 1; /* 垂直居中 "+" 符號 */
   padding: 0;
   display: flex; /* 使用flexbox居中內容 */
   justify-content: center;
   align-items: center;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* 浮動按鈕增加陰影 */
+  position: fixed; /* 讓新增按鈕浮動在右下角 */
+  bottom: 80px; /* 離底部導航列一點距離 */
+  right: 1rem;
+  z-index: 99; /* 確保在其他內容之上 */
 }
 .btn.add-btn:hover {
   background-color: var(--primary-color-dark);
@@ -131,7 +143,7 @@ ul {
   display: block;
   margin-bottom: 0.35rem;
   font-weight: 500;
-  font-size: 0.9rem;
+  font-size: 0.95rem; /* 稍微增大標籤字體 */
 }
 .form-group input,
 .form-group select {
@@ -142,6 +154,20 @@ ul {
   font-family: 'Roboto', sans-serif;
   font-size: 1rem;
   box-sizing: border-box; /* 確保 padding 不增加寬度 */
+  min-height: 44px; /* 輸入框也給個最小高度 */
+  background-color: var(--card-background); /* 確保背景色一致 */
+}
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px var(--primary-color-light);
+}
+/* 針對日期時間輸入框的樣式 */
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.5) sepia(1) saturate(5) hue-rotate(175deg); /* 讓日曆圖示變色 */
+  opacity: 0.8;
+  cursor: pointer;
 }
 .form-actions {
   margin-top: 1.5rem;
@@ -165,6 +191,7 @@ ul {
   padding: 2rem;
   text-align: center;
   color: var(--text-color-light);
+  font-size: 1.1rem; /* 增大無資料訊息 */
 }
 
 
@@ -176,18 +203,29 @@ ul {
   background-color: var(--card-background);
   border-bottom: 1px solid var(--border-color);
   box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* 增加輕微陰影 */
+  position: sticky; /* 在滾動時固定標題 */
+  top: 0;
+  z-index: 10; /* 確保在列表內容之上 */
 }
 .page-header h2 {
-  font-size: 1.2rem;
+  font-size: 1.3rem; /* 標題大一點 */
   margin: 0;
   flex-grow: 1; /* 讓標題佔據剩餘空間 */
   text-align: center; /* 標題居中 */
 }
 .page-header .back-btn {
   color: var(--text-color-light);
-  font-size: 1.5rem;
+  font-size: 1.6rem; /* 增大返回箭頭 */
   margin-right: 1rem;
   padding: 5px; /* 增加點擊區域 */
+}
+.page-header .btn.add-btn {
+    position: static; /* 在 header 裡的加號按鈕不再浮動 */
+    margin-left: auto; /* 推到最右邊 */
+    width: 36px;
+    height: 36px;
+    font-size: 1.5rem;
+    box-shadow: none;
 }
 
 
@@ -201,7 +239,7 @@ ul {
   box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 增加陰影 */
 }
 .app-header h1 {
-  font-size: 1.4rem;
+  font-size: 1.5rem; /* 稍微增大標題 */
   font-weight: 500;
   margin: 0;
 }
@@ -213,7 +251,7 @@ ul {
   left: 0;
   width: 100%;
   background-color: var(--card-background);
-  box-shadow: 0 -2px 5px rgba(0,0,0,0.05);
+  box-shadow: 0 -4px 10px rgba(0,0,0,0.1); /* 更明顯的陰影 */
   display: flex;
   justify-content: space-around;
   padding: 0.5rem 0;
@@ -223,14 +261,16 @@ ul {
 }
 .bottom-nav .nav-item {
   color: var(--text-color-light);
-  font-size: 1rem;
+  font-size: 0.9rem; /* 稍微縮小文字避免過長 */
   flex: 1;
   text-align: center;
   padding: 0.25rem 0;
   display: flex; /* 使用 flex 讓文字居中 */
+  flex-direction: column; /* 文字和圖示可以垂直排列 */
   justify-content: center;
   align-items: center;
   height: 100%; /* 讓點擊區域填滿 nav-item */
+  font-weight: 500; /* 讓文字更清晰 */
 }
 .bottom-nav .nav-item:hover {
   background-color: #f0f0f0; /* 懸停效果 */
@@ -240,6 +280,11 @@ ul {
   color: var(--primary-color);
   font-weight: 700;
 }
+/* 可以為導航項添加圖標，這裡只預留樣式 */
+.bottom-nav .nav-item .icon {
+  font-size: 1.2rem;
+  margin-bottom: 3px;
+}
 
 
 /* ------------ 登入/註冊頁面樣式 ------------ */
@@ -247,7 +292,7 @@ ul {
   display: flex;
   justify-content: center; /* 水平居中 */
   align-items: center; /* 垂直居中 */
-  min-height: calc(100vh - 60px); /* 減去 header 和可能的 footer 高度 */
+  min-height: calc(100vh - 60px); /* 減去 header 高度 */
   background-color: var(--background-color);
   padding: 1rem; /* 確保小螢幕有邊距 */
 }
@@ -262,14 +307,14 @@ ul {
   text-align: center; /* 內容居中 */
 }
 .card-title {
-  font-size: 1.8rem; /* 標題大一點 */
+  font-size: 2rem; /* 標題大一點 */
   margin-bottom: 1.5rem;
   color: var(--primary-color);
   font-weight: 700;
 }
 .auth-container .small-text {
   margin-top: 1.5rem;
-  font-size: 0.85rem;
+  font-size: 0.9rem; /* 稍微增大文字 */
   color: var(--text-color-light);
 }
 .auth-container .small-text a {
@@ -296,43 +341,44 @@ ul {
   flex-direction: column;
   align-items: center;
   flex-basis: 50%; /* 各佔一半空間 */
-  min-width: 150px; /* 避免圖表過小 */
+  min-width: 160px; /* 避免圖表過小，給 iPhone Pro Max 留足空間 */
   padding: 10px 0; /* 內部間距 */
 }
 .chart-container svg {
-  width: 120px;
-  height: 120px; /* 確保兩個圖表一樣高 */
+  width: 130px; /* 稍微增大圖表尺寸 */
+  height: 130px; /* 確保兩個圖表一樣高 */
 }
 
 /* 圖表內的文字樣式 */
 .chart-text-lg {
-  font-size: 24px;
+  font-size: 28px; /* 增大主熱量數字 */
   font-weight: 700;
   fill: var(--text-color-dark); /* 確保文字顏色可見 */
 }
 .chart-text-sm {
-  font-size: 14px;
+  font-size: 16px; /* 增大次要文字 */
   fill: var(--text-color-light); /* 確保文字顏色可見 */
 }
 
 .target-input-group {
   margin-top: 0.75rem;
-  font-size: 0.9rem;
+  font-size: 1rem; /* 增大文字 */
   display: flex; /* 讓標籤和輸入框在同一行 */
   align-items: center;
 }
 .target-input {
-  width: 80px; /* 稍微加大輸入框寬度 */
-  padding: 0.25rem 0.5rem;
+  width: 90px; /* 稍微加大輸入框寬度 */
+  padding: 0.3rem 0.6rem;
   border-radius: 4px;
   border: 1px solid #ccc;
   text-align: center;
   margin-left: 5px; /* 與標籤間距 */
-  font-size: 1rem;
+  font-size: 1.1rem; /* 增大輸入文字 */
+  min-height: 40px; /* 讓輸入框更易點擊 */
 }
 .macro-legend {
   margin-top: 0.75rem;
-  font-size: 0.85rem;
+  font-size: 0.9rem; /* 增大圖例文字 */
   text-align: left; /* 讓圖例左對齊 */
   width: 100%; /* 佔滿空間，避免換行問題 */
   padding-left: 20px; /* 與圖表對齊 */
@@ -340,13 +386,13 @@ ul {
 .legend-item {
   display: flex;
   align-items: center;
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.3rem; /* 增大圖例間距 */
 }
 .legend-color {
-  width: 12px;
-  height: 12px;
-  margin-right: 0.5rem;
-  border-radius: 3px;
+  width: 14px; /* 增大色塊 */
+  height: 14px;
+  margin-right: 0.6rem; /* 增大間距 */
+  border-radius: 4px;
 }
 /* 更新圖例顏色，與 HTML SVG 內顏色保持一致 */
 .carb-color { background-color: #8BC34A; } /* 綠色 */
@@ -372,72 +418,297 @@ ul {
 }
 .list-header h3 {
   margin: 0;
-  font-size: 1.1rem;
+  font-size: 1.2rem; /* 增大列表標題 */
 }
 .data-table {
   width: 100%;
 }
 .table-header {
   display: flex;
-  font-size: 0.8rem;
+  font-size: 0.85rem; /* 增大表頭文字 */
   font-weight: 500;
   color: var(--text-color-light);
-  padding: 0.5rem 1rem;
+  padding: 0.6rem 1rem; /* 增大內邊距 */
   background-color: #f8f9fa;
   border-bottom: 1px solid var(--border-color);
 }
 .table-row {
   display: flex;
   align-items: center;
-  padding: 0.75rem 1rem;
+  padding: 0.85rem 1rem; /* 增大行高 */
   border-bottom: 1px solid var(--border-color);
 }
 .table-row:last-child {
   border-bottom: none;
 }
 .table-cell {
-  font-size: 0.95rem;
+  font-size: 1rem; /* 增大單元格文字 */
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 /* 調整欄位寬度 */
 .cell-name { flex: 4; min-width: 100px; font-weight: 500; }
-.cell-info { flex: 3; text-align: right; color: var(--text-color-light); font-size: 0.9rem;}
+.cell-info { flex: 3; text-align: right; color: var(--text-color-light); font-size: 0.95rem;}
 .cell-actions { flex: 2; display: flex; justify-content: flex-end; }
 
 /* 針對不同列表的微調 */
 .custom-foods-table .cell-info { display: none; } /* 自訂食物列表不需要時間 */
 .custom-foods-table .cell-name { flex: 6; } /* 讓名稱欄位更寬 */
 .all-records-group .group-header {
-  padding: 0.5rem 1rem;
+  padding: 0.6rem 1rem; /* 增大組標題內邊距 */
   font-weight: 700;
   background-color: var(--primary-color-light);
   color: var(--primary-color-dark);
+  font-size: 1.1rem; /* 增大組標題字體 */
 }
 
-/* 針對行動裝置的響應式設計 */
-@media (max-width: 600px) {
+
+/* -------------------------------------- */
+/* ------------ 響應式設計 (Media Queries) ------------ */
+/* -------------------------------------- */
+
+/* 針對平板 (iPad, Pro Max 橫向) 和較大手機 (iPhone Pro Max, Samsung Galaxy) 的優化 */
+/* 螢幕寬度介於 601px 和 991px 之間 */
+@media (min-width: 601px) and (max-width: 991px) {
+  body {
+    font-size: 17px; /* 增大基礎字體 */
+  }
+  .app-header h1 {
+    font-size: 1.8rem;
+  }
+  .page-header h2 {
+    font-size: 1.5rem;
+  }
+  .auth-card, .form-card, .list-container {
+    max-width: 600px; /* 限制寬度，避免過寬 */
+    margin-left: auto;
+    margin-right: auto;
+    padding: 2rem;
+  }
   .dashboard-charts {
-    flex-direction: column; /* 在小螢幕上垂直堆疊 */
-    align-items: center;
+    flex-wrap: nowrap; /* 平板上可能不需要換行 */
+    justify-content: center;
+    padding: 2rem;
   }
   .chart-container {
-    flex-basis: 100%; /* 每個圖表佔滿一行 */
+    flex-basis: auto; /* 不強制一半，讓內容決定寬度 */
+    margin: 0 1rem; /* 圖表間距 */
+  }
+  .chart-container svg {
+    width: 150px; /* 平板上增大圖表 */
+    height: 150px;
+  }
+  .chart-text-lg {
+    font-size: 32px;
+  }
+  .chart-text-sm {
+    font-size: 18px;
+  }
+  .target-input-group {
+    font-size: 1.1rem;
+  }
+  .target-input {
+    width: 100px;
+    font-size: 1.2rem;
+  }
+  .macro-legend {
+    font-size: 1rem;
+    padding-left: 30px;
+  }
+  .legend-color {
+    width: 16px;
+    height: 16px;
+  }
+  .bottom-nav .nav-item {
+    font-size: 1rem;
+  }
+  .btn {
+    font-size: 1rem;
+    padding: 0.6rem 1.2rem;
+  }
+  .btn.add-btn {
+    width: 56px; /* 平板上更大的浮動按鈕 */
+    height: 56px;
+    font-size: 2.5rem;
+    bottom: 90px;
+    right: 1.5rem;
+  }
+  .form-group label {
+    font-size: 1rem;
+  }
+  .form-group input,
+  .form-group select {
+    font-size: 1.1rem;
+    padding: 0.8rem;
+  }
+  .table-header, .table-row {
+    padding: 1rem 1.2rem;
+  }
+  .table-cell {
+    font-size: 1.05rem;
+  }
+  .all-records-group .group-header {
+    font-size: 1.2rem;
+  }
+  .no-data {
+    font-size: 1.2rem;
+  }
+}
+
+
+/* 針對一般手機 (iPhone 14 Pro Max 豎向, iPhone SE 等) */
+/* 螢幕寬度最大 600px */
+@media (max-width: 600px) {
+  body {
+    font-size: 16px; /* 基礎字體 */
+  }
+  .app-header {
+    padding: 0.8rem;
+  }
+  .app-header h1 {
+    font-size: 1.4rem;
   }
   .app-header .logout-btn {
     font-size: 0.8rem;
     padding: 0.3rem 0.6rem;
     right: 0.5rem;
   }
+  .page-header {
+    padding: 0.8rem;
+  }
   .page-header h2 {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
+  }
+  .page-header .back-btn {
+    font-size: 1.4rem;
+    margin-right: 0.8rem;
   }
   .form-card {
     margin: 0.5rem;
-    padding: 1rem;
+    padding: 1.2rem;
+  }
+  .card-title {
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+  }
+  .btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+    min-height: 40px; /* 手機按鈕最小高度 */
+  }
+  .btn.small-btn {
+    padding: 0.2rem 0.4rem;
+    font-size: 0.75rem;
+    min-height: 32px;
+  }
+  .btn.add-btn {
+    width: 44px; /* 手機上浮動按鈕尺寸 */
+    height: 44px;
+    font-size: 1.8rem;
+    bottom: 75px; /* 稍微縮小距離 */
+    right: 0.8rem;
+  }
+  .bottom-nav {
+    height: 55px; /* 稍微縮小底部導航高度 */
   }
   .bottom-nav .nav-item {
+    font-size: 0.8rem;
+  }
+  .dashboard-charts {
+    flex-direction: column; /* 在小螢幕上垂直堆疊 */
+    align-items: center;
+    padding: 1rem 0.5rem;
+    margin: 0.5rem;
+  }
+  .chart-container {
+    flex-basis: 100%; /* 每個圖表佔滿一行 */
+    padding: 5px 0;
+  }
+  .chart-container svg {
+    width: 110px; /* 稍微縮小圖表 */
+    height: 110px;
+  }
+  .chart-text-lg {
+    font-size: 24px;
+  }
+  .chart-text-sm {
+    font-size: 14px;
+  }
+  .target-input-group {
     font-size: 0.9rem;
+  }
+  .target-input {
+    width: 70px;
+    font-size: 1rem;
+  }
+  .macro-legend {
+    font-size: 0.8rem;
+    padding-left: 15px;
+  }
+  .legend-color {
+    width: 10px;
+    height: 10px;
+    margin-right: 0.4rem;
+  }
+  .list-container {
+    margin: 0.5rem;
+  }
+  .list-header {
+    padding: 0.6rem 0.8rem;
+  }
+  .list-header h3 {
+    font-size: 1.1rem;
+  }
+  .table-header, .table-row {
+    padding: 0.6rem 0.8rem;
+  }
+  .table-cell {
+    font-size: 0.9rem;
+  }
+  .cell-actions .btn {
+    margin-left: 0.3rem; /* 縮小按鈕間距 */
+  }
+  .no-data {
+    padding: 1.5rem;
+    font-size: 1rem;
+  }
+}
+
+/* 針對更小的螢幕 (例如 iPhone SE, 但 iPhone 14 Pro Max 不會到這尺寸) */
+@media (max-width: 375px) {
+  .btn.add-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 1.6rem;
+    bottom: 70px;
+    right: 0.5rem;
+  }
+  .bottom-nav {
+    height: 50px;
+  }
+  .bottom-nav .nav-item {
+    font-size: 0.75rem;
+  }
+  .chart-container svg {
+    width: 100px;
+    height: 100px;
+  }
+  .chart-text-lg {
+    font-size: 22px;
+  }
+  .chart-text-sm {
+    font-size: 12px;
+  }
+}
+
+/* 為了更好的可訪問性，可以考慮增加 hover 效果只在非觸控裝置上 */
+@media (hover: hover) {
+  .btn:hover:not(.link-btn):not(.add-btn) {
+    opacity: 0.9;
+  }
+  .form-group input:hover,
+  .form-group select:hover {
+    border-color: var(--primary-color);
   }
 }

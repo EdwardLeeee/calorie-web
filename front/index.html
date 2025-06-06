@@ -11,6 +11,8 @@
     rel="stylesheet"
   />
 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+
   <link rel="stylesheet" href="styles.css" />
 
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
@@ -20,6 +22,8 @@
   <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 </head>
 
 <body>
@@ -207,10 +211,21 @@
         <div v-else class="no-data"><p>今天尚無紀錄，點此新增</p></div>
       </div>
       
+      <button class="btn add-btn" @click="$router.push('/add-record')">+</button>
+
       <nav class="bottom-nav">
-        <div class="nav-item active" @click="$router.push('/')">飲食紀錄</div>
-        <div class="nav-item" @click="$router.push('/add-record')">新增紀錄</div>
-        <div class="nav-item" @click="$router.push('/custom-foods')">自訂食物</div>
+        <div class="nav-item" :class="{ active: $route.path === '/' }" @click="$router.push('/')">
+          <i class="fas fa-chart-pie icon"></i>
+          <span>儀表板</span>
+        </div>
+        <div class="nav-item" :class="{ active: $route.path === '/add-record' }" @click="$router.push('/add-record')">
+          <i class="fas fa-plus-circle icon"></i>
+          <span>新增紀錄</span>
+        </div>
+        <div class="nav-item" :class="{ active: $route.path === '/custom-foods' }" @click="$router.push('/custom-foods')">
+          <i class="fas fa-utensils icon"></i>
+          <span>自訂食物</span>
+        </div>
       </nav>
     </div>
   </template>
@@ -331,9 +346,18 @@
       </div>
       <div v-if="error" class="error">{{ error }}</div>
       <nav class="bottom-nav">
-        <div class="nav-item" @click="$router.push('/')">飲食紀錄</div>
-        <div class="nav-item active">新增紀錄</div>
-        <div class="nav-item" @click="$router.push('/custom-foods')">自訂食物</div>
+        <div class="nav-item" :class="{ active: $route.path === '/' }" @click="$router.push('/')">
+          <i class="fas fa-chart-pie icon"></i>
+          <span>儀表板</span>
+        </div>
+        <div class="nav-item" :class="{ active: $route.path === '/add-record' }" @click="$router.push('/add-record')">
+          <i class="fas fa-plus-circle icon"></i>
+          <span>新增紀錄</span>
+        </div>
+        <div class="nav-item" :class="{ active: $route.path === '/custom-foods' }" @click="$router.push('/custom-foods')">
+          <i class="fas fa-utensils icon"></i>
+          <span>自訂食物</span>
+        </div>
       </nav>
     </div>
   </template>
@@ -369,9 +393,18 @@
     <div v-else class="no-data"><p>目前沒有任何紀錄</p></div>
 
     <nav class="bottom-nav">
-      <div class="nav-item" @click="$router.push('/')">飲食紀錄</div>
-      <div class="nav-item" @click="$router.push('/add-record')">新增紀錄</div>
-      <div class="nav-item" @click="$router.push('/custom-foods')">自訂食物</div>
+      <div class="nav-item" :class="{ active: $route.path === '/' }" @click="$router.push('/')">
+        <i class="fas fa-chart-pie icon"></i>
+        <span>儀表板</span>
+      </div>
+      <div class="nav-item" :class="{ active: $route.path === '/add-record' }" @click="$router.push('/add-record')">
+        <i class="fas fa-plus-circle icon"></i>
+        <span>新增紀錄</span>
+      </div>
+      <div class="nav-item" :class="{ active: $route.path === '/custom-foods' }" @click="$router.push('/custom-foods')">
+        <i class="fas fa-utensils icon"></i>
+        <span>自訂食物</span>
+      </div>
     </nav>
   </div>
 </template>
@@ -381,8 +414,7 @@
     <div class="page-header">
       <router-link to="/" class="back-btn">←</router-link>
       <h2>自訂食物</h2>
-      <button class="btn add-btn" @click="goToAddFood">+</button>
-    </div>
+      <button class="btn add-btn" @click="goToAddFood">+</button> </div>
 
     <div v-if="foods.length > 0" class="list-container custom-foods-table">
       <div class="data-table">
@@ -401,11 +433,20 @@
     </div>
 
     <div v-else class="no-data"><p>目前尚無自訂食物</p></div>
-
+    
     <nav class="bottom-nav">
-      <div class="nav-item" @click="$router.push('/')">飲食紀錄</div>
-      <div class="nav-item" @click="$router.push('/add-record')">新增紀錄</div>
-      <div class="nav-item active">自訂食物</div>
+      <div class="nav-item" :class="{ active: $route.path === '/' }" @click="$router.push('/')">
+        <i class="fas fa-chart-pie icon"></i>
+        <span>儀表板</span>
+      </div>
+      <div class="nav-item" :class="{ active: $route.path === '/add-record' }" @click="$router.push('/add-record')">
+        <i class="fas fa-plus-circle icon"></i>
+        <span>新增紀錄</span>
+      </div>
+      <div class="nav-item" :class="{ active: $route.path === '/custom-foods' }" @click="$router.push('/custom-foods')">
+        <i class="fas fa-utensils icon"></i>
+        <span>自訂食物</span>
+      </div>
     </nav>
   </div>
   </template>
@@ -480,9 +521,18 @@
       </div>
       <div v-if="error" class="error">{{ error }}</div>
       <nav class="bottom-nav">
-        <div class="nav-item" @click="$router.push('/')">飲食紀錄</div>
-        <div class="nav-item" @click="$router.push('/add-record')">新增紀錄</div>
-        <div class="nav-item active">自訂食物</div>
+        <div class="nav-item" :class="{ active: $route.path === '/' }" @click="$router.push('/')">
+          <i class="fas fa-chart-pie icon"></i>
+          <span>儀表板</span>
+        </div>
+        <div class="nav-item" :class="{ active: $route.path === '/add-record' }" @click="$router.push('/add-record')">
+          <i class="fas fa-plus-circle icon"></i>
+          <span>新增紀錄</span>
+        </div>
+        <div class="nav-item" :class="{ active: $route.path === '/custom-foods' }" @click="$router.push('/custom-foods')">
+          <i class="fas fa-utensils icon"></i>
+          <span>自訂食物</span>
+        </div>
       </nav>
     </div>
   </template>
