@@ -6,22 +6,31 @@
 </head>
 <body>
     <h1>註冊</h1>
+
     {% with messages = get_flashed_messages() %}
       {% if messages %}
+        <!-- 顯示 Auth 服務 flash 的錯誤訊息，例如「此使用者名稱已被註冊。」 -->
         <ul style="color:red;">
           {% for m in messages %}
-          <li>{{ m }}</li>
+            <li>{{ m }}</li>
           {% endfor %}
         </ul>
       {% endif %}
     {% endwith %}
-    <form method="post" action="{{ url_for('auth.signup') }}">
+
+    {% if error %}
+      <!-- 前端 signup 轉發失敗時顯示 -->
+      <p style="color:red;">{{ error }}</p>
+    {% endif %}
+
+    <form method="post" action="/signup">
         <label for="username">Username:</label>
         <input type="text" name="username" id="username" required><br><br>
         <label for="password">Password:</label>
         <input type="password" name="password" id="password" required><br><br>
         <button type="submit">註冊</button>
     </form>
-    <p>已有帳號？ <a href="{{ url_for('auth.login') }}">登入</a></p>
+    <p>已有帳號？ <a href="/login">登入</a></p>
 </body>
 </html>
+

@@ -1,101 +1,44 @@
-# app.py
+# frontend_app.py (僅負責串 customer API 及 index.html，不再自行處理登入/註冊/登出)
 from flask import Flask, render_template, request, redirect, url_for, session
-from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
 import os
 import requests
 
-# 載入 .env 中的資料庫設定與秘鑰
+# 載入 .env
 load_dotenv()
-DB_USER     = os.getenv("DB_USER")
-DB_PASSWORD = os.getenv("DB_PASSWORD")
-DB_HOST     = os.getenv("DB_HOST", "localhost")
-DB_PORT     = os.getenv("DB_PORT", "3306")
-DB_NAME     = os.getenv("DB_NAME")
-SECRET_KEY  = os.getenv("SECRET_KEY", "dev_secret_key")
-API_BASE    = os.getenv("API_BASE", "http://127.0.0.1:1122")
+API_BASE   = os.getenv("API_BASE", "http://127.0.0.1:1122")
+AUTH_BASE  = os.getenv("AUTH_BASE", "http://127.0.0.1:5001")
+SECRET_KEY = os.getenv("SECRET_KEY", "dev_secret_key")
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = (
-    f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
-)
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = SECRET_KEY
 
-db = SQLAlchemy(app)
-
-# ---------- 使用者模型 (對應 user table) ----------
-class User(db.Model):
-    __tablename__ = "user"
-    id            = db.Column(db.Integer, primary_key=True)
-    username      = db.Column(db.String(50), unique=True, nullable=False)
-    password_hash = db.Column("password", db.String(200), nullable=False)
-
-# ---------- 載入認證功能 (Blueprint) ----------
-from flask import Blueprint, flash
-from werkzeug.security import generate_password_hash, check_password_hash
-
-auth = Blueprint('auth', __name__)
-
-@auth.route('/signup', methods=['GET', 'POST'])
-def signup():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        if not username or not password:
-            flash('請輸入使用者名稱與密碼。')
-            return redirect(url_for('auth.signup'))
-        # 檢查帳號是否已存在
-        existing = User.query.filter_by(username=username).first()
-        if existing:
-            flash('此使用者名稱已被註冊。')
-            return redirect(url_for('auth.signup'))
-        # 建立新使用者
-        hashed = generate_password_hash(password)
-        new_user = User(username=username, password_hash=hashed)
-        db.session.add(new_user)
-        db.session.commit()
-        flash('註冊成功，請使用新帳號登入。')
-        # 註冊完成後導向登入頁面
-        return redirect(url_for('auth.login'))
-    return render_template('signup.html')
-
-@auth.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        user = User.query.filter_by(username=username).first()
-        if user and check_password_hash(user.password_hash, password):
-            session.clear()
-            session['user_id'] = user.id
-            return redirect(url_for('index'))
-        flash('帳號或密碼錯誤。')
-        return redirect(url_for('auth.login'))
-    return render_template('login.html')
-
-@auth.route('/logout')
-def logout():
-    session.clear()
-    return redirect(url_for('auth.login'))
-
-app.register_blueprint(auth)
-
-# ---------- 前端功能 (依賴已登入使用者) ----------
 @app.before_request
 def require_login():
-    allowed = ['auth.login', 'auth.signup', 'static']
-    if not session.get('user_id') and request.endpoint not in allowed:
-        return redirect(url_for('auth.login'))
+    """
+    如果尚未在前端 session 中看到 user_id，就把整個請求導到 auth 服務的 /login。
+    這樣用戶只能先到 auth.py 去登入，登入後 auth.py 會 set-cookie，
+    再重導到這裡時，session['user_id'] 就應該已存在（同一個域名下共用 cookie）。
+    """
+    # 如果前端 session 沒有 user_id，且不是在 static 目錄，直接跳到 auth 服務登入
+    if not session.get('user_id') and not request.path.startswith('/static'):
+        # 直接跳到 auth 的登入畫面
+        return redirect(f"{AUTH_BASE}/login")
 
-@app.route("/")
+
+@app.route("/")   
 def index():
     user_id = session.get('user_id')
-    # 向後端微服務取得該使用者的自訂食物
+    # 向 Customer Foods API 傳 user_id 取得該使用者的資料
     params = {'user_id': user_id}
-    resp = requests.get(f"{API_BASE}/customer-foods", params=params)
+    resp = requests.get(f"{API_BASE}/customer-foods", params={'user_id':user_id})
     foods = resp.json() if resp.ok else []
-    return render_template("index.html", foods=foods)
+    
+    return render_template(
+        "index.html",
+        foods=foods,
+        AUTH_BASE=os.getenv("AUTH_BASE", "http://127.0.0.1:5001")
+    )
 
 @app.route("/add", methods=["POST"])
 def add_food():
@@ -113,7 +56,6 @@ def add_food():
 
 @app.route("/delete/<int:id>", methods=["POST"])
 def delete_food(id):
-    # 呼叫微服務刪除
     requests.delete(f"{API_BASE}/customer-foods/{id}")
     return redirect(url_for('index'))
 
@@ -129,5 +71,5 @@ def update_food(id):
     return redirect(url_for('index'))
 
 if __name__ == "__main__":
-    # 若尚未建表，請先執行一次： with app.app_context(): db.create_all()
     app.run(debug=True, port=5000)
+

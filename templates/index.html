@@ -11,10 +11,9 @@
 <body>
     <h1>Customer Foods 管理</h1>
     <p>目前使用者：{{ session['user_id'] }}</p>
-    <p><a href="{{ url_for('auth.logout') }}">登出</a></p>
+    <p><a href="{{ AUTH_BASE }}/logout">登出</a></p>
     <hr>
 
-    <!-- 顯示現有資料 -->
     {% if foods %}
     <table>
         <thead>
@@ -38,11 +37,9 @@
                 <td>{{ f.fat }}</td>
                 <td>{{ f.carbs }}</td>
                 <td>
-                    <!-- 刪除按鈕 -->
                     <form method="post" action="/delete/{{ f.id }}" style="display:inline">
                         <button type="submit" onclick="return confirm('確定刪除？')">刪除</button>
                     </form>
-                    <!-- 更新表單 -->
                     <details>
                         <summary>更新</summary>
                         <form method="post" action="/update/{{ f.id }}">
@@ -64,7 +61,6 @@
     {% endif %}
 
     <hr>
-    <!-- 新增表單 -->
     <h2>新增自訂食物</h2>
     <form method="post" action="/add">
         <label for="name_input">Name:</label>
@@ -81,3 +77,4 @@
     </form>
 </body>
 </html>
+
