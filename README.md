@@ -2,6 +2,7 @@
 ## 簡介
 這是一個給用戶紀錄每日卡路里攝取的網站
 
+
 ## UI 
 ```
 cd front
@@ -11,8 +12,7 @@ python3 -m http.server 5000 --bind 127.0.0.1
 ## FOOD API
 ### 安裝必要套件
 ```
-pip install flask flask-sqlalchemy
-pip install pymysql
+pip install -r requirements.txt
 ```
 ### 環境變數
 你需要自建環境變數設定檔`.env`
@@ -63,12 +63,12 @@ curl -X DELETE http://127.0.0.1:1111/foods/1
 ```
 sudo mysql
 ```
-1.建立db
+1. 建立db
 ```
 CREATE DATABASE calorie_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE calorie;
 ```
-2.建表
+2. 建表
 ```
 -- 用戶表
 CREATE TABLE user (
@@ -124,7 +124,7 @@ CREATE TABLE diet_record (
 
 
 
-3.測試
+3. 測試
 ```
 -- 插入用戶
 INSERT INTO user (username, password) VALUES 
@@ -168,9 +168,17 @@ select * from diet_record
 ```
 4. 建立 MySQL user
 ```
-sudo mysql
+sudo mysql -u root -p
 CREATE USER 'calorie'@'localhost' IDENTIFIED BY 'your_password';
-GRANT ALL PRIVILEGES ON calorie_db.* TO 'calorie'@'localhost';-- 開calorie_db所有權限給calorie
+
+GRANT SELECT ON calorie_db.user           TO 'calorie'@'localhost';
+GRANT SELECT ON calorie_db.customer_food  TO 'calorie'@'localhost';
+GRANT SELECT ON calorie_db.food           TO 'calorie'@'localhost';
+GRANT SELECT ON calorie_db.diet_record    TO 'calorie'@'localhost';
+
+CREATE USER 'calorie_admin'@'localhost' IDENTIFIED BY 'your_password';
+GRANT ALL PRIVILEGES ON calorie_db.* TO 'calorie_admin'@'localhost';-- 開calorie_db所有權限給calorie admin
+
 FLUSH PRIVILEGES;-- 套用權限變更
 -- 用calorie 登入
 mysql -u calorie -p 
