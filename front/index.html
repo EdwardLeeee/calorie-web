@@ -33,7 +33,9 @@
       <button v-if="isLoggedIn" class="btn logout-btn" @click="$root.doLogout">登出</button>
     </header>
 
+    <main class="main-content">
     <router-view></router-view>
+    </main>
 
     <div v-if="$root.isModalVisible" class="modal-overlay" @click.self="$root.closeModal">
       <div class="modal-card">
