@@ -1,4 +1,4 @@
-# auth_admin.py  -----------------------------------------------------------
+# auth_admin.py  ------------------------------
 from flask import Flask, request, session, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
@@ -6,7 +6,6 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
 import os
 
-# ---------- 讀取 .env ----------
 load_dotenv()
 DB_USER       = os.getenv("DB_USER")
 DB_PASSWORD   = os.getenv("DB_PASSWORD")
@@ -14,7 +13,7 @@ DB_HOST       = os.getenv("DB_HOST", "localhost")
 DB_PORT       = os.getenv("DB_PORT", "3306")
 DB_NAME       = os.getenv("DB_NAME")
 SECRET_KEY    = os.getenv("SECRET_KEY", "dev_secret_key")
-FRONTEND_BASE = os.getenv("ADMIN_FRONTEND_BASE", "http://127.0.0.1:5003")
+FRONT_ORIGIN  = os.getenv("ADMIN_FRONTEND_BASE", "http://127.0.0.1:8080")  # Vue dev
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = (
@@ -23,51 +22,52 @@ app.config["SQLALCHEMY_DATABASE_URI"] = (
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SECRET_KEY"] = SECRET_KEY
 
-# 允許後台 (admin_app.py, 預設 5003) 夾帶 Cookie 跨域
-CORS(app, supports_credentials=True, origins=[FRONTEND_BASE])
+# 允許帶 Cookie 的跨域
+CORS(app, supports_credentials=True, origins=[FRONT_ORIGIN])
 
 db = SQLAlchemy(app)
 
-# ---------- Admin Model ----------
+# -------- Admin Model --------
 class Admin(db.Model):
     __tablename__ = "admin"
     id            = db.Column(db.Integer, primary_key=True)
     username      = db.Column(db.String(50), unique=True, nullable=False)
+    # 資料庫欄名 password，程式屬性 password_hash
     password_hash = db.Column("password", db.String(200), nullable=False)
 
-# ---------- 無註冊功能；僅登入 ----------
+# -------- 登入 --------
 @app.post("/login")
 def admin_login():
-    data = request.json or {}
-    username = data.get("username")
-    password = data.get("password")
-    if not username or not password:
-        return jsonify({"error": "請輸入帳號與密碼"}), 400
+    data = request.get_json(force=True)
+    u, p = data.get("username"), data.get("password")
+    if not u or not p:
+        return jsonify({"msg": "缺少帳號或密碼"}), 400
 
-    admin = Admin.query.filter_by(username=username).first()
-    if admin and check_password_hash(admin.password_hash, password):
-        session.clear()
-        session["admin_id"] = admin.id
-        return jsonify({"message": "登入成功"}), 200
-    return jsonify({"error": "帳號或密碼錯誤"}), 401
+    admin = Admin.query.filter_by(username=u).first()
+    if not admin or not check_password_hash(admin.password_hash, p):
+        return jsonify({"msg": "帳號或密碼錯誤"}), 401
 
-# ---------- 登出 ----------
+    session.clear()
+    session["admin_id"] = admin.id
+    return jsonify({"msg": "login ok"}), 200
+
+# -------- 登出 --------
 @app.post("/logout")
 def admin_logout():
     session.clear()
-    return jsonify({"message": "已登出"}), 200
+    return jsonify({"msg": "logout ok"}), 200
 
-# ---------- 身分查詢 ----------
+# -------- 檢查是否已登入 --------
 @app.get("/whoami")
 def whoami():
-    admin_id = session.get("admin_id")
-    if not admin_id:
+    aid = session.get("admin_id")
+    if not aid:
         return jsonify({"logged_in": False}), 401
-    admin = Admin.query.get(admin_id)
-    return jsonify({"logged_in": True, "username": admin.username}), 200
+    admin = Admin.query.get(aid)
+    return jsonify({"logged_in": True, "username": admin.username})
 
 if __name__ == "__main__":
     with app.app_context():
-        db.create_all()       # 確保 admin 表存在 (需先預插一筆帳號)
+        db.create_all()   # 確保 admin 表在
     app.run(debug=True, port=5002)
 
