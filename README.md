@@ -2,6 +2,11 @@
 ## 簡介
 這是一個給用戶紀錄每日卡路里攝取的網站
 
+## 除錯
+```
+nohup  python3 -m http.server 5000 --bind 127.0.0.1 > front.log 2>&1 &
+
+```
 
 ## UI 
 ```
@@ -171,10 +176,12 @@ select * from diet_record
 sudo mysql -u root -p
 CREATE USER 'calorie'@'localhost' IDENTIFIED BY 'your_password';
 
-GRANT SELECT ON calorie_db.user           TO 'calorie'@'localhost';
-GRANT SELECT ON calorie_db.customer_food  TO 'calorie'@'localhost';
-GRANT SELECT ON calorie_db.food           TO 'calorie'@'localhost';
-GRANT SELECT ON calorie_db.diet_record    TO 'calorie'@'localhost';
+GRANT SELECT, INSERT, UPDATE, DELETE ON calorie_db.user           TO 'calorie'@'localhost';
+GRANT SELECT, INSERT, UPDATE, DELETE ON calorie_db.customer_food  TO 'calorie'@'localhost';
+GRANT SELECT, INSERT, UPDATE, DELETE ON calorie_db.food           TO 'calorie'@'localhost';
+GRANT SELECT, INSERT, UPDATE, DELETE ON calorie_db.diet_record    TO 'calorie'@'localhost';
+FLUSH PRIVILEGES;
+
 
 CREATE USER 'calorie_admin'@'localhost' IDENTIFIED BY 'your_password';
 GRANT ALL PRIVILEGES ON calorie_db.* TO 'calorie_admin'@'localhost';-- 開calorie_db所有權限給calorie admin
