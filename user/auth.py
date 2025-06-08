@@ -1,5 +1,5 @@
 # 修改後的 auth.py 範例
-from flask import Flask, request, redirect, session, flash, jsonify
+from flask import Flask, request, session, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -81,9 +81,16 @@ def whoami():
     user_id = session.get('user_id')
     if not user_id:
         return jsonify({"logged_in": False}), 401
-    user = User.query.get(user_id)
+    
+    # 【已修改】使用 db.session.get() 取代舊的 User.query.get()
+    user = db.session.get(User, user_id)
+    
+    # 雖然在此處 user 不太可能為 None (因為有 user_id)，但做個檢查更穩健
+    if not user:
+        session.clear() # 清除無效的 session
+        return jsonify({"logged_in": False, "error": "找不到使用者"}), 404
+
     return jsonify({"logged_in": True, "username": user.username}), 200
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5001)
-
+    app.run(debug=False, port=5001)

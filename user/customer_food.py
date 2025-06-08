@@ -144,5 +144,5 @@ def delete_customer_food(id):
 if __name__ == "__main__":
     # 第一次建表時：取消下面那行
     # with app.app_context(): db.create_all()
-    app.run(debug=True, host="127.0.0.1", port=1122)
+    app.run(debug=False, host="127.0.0.1", port=1122)
 

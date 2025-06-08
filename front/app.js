@@ -1,9 +1,9 @@
 // app.js
 
 // 先宣告後端三個服務的 base URL
-const AUTH_BASE    = 'http://127.0.0.1:5001';
-const API_BASE     = 'http://127.0.0.1:1122';
-const RECORD_BASE  = 'http://127.0.0.1:1133';
+const AUTH_BASE    = '/auth';
+const API_BASE     = '/customer_food';
+const RECORD_BASE  = '/diet_record';
 
 // 建立 axios 實例，自動攜帶 Cookie（Session）
 const httpAuth     = axios.create({ baseURL: AUTH_BASE,    withCredentials: true });
