@@ -13,7 +13,7 @@ DB_HOST       = os.getenv("DB_HOST", "localhost")
 DB_PORT       = os.getenv("DB_PORT", "3306")
 DB_NAME       = os.getenv("DB_NAME")
 SECRET_KEY    = os.getenv("SECRET_KEY", "dev_secret_key")
-FRONT_ORIGIN  = os.getenv("ADMIN_FRONTEND_BASE", "http://127.0.0.1:8080")  # Vue dev
+FRONT_ORIGIN  = os.getenv("ADMIN_FRONTEND_BASE", "http://127.0.0.1:5000")  # Vue dev
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = (

@@ -27,9 +27,18 @@ const AdminLogin = {
   methods:{
     async login(){
       try{
+        // 登入請求，如果失敗，會直接跳到 catch
         await httpAuth.post('/login',{username:this.u,password:this.p});
-        await store.checkLogin();
-        if(store.isLoggedIn) this.$router.replace('/');
+
+        // 程式能走到這裡，就代表登入100%成功了
+        // 我們直接更新前端的狀態，不需要再問後端
+        store.isLoggedIn = true;
+
+        // 因為馬上要跳轉到主控台，主控台會需要食物資料，所以在這裡先取得
+        await store.fetchFoods();
+
+        // 直接跳轉到主控台頁面
+        this.$router.replace('/');
       }catch(e){
         this.msg = e.response?.data?.msg || '登入失敗';
       }
@@ -53,7 +62,7 @@ const FoodsDash = {
       await store.fetchFoods();
     }
   },
-  async mounted(){ await store.fetchFoods(); }
+  //async mounted(){ await store.fetchFoods(); }
 };
 
 /* ================= 新增 / 編輯 食物 ================= */
@@ -103,13 +112,29 @@ const routes=[
 const router = VueRouter.createRouter({
   history:VueRouter.createWebHashHistory(), routes
 });
-router.beforeEach(async(to,from,next)=>{
-  if(!store.isLoggedIn && to.path!='/login'){
+router.beforeEach(async (to, from, next) => {
+  // 檢查目標路徑是否需要登入
+  const requiresAuth = to.path !== '/login';
+
+  // 如果 store 狀態是未登入，且 cookie 裡也沒登入資訊，就留在登入頁
+  if (!store.isLoggedIn) {
+    // 呼叫 checkLogin() 嘗試從 cookie 恢復登入狀態
+    // 這對處理「使用者按 F5 重新整理頁面」的情況至關重要
     await store.checkLogin();
-    if(!store.isLoggedIn) return next('/login');
   }
-  if(store.isLoggedIn && to.path==='/login') return next('/');
-  next();
+
+  // 經過 checkLogin() 後，再次檢查最終的登入狀態
+  if (requiresAuth && !store.isLoggedIn) {
+    // 如果需要授權的頁面，但使用者最終仍未登入，則導向到登入頁
+    next('/login');
+  } else if (!requiresAuth && store.isLoggedIn) {
+    // 如果目標是不需要授權的頁面 (即 /login)，但使用者已經登入了，
+    // 則直接導向到主控台，而不是停在登入頁
+    next('/');
+  } else {
+    // 其他所有情況 (例如: 已登入且要去主控台)，都直接放行
+    next();
+  }
 });
 
 /* ================= 主 App ================= */
