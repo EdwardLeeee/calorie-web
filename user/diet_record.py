@@ -83,6 +83,7 @@ class DietRecord(db.Model):
     id               = db.Column(db.Integer, primary_key=True)
     user_id          = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     record_time      = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    qty              = db.Column(db.Float,     nullable=False, default=1)
     official_food_id = db.Column(db.Integer, db.ForeignKey("food.id"), nullable=True)
     custom_food_id   = db.Column(db.Integer, db.ForeignKey("customer_food.id"), nullable=True)
     calorie_sum      = db.Column(db.Float, nullable=False)
@@ -95,6 +96,7 @@ class DietRecord(db.Model):
             "id":               self.id,
             "user_id":          self.user_id,
             "record_time":      self.record_time.isoformat(sep=' '),
+            "qty": self.qty,
             "official_food_id": self.official_food_id,
             "custom_food_id":   self.custom_food_id,
             "calorie_sum":      self.calorie_sum,
@@ -141,7 +143,7 @@ def create_diet_record():
     require_login()
     data = request.get_json() or {}
     # 必填欄位
-    required = ["record_time", "calorie_sum", "carb_sum", "protein_sum", "fat_sum"]
+    required = ["record_time", "qty", "calorie_sum", "carb_sum", "protein_sum", "fat_sum"]
     missing = [k for k in required if k not in data]
     if missing:
         abort(400, description=f"Missing fields: {missing}")
@@ -149,8 +151,9 @@ def create_diet_record():
     # 轉 iso 格式
     try:
         rt = datetime.fromisoformat(data["record_time"])
+        qty = float(data["qty"])
     except Exception:
-        abort(400, description="record_time 格式需為 ISO 字串 (YYYY-MM-DDTHH:MM)")
+        abort(400, description="record_time 格式需為 ISO 字串 (YYYY-MM-DDTHH:MM)；qty 需為數字")
 
     ofid = data.get("official_food_id")
     cfid = data.get("custom_food_id")
@@ -159,6 +162,7 @@ def create_diet_record():
     new_rec = DietRecord(
         user_id          = uid,
         record_time      = rt,
+        qty              = qty,
         official_food_id = ofid,
         custom_food_id   = cfid,
         calorie_sum      = data["calorie_sum"],
@@ -184,6 +188,11 @@ def update_diet_record(id):
             record.record_time = datetime.fromisoformat(data["record_time"])
         except Exception:
             abort(400, description="record_time 格式需為 ISO 字串 (YYYY-MM-DDTHH:MM)")
+    if "qty" in data:
+        try:
+            record.qty = float(data["qty"])
+        except:
+            abort(400, description="qty 需為數字")
     for field in ["official_food_id", "custom_food_id", "calorie_sum", "carb_sum", "protein_sum", "fat_sum"]:
         if field in data:
             setattr(record, field, data[field])

@@ -109,6 +109,7 @@ CREATE TABLE diet_record (
   id                INT AUTO_INCREMENT PRIMARY KEY,
   user_id           INT NOT NULL,
   record_time       DATETIME NOT NULL,
+  qty               FLOAT NOT NULL DEFAUT 1,
   official_food_id  INT NULL,
   custom_food_id    INT NULL,
   calorie_sum       FLOAT NOT NULL,
@@ -151,18 +152,18 @@ INSERT INTO customer_food (
 
 -- 新增紀錄
 INSERT INTO diet_record (
-  user_id, record_time, official_food_id,
+  user_id, record_time, qty, official_food_id,
   calorie_sum, carb_sum, protein_sum, fat_sum
 ) VALUES (
-  1, NOW(), 1,
+  1, NOW(), 1, 1,
   300, 40, 20, 10
 );
 
 INSERT INTO diet_record (
-  user_id, record_time, custom_food_id,
+  user_id, record_time, qty, custom_food_id,
   calorie_sum, carb_sum, protein_sum, fat_sum
 ) VALUES (
-  1, NOW(), 1,
+  1, NOW(), 1, 1,
   150, 25, 5, 2
 );
 
