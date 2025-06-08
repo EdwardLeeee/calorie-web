@@ -109,7 +109,7 @@ CREATE TABLE diet_record (
   id                INT AUTO_INCREMENT PRIMARY KEY,
   user_id           INT NOT NULL,
   record_time       DATETIME NOT NULL,
-  qty               FLOAT NOT NULL DEFAUT 1,
+  qty               FLOAT NOT NULL DEFAULT 1,
   official_food_id  INT NULL,
   custom_food_id    INT NULL,
   calorie_sum       FLOAT NOT NULL,
