@@ -1,5 +1,5 @@
 /* ------------ 載入 Roboto 字體 ------------ */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
 
 /* ------------ CSS 變數：方便統一管理風格 ------------ */
 :root {
@@ -24,7 +24,8 @@
   box-sizing: border-box;
 }
 body {
-  font-family: 'Roboto', sans-serif;
+  letter-spacing: 0.1em;
+  font-family: 'Noto Sans TC', sans-serif;
   background-color: var(--background-color);
   color: var(--text-color-dark);
   line-height: 1.5;
@@ -55,6 +56,7 @@ ul {
   transition: all 0.2s ease;
   min-height: 44px;
   line-height: 1;
+
 }
 .btn.primary {
   background-color: var(--primary-color);
@@ -212,7 +214,7 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
   z-index: 10;
 }
 .page-header h2 {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   margin: 0;
   text-align: center;
 }
@@ -240,14 +242,15 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
 .app-header {
   background-color: var(--primary-color);
   color: var(--text-color-white);
-  padding: 1rem;
+  padding: 1.5rem;
   text-align: center;
   position: relative;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 .app-header h1 {
-  font-size: 1.5rem;
-  font-weight: 500;
+  letter-spacing: 0.2em;
+  font-size: 2rem;
+  font-weight: bold;
   margin: 0;
 }
 
@@ -328,6 +331,15 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
 }
 
 /* ------------ Dashboard 樣式 ------------ */
+/* 如果你想要色塊與文字之間有小距離： */
+.dashboard-charts .legend-item {
+  margin-bottom: 0.5rem;
+}
+
+.dashboard-charts .legend-item:last-child {
+  margin-bottom: 0;
+}
+
 .dashboard-charts {
   display: flex;
   justify-content: space-around;
@@ -340,6 +352,7 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
   flex-wrap: wrap;
 }
 .chart-container {
+text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -379,7 +392,7 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
 .macro-legend {
   margin-top: 0.75rem;
   font-size: 0.85rem;
-  text-align: left;
+  text-align: center;
   width: 100%;
   padding-left: 15px;
 }
@@ -572,4 +585,24 @@ select[readonly] {
 select[readonly] {
   background-color: #f5f5f5;
   color: #777;
+}
+
+/* --------- Legend 置中＋內容左對齊覆蓋 --------- */
+.dashboard-charts .chart-container:nth-child(2) {
+  text-align: center;   /* 讓 legend 這個 inline-block 整體置中 */
+}
+
+.dashboard-charts .chart-container:nth-child(2) .macro-legend {
+  display: inline-block; /* 依內容寬度撐開 */
+  width: auto !important;/* 取消 width:100% */
+  text-align: left !important; /* 內容左對齊 */
+  padding-left: 0 !important; /* 取消多餘內距 */
+}
+
+/* 可選的：微調每行間距 */
+.dashboard-charts .chart-container:nth-child(2) .legend-item {
+  margin-bottom: 0.4rem;
+}
+.dashboard-charts .chart-container:nth-child(2) .legend-item:last-child {
+  margin-bottom: 0;
 }
