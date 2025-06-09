@@ -345,6 +345,18 @@
         <router-link to="/" class="back-btn">←</router-link>
         <h2>全部飲食紀錄</h2>
       </div>
+      <div class="filter-bar">
+      <div class="filter-group">
+        <label for="start-date">從：</label>
+        <input type="date" id="start-date" v-model="startDate" />
+      </div>
+      <div class="filter-group">
+        <label for="end-date">到：</label>
+        <input type="date" id="end-date" v-model="endDate" />
+      </div>
+      <button class="btn primary small-btn" @click="applyFilter">查詢</button>
+      <button class="btn small-btn" @click="clearFilter">清除</button>
+    </div>
       <div v-if="records.length>0">
         <div v-for="(group,date) in groupedRecords" :key="date" class="list-container all-records-group">
           <div class="group-header">{{ date }} ({{ weekdayOf(date) }})</div>

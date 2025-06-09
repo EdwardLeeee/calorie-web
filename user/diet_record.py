@@ -6,7 +6,7 @@ from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 
 load_dotenv()
 DB_USER     = os.getenv("DB_USER")
@@ -127,7 +127,35 @@ def get_official_foods():
 def get_diet_records():
     require_login()
     uid = session['user_id']
-    records = DietRecord.query.filter_by(user_id=uid).order_by(DietRecord.record_time.desc()).all()
+    # 從 URL 查詢參數中獲取日期字串
+    start_date_str = request.args.get('start_date')
+    end_date_str = request.args.get('end_date')
+
+    # 建立基礎查詢
+    query = DietRecord.query.filter_by(user_id=uid)
+
+    # 如果有提供 start_date，則加入起始日期的過濾條件
+    if start_date_str:
+        try:
+            # 轉換字串為 date 物件 (只取年-月-日)
+            start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date()
+            # 查詢條件：紀錄時間 >= 起始日期的 00:00:00
+            query = query.filter(DietRecord.record_time >= start_date)
+        except ValueError:
+            abort(400, description="start_date 格式錯誤，請使用 YYYY-MM-DD")
+
+    # 如果有提供 end_date，則加入結束日期的過濾條件
+    if end_date_str:
+        try:
+            end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date()
+            # 查詢條件：紀錄時間 < 結束日期的隔天 00:00:00 (這樣才能包含結束日期當天)
+            query = query.filter(DietRecord.record_time < end_date + timedelta(days=1))
+        except ValueError:
+            abort(400, description="end_date 格式錯誤，請使用 YYYY-MM-DD")
+            
+    # 執行查詢並排序
+    records = query.order_by(DietRecord.record_time.desc()).all()
+    
     return jsonify([r.to_dict() for r in records])
 
 # 取得特定紀錄 (僅限本人)

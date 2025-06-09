@@ -606,3 +606,37 @@ select[readonly] {
 .dashboard-charts .chart-container:nth-child(2) .legend-item:last-child {
   margin-bottom: 0;
 }
+
+/* time search */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  margin: 1rem 1rem 0 1rem;
+  background-color: var(--card-background);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.filter-group label {
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+.filter-group input[type="date"] {
+  padding: 0.4rem;
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+  min-height: 40px;
+}
+.filter-bar .btn {
+  margin-left: auto; /* 將按鈕推到右邊 */
+}
+.filter-bar .btn.small-btn {
+  margin-left: 0.5rem;
+}
