@@ -1,0 +1,174 @@
+ * Serving Flask app 'auth'
+ * Debug mode: on
+Address already in use
+Port 5001 is in use by another program. Either identify and stop that program, or start the server with a different port.
+ * Serving Flask app 'food'
+ * Debug mode: off
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on http://127.0.0.1:1111
+Press CTRL+C to quit
+ * Serving Flask app 'diet_record_new'
+ * Debug mode: on
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on http://127.0.0.1:1133
+Press CTRL+C to quit
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 354-405-028
+127.0.0.1 - - [08/Jun/2025 17:29:45] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [08/Jun/2025 17:29:45] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [08/Jun/2025 17:30:02] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [08/Jun/2025 17:30:02] "GET /diet-records HTTP/1.0" 200 -
+--- DEBUG [2025-06-08 17:30:10] ---
+[REQUEST] POST /diet-records: Received a request to create a new record.
+
+--- DEBUG [2025-06-08 17:30:10] ---
+User '10' is creating a record. Raw JSON payload received:
+{'record_time': '2025-06-09 01:30:00', 'qty': 1, 'calorie_sum': 196, 'carb_sum': 34.6, 'protein_sum': 4.2, 'fat_sum': 8.9, 'official_food_id': None, 'custom_food_id': 7, 'manual_name': None}
+
+--- DEBUG [2025-06-08 17:30:10] ---
+[SUCCESS] Record created with ID: 20
+
+127.0.0.1 - - [08/Jun/2025 17:30:10] "POST /diet-records HTTP/1.0" 201 -
+127.0.0.1 - - [08/Jun/2025 17:30:10] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [08/Jun/2025 17:30:10] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [08/Jun/2025 17:30:21] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [08/Jun/2025 17:30:22] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [08/Jun/2025 17:30:52] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [08/Jun/2025 17:30:52] "GET /diet-records HTTP/1.0" 200 -
+--- DEBUG [2025-06-08 17:31:02] ---
+[REQUEST] POST /diet-records: Received a request to create a new record.
+
+--- DEBUG [2025-06-08 17:31:02] ---
+User '13' is creating a record. Raw JSON payload received:
+{'record_time': '2025-06-09 01:30:00', 'qty': 1, 'calorie_sum': 165, 'carb_sum': 0, 'protein_sum': 31, 'fat_sum': 3.6, 'official_food_id': 1, 'custom_food_id': None, 'manual_name': None}
+
+--- DEBUG [2025-06-08 17:31:02] ---
+[SUCCESS] Record created with ID: 21
+
+127.0.0.1 - - [08/Jun/2025 17:31:02] "POST /diet-records HTTP/1.0" 201 -
+127.0.0.1 - - [08/Jun/2025 17:31:03] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [08/Jun/2025 17:31:03] "GET /diet-records HTTP/1.0" 200 -
+--- DEBUG [2025-06-08 17:33:26] ---
+[REQUEST] PUT /diet-records/21: Received a request to update record.
+
+--- DEBUG [2025-06-08 17:33:26] ---
+User '13' is updating record '21'. Raw JSON payload received:
+{'record_time': '2025-06-09 01:30:00', 'qty': 2, 'calorie_sum': 330, 'carb_sum': 0, 'protein_sum': 62, 'fat_sum': 7.2, 'official_food_id': 1, 'custom_food_id': None, 'manual_name': None}
+
+--- DEBUG [2025-06-08 17:33:26] ---
+[SUCCESS] Record 21 updated successfully.
+
+127.0.0.1 - - [08/Jun/2025 17:33:26] "PUT /diet-records/21 HTTP/1.0" 200 -
+127.0.0.1 - - [08/Jun/2025 17:33:26] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [08/Jun/2025 17:33:26] "GET /official-foods HTTP/1.0" 200 -
+--- DEBUG [2025-06-08 17:33:27] ---
+[REQUEST] PUT /diet-records/21: Received a request to update record.
+
+--- DEBUG [2025-06-08 17:33:27] ---
+User '13' is updating record '21'. Raw JSON payload received:
+{'record_time': '2025-06-09 01:30:00', 'qty': 2, 'calorie_sum': 330, 'carb_sum': 0, 'protein_sum': 62, 'fat_sum': 7.2, 'official_food_id': 1, 'custom_food_id': None, 'manual_name': None}
+
+--- DEBUG [2025-06-08 17:33:27] ---
+[SUCCESS] Record 21 updated successfully.
+
+127.0.0.1 - - [08/Jun/2025 17:33:27] "PUT /diet-records/21 HTTP/1.0" 200 -
+127.0.0.1 - - [08/Jun/2025 17:33:30] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [08/Jun/2025 17:33:30] "GET /official-foods HTTP/1.0" 200 -
+--- DEBUG [2025-06-08 17:33:34] ---
+[REQUEST] PUT /diet-records/21: Received a request to update record.
+
+--- DEBUG [2025-06-08 17:33:34] ---
+User '13' is updating record '21'. Raw JSON payload received:
+{'record_time': '2025-06-09 01:30:00', 'qty': 20, 'calorie_sum': 3300, 'carb_sum': 0, 'protein_sum': 620, 'fat_sum': 72, 'official_food_id': 1, 'custom_food_id': None, 'manual_name': None}
+
+--- DEBUG [2025-06-08 17:33:34] ---
+[SUCCESS] Record 21 updated successfully.
+
+127.0.0.1 - - [08/Jun/2025 17:33:34] "PUT /diet-records/21 HTTP/1.0" 200 -
+127.0.0.1 - - [08/Jun/2025 17:33:34] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [08/Jun/2025 17:33:34] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [08/Jun/2025 17:35:41] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [08/Jun/2025 17:35:41] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [08/Jun/2025 17:38:07] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [08/Jun/2025 17:38:07] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 01:29:41] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 01:29:41] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 03:00:47] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 03:00:47] "GET /official-foods HTTP/1.0" 200 -
+--- DEBUG [2025-06-09 03:01:04] ---
+[REQUEST] POST /diet-records: Received a request to create a new record.
+
+--- DEBUG [2025-06-09 03:01:04] ---
+User '12' is creating a record. Raw JSON payload received:
+{'record_time': '2025-06-09 11:00:00', 'qty': 1, 'calorie_sum': 165, 'carb_sum': 0, 'protein_sum': 31, 'fat_sum': 3.6, 'official_food_id': 1, 'custom_food_id': None, 'manual_name': None}
+
+--- DEBUG [2025-06-09 03:01:04] ---
+[SUCCESS] Record created with ID: 22
+
+127.0.0.1 - - [09/Jun/2025 03:01:04] "POST /diet-records HTTP/1.0" 201 -
+127.0.0.1 - - [09/Jun/2025 03:01:05] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 03:01:06] "GET /official-foods HTTP/1.0" 200 -
+--- DEBUG [2025-06-09 03:01:22] ---
+[REQUEST] POST /diet-records: Received a request to create a new record.
+
+--- DEBUG [2025-06-09 03:01:22] ---
+User '12' is creating a record. Raw JSON payload received:
+{'record_time': '2025-06-09 11:01:00', 'qty': 2, 'calorie_sum': 24, 'carb_sum': 62, 'protein_sum': 48, 'fat_sum': 1564, 'official_food_id': None, 'custom_food_id': 6, 'manual_name': None}
+
+--- DEBUG [2025-06-09 03:01:22] ---
+[SUCCESS] Record created with ID: 23
+
+127.0.0.1 - - [09/Jun/2025 03:01:22] "POST /diet-records HTTP/1.0" 201 -
+127.0.0.1 - - [09/Jun/2025 03:01:22] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 03:01:22] "GET /diet-records HTTP/1.0" 200 -
+--- DEBUG [2025-06-09 03:01:46] ---
+[REQUEST] POST /diet-records: Received a request to create a new record.
+
+--- DEBUG [2025-06-09 03:01:46] ---
+User '12' is creating a record. Raw JSON payload received:
+{'record_time': '2025-06-09 11:01:00', 'qty': 3, 'calorie_sum': 300, 'carb_sum': 30, 'protein_sum': 3, 'fat_sum': 99, 'official_food_id': None, 'custom_food_id': None, 'manual_name': '葡萄'}
+
+--- DEBUG [2025-06-09 03:01:46] ---
+[SUCCESS] Record created with ID: 24
+
+127.0.0.1 - - [09/Jun/2025 03:01:46] "POST /diet-records HTTP/1.0" 201 -
+127.0.0.1 - - [09/Jun/2025 03:01:46] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 03:01:46] "GET /diet-records HTTP/1.0" 200 -
+--- DEBUG [2025-06-09 06:14:41] ---
+[ERROR HANDLER] Sending 401 Response to client with message: 未登入，請先登入
+
+127.0.0.1 - - [09/Jun/2025 06:14:41] "GET /diet-records HTTP/1.0" 401 -
+127.0.0.1 - - [09/Jun/2025 06:14:41] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 06:14:51] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 06:14:51] "GET /official-foods HTTP/1.0" 200 -
+--- DEBUG [2025-06-09 06:15:00] ---
+[REQUEST] PUT /diet-records/21: Received a request to update record.
+
+--- DEBUG [2025-06-09 06:15:00] ---
+User '13' is updating record '21'. Raw JSON payload received:
+{'record_time': '2025-06-09 01:30:00', 'qty': 20, 'calorie_sum': 2600, 'carb_sum': 560, 'protein_sum': 54, 'fat_sum': 6, 'official_food_id': 2, 'custom_food_id': None, 'manual_name': None}
+
+--- DEBUG [2025-06-09 06:15:00] ---
+[SUCCESS] Record 21 updated successfully.
+
+127.0.0.1 - - [09/Jun/2025 06:15:00] "PUT /diet-records/21 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 06:15:00] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 06:15:00] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 06:15:17] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 06:15:17] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:47:43] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:47:43] "GET /diet-records HTTP/1.0" 200 -
+--- DEBUG [2025-06-09 10:48:16] ---
+[REQUEST] POST /diet-records: Received a request to create a new record.
+
+--- DEBUG [2025-06-09 10:48:16] ---
+User '14' is creating a record. Raw JSON payload received:
+{'record_time': '2025-06-09 18:47:00', 'qty': 1, 'calorie_sum': 194, 'carb_sum': 25.4, 'protein_sum': 4.4, 'fat_sum': 8.3, 'official_food_id': 5, 'custom_food_id': None, 'manual_name': None}
+
+--- DEBUG [2025-06-09 10:48:16] ---
+[SUCCESS] Record created with ID: 25
+
+127.0.0.1 - - [09/Jun/2025 10:48:16] "POST /diet-records HTTP/1.0" 201 -
+127.0.0.1 - - [09/Jun/2025 10:48:16] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:48:16] "GET /diet-records HTTP/1.0" 200 -

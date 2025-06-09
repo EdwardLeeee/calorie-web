@@ -4,3 +4,4 @@ __pycache__
 venv
 ohup.out
 front.log
+cors.conf

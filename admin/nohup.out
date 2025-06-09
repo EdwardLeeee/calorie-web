@@ -1,0 +1,149 @@
+ * Serving Flask app 'admin_app'
+ * Debug mode: off
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on http://127.0.0.1:5005
+Press CTRL+C to quit
+ * Serving Flask app 'auth_admin'
+ * Debug mode: off
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on http://127.0.0.1:5006
+Press CTRL+C to quit
+ * Serving Flask app 'auth_admin'
+ * Debug mode: off
+Address already in use
+Port 5006 is in use by another program. Either identify and stop that program, or start the server with a different port.
+ * Serving Flask app 'auth_admin'
+ * Debug mode: off
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5006
+[33mPress CTRL+C to quit[0m
+ * Serving Flask app 'auth_admin'
+ * Debug mode: off
+Address already in use
+Port 5006 is in use by another program. Either identify and stop that program, or start the server with a different port.
+ * Serving Flask app 'auth_admin'
+ * Debug mode: off
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5006
+[33mPress CTRL+C to quit[0m
+ * Serving Flask app 'admin_app'
+ * Debug mode: off
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5005
+[33mPress CTRL+C to quit[0m
+ * Serving Flask app 'auth_admin'
+ * Debug mode: off
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5006
+[33mPress CTRL+C to quit[0m
+ * Serving Flask app 'auth_admin'
+ * Debug mode: off
+Address already in use
+Port 5006 is in use by another program. Either identify and stop that program, or start the server with a different port.
+127.0.0.1 - - [09/Jun/2025 09:56:27] "[33mGET /whoami HTTP/1.0[0m" 404 -
+127.0.0.1 - - [09/Jun/2025 09:56:27] "[33mGET /whoami HTTP/1.0[0m" 404 -
+127.0.0.1 - - [09/Jun/2025 09:57:43] "[33mGET /whoami HTTP/1.0[0m" 404 -
+127.0.0.1 - - [09/Jun/2025 09:57:43] "[33mGET /whoami HTTP/1.0[0m" 404 -
+127.0.0.1 - - [09/Jun/2025 09:57:58] "[33mPOST /login HTTP/1.0[0m" 404 -
+127.0.0.1 - - [09/Jun/2025 09:58:08] "[33mPOST /login HTTP/1.0[0m" 404 -
+127.0.0.1 - - [09/Jun/2025 09:58:10] "[33mPOST /login HTTP/1.0[0m" 404 -
+127.0.0.1 - - [09/Jun/2025 09:58:15] "[33mPOST /login HTTP/1.0[0m" 404 -
+127.0.0.1 - - [09/Jun/2025 10:00:21] "[33mGET /whoami HTTP/1.0[0m" 404 -
+127.0.0.1 - - [09/Jun/2025 10:00:21] "[33mGET /whoami HTTP/1.0[0m" 404 -
+127.0.0.1 - - [09/Jun/2025 10:06:36] "[33mPOST /login HTTP/1.0[0m" 404 -
+127.0.0.1 - - [09/Jun/2025 10:06:43] "[33mGET /whoami HTTP/1.0[0m" 404 -
+127.0.0.1 - - [09/Jun/2025 10:07:01] "[33mPOST /login HTTP/1.0[0m" 404 -
+127.0.0.1 - - [09/Jun/2025 10:07:44] "[33mGET /login HTTP/1.0[0m" 404 -
+127.0.0.1 - - [09/Jun/2025 10:10:34] "[33mGET /whoami HTTP/1.0[0m" 404 -
+127.0.0.1 - - [09/Jun/2025 10:11:34] "[33mGET /whoami HTTP/1.0[0m" 404 -
+127.0.0.1 - - [09/Jun/2025 10:11:34] "[33mGET /whoami HTTP/1.0[0m" 404 -
+127.0.0.1 - - [09/Jun/2025 10:11:56] "[33mPOST /login HTTP/1.0[0m" 404 -
+127.0.0.1 - - [09/Jun/2025 10:12:13] "[33mPOST /login HTTP/1.0[0m" 404 -
+127.0.0.1 - - [09/Jun/2025 10:14:46] "GET /foods HTTP/1.0" 200 -
+ * Serving Flask app 'auth_admin'
+ * Debug mode: off
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on http://127.0.0.1:5006
+Press CTRL+C to quit
+127.0.0.1 - - [09/Jun/2025 10:15:45] "POST /login HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:15:45] "GET /foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:15:52] "POST /login HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:15:52] "GET /foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:15:53] "GET /whoami HTTP/1.0" 401 -
+127.0.0.1 - - [09/Jun/2025 10:15:53] "GET /whoami HTTP/1.0" 401 -
+127.0.0.1 - - [09/Jun/2025 10:16:48] "GET /foods?name=雞 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:16:53] "GET /foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:17:22] "POST /login HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:17:22] "GET /foods HTTP/1.0" 200 -
+/home/theone/using_web/calorie-web/admin/auth_admin.py:68: LegacyAPIWarning: The Query.get() method is considered legacy as of the 1.x series of SQLAlchemy and becomes a legacy construct in 2.0. The method is now available as Session.get() (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+  admin = Admin.query.get(aid)
+127.0.0.1 - - [09/Jun/2025 10:19:34] "GET /whoami HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:19:34] "GET /foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:19:36] "GET /whoami HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:19:36] "GET /foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:23:30] "GET /whoami HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:23:30] "GET /foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:24:44] "PUT /foods/3 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:24:44] "GET /foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:25:36] "GET /whoami HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:25:36] "GET /foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:25:38] "GET /whoami HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:25:38] "GET /foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:25:44] "PUT /foods/1 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:25:44] "GET /foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:25:46] "GET /whoami HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:25:46] "GET /foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:26:42] "PUT /foods/3 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:26:42] "GET /foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:26:59] "PUT /foods/3 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:26:59] "GET /foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:27:33] "GET /whoami HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:27:33] "GET /foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:32:21] "PUT /foods/2 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:32:21] "GET /foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:36:47] "PUT /foods/2 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:36:47] "GET /foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:37:06] "GET /whoami HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:37:06] "GET /foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:38:18] "PUT /foods/3 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:38:18] "GET /foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:38:19] "GET /whoami HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:38:19] "GET /foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:39:47] "[35m[1mPOST /foods HTTP/1.0[0m" 201 -
+127.0.0.1 - - [09/Jun/2025 10:39:47] "GET /foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:40:54] "GET /whoami HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:40:54] "GET /foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:41:31] "[35m[1mPOST /foods HTTP/1.0[0m" 201 -
+127.0.0.1 - - [09/Jun/2025 10:41:31] "GET /foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:41:33] "GET /whoami HTTP/1.0" 401 -
+127.0.0.1 - - [09/Jun/2025 10:41:33] "GET /whoami HTTP/1.0" 401 -
+127.0.0.1 - - [09/Jun/2025 10:43:44] "GET /whoami HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:43:44] "GET /foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:44:24] "GET /whoami HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:44:24] "GET /foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:45:44] "POST /logout HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:45:44] "GET /whoami HTTP/1.0" 401 -
+127.0.0.1 - - [09/Jun/2025 10:48:31] "POST /login HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:48:31] "GET /foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:48:57] "[35m[1mPOST /foods HTTP/1.0[0m" 201 -
+127.0.0.1 - - [09/Jun/2025 10:48:57] "GET /foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:49:06] "PUT /foods/6 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:49:06] "GET /foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:49:11] "[35m[1mDELETE /foods/6 HTTP/1.0[0m" 204 -
+127.0.0.1 - - [09/Jun/2025 10:49:11] "GET /foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:49:17] "GET /foods?name=科學 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:49:19] "GET /foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:50:58] "POST /logout HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:50:58] "GET /whoami HTTP/1.0" 401 -
+127.0.0.1 - - [09/Jun/2025 10:51:25] "POST /login HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:51:25] "GET /foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:51:40] "[35m[1mPOST /foods HTTP/1.0[0m" 201 -
+127.0.0.1 - - [09/Jun/2025 10:51:40] "GET /foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:51:47] "PUT /foods/7 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:51:47] "GET /foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:51:54] "[35m[1mDELETE /foods/7 HTTP/1.0[0m" 204 -
+127.0.0.1 - - [09/Jun/2025 10:51:54] "GET /foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:51:58] "GET /foods?name=科 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:52:01] "GET /foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:52:03] "POST /logout HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 10:52:03] "GET /whoami HTTP/1.0" 401 -
