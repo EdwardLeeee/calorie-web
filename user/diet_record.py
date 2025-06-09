@@ -6,7 +6,7 @@ from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 
 load_dotenv()
 DB_USER     = os.getenv("DB_USER")
@@ -86,6 +86,7 @@ class DietRecord(db.Model):
     qty              = db.Column(db.Float,     nullable=False, default=1)
     official_food_id = db.Column(db.Integer, db.ForeignKey("food.id"), nullable=True)
     custom_food_id   = db.Column(db.Integer, db.ForeignKey("customer_food.id"), nullable=True)
+    food_name        = db.Column(db.String(100), nullable=False)
     calorie_sum      = db.Column(db.Float, nullable=False)
     carb_sum         = db.Column(db.Float, nullable=False)
     protein_sum      = db.Column(db.Float, nullable=False)
@@ -99,6 +100,7 @@ class DietRecord(db.Model):
             "qty": self.qty,
             "official_food_id": self.official_food_id,
             "custom_food_id":   self.custom_food_id,
+            "food_name":	self.food_name,
             "calorie_sum":      self.calorie_sum,
             "carb_sum":         self.carb_sum,
             "protein_sum":      self.protein_sum,
@@ -125,7 +127,35 @@ def get_official_foods():
 def get_diet_records():
     require_login()
     uid = session['user_id']
-    records = DietRecord.query.filter_by(user_id=uid).order_by(DietRecord.record_time.desc()).all()
+    # 從 URL 查詢參數中獲取日期字串
+    start_date_str = request.args.get('start_date')
+    end_date_str = request.args.get('end_date')
+
+    # 建立基礎查詢
+    query = DietRecord.query.filter_by(user_id=uid)
+
+    # 如果有提供 start_date，則加入起始日期的過濾條件
+    if start_date_str:
+        try:
+            # 轉換字串為 date 物件 (只取年-月-日)
+            start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date()
+            # 查詢條件：紀錄時間 >= 起始日期的 00:00:00
+            query = query.filter(DietRecord.record_time >= start_date)
+        except ValueError:
+            abort(400, description="start_date 格式錯誤，請使用 YYYY-MM-DD")
+
+    # 如果有提供 end_date，則加入結束日期的過濾條件
+    if end_date_str:
+        try:
+            end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date()
+            # 查詢條件：紀錄時間 < 結束日期的隔天 00:00:00 (這樣才能包含結束日期當天)
+            query = query.filter(DietRecord.record_time < end_date + timedelta(days=1))
+        except ValueError:
+            abort(400, description="end_date 格式錯誤，請使用 YYYY-MM-DD")
+            
+    # 執行查詢並排序
+    records = query.order_by(DietRecord.record_time.desc()).all()
+    
     return jsonify([r.to_dict() for r in records])
 
 # 取得特定紀錄 (僅限本人)
@@ -157,6 +187,27 @@ def create_diet_record():
 
     ofid = data.get("official_food_id")
     cfid = data.get("custom_food_id")
+    manual_name = data.get("manual_name")
+
+    # 確保至少一個食物來源
+    if not any([ofid, cfid, manual_name]):
+        abort(400, description="需指定 official_food_id、custom_food_id 或 manual_name")
+
+    # 產生 food_name 欄位
+    if manual_name:
+        food_name = manual_name
+    elif ofid:
+        food = OfficialFood.query.get(ofid)
+        if not food:
+            abort(400, description="找不到指定的 official_food_id")
+        food_name = food.name
+    elif cfid:
+        food = CustomerFood.query.get(cfid)
+        if not food:
+            abort(400, description="找不到指定的 custom_food_id")
+        food_name = food.name
+    else:
+        food_name = "未知"
 
     uid = session['user_id']
     new_rec = DietRecord(
@@ -165,6 +216,7 @@ def create_diet_record():
         qty              = qty,
         official_food_id = ofid,
         custom_food_id   = cfid,
+        food_name        = food_name,
         calorie_sum      = data["calorie_sum"],
         carb_sum         = data["carb_sum"],
         protein_sum      = data["protein_sum"],
@@ -193,7 +245,46 @@ def update_diet_record(id):
             record.qty = float(data["qty"])
         except:
             abort(400, description="qty 需為數字")
-    for field in ["official_food_id", "custom_food_id", "calorie_sum", "carb_sum", "protein_sum", "fat_sum"]:
+    
+    # 更新食物來源
+    updated_food_source = False
+
+    # 情況1：更新為手動輸入
+    if "manual_name" in data and data["manual_name"]:
+        # 直接更新 food_name
+        record.food_name = data["manual_name"]
+        record.official_food_id = None
+        record.custom_food_id = None
+        updated_food_source = True
+
+    # 情況2：更新為官方食物
+    elif "official_food_id" in data and data["official_food_id"]:
+        food = OfficialFood.query.get(data["official_food_id"])
+        if not food:
+            abort(400, description="找不到指定的 official_food_id")
+        record.official_food_id = data["official_food_id"]
+        record.custom_food_id = None
+        # 同樣更新 food_name
+        record.food_name = food.name
+        updated_food_source = True
+
+    # 情況3：更新為自訂食物
+    elif "custom_food_id" in data and data["custom_food_id"]:
+        food = CustomerFood.query.get(data["custom_food_id"])
+        if not food:
+            abort(400, description="找不到指定的 custom_food_id")
+        # 並且要檢查這個自訂食物是否屬於當前使用者
+        if food.user_id != session['user_id']:
+            abort(403, description="沒有權限使用此自訂食物")
+        record.custom_food_id = data["custom_food_id"]
+        record.official_food_id = None
+        # 同樣更新 food_name
+        record.food_name = food.name
+        updated_food_source = True
+    # ----------------------------------------------------
+        
+    # 更新營養總和欄位
+    for field in ["calorie_sum", "carb_sum", "protein_sum", "fat_sum"]:
         if field in data:
             setattr(record, field, data[field])
 
@@ -214,5 +305,5 @@ def delete_diet_record(id):
 if __name__ == "__main__":
     # 第一次啟動若未建表，取消下面那行：
     # with app.app_context(): db.create_all()
-    app.run(debug=False, host="127.0.0.1", port=1133)
+    app.run(debug=True, host="127.0.0.1", port=1133)
 

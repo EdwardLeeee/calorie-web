@@ -1,13 +1,15 @@
 // app.js
+
 // 先宣告後端三個服務的 base URL server
 const AUTH_BASE    = '/auth';
 const API_BASE     = '/customer_food';
 const RECORD_BASE  = '/diet_record';
 
-// 先宣告後端三個服務的 base URL
+// local
 //const AUTH_BASE    = 'http://127.0.0.1:5001';
 //const API_BASE     = 'http://127.0.0.1:1122';
 //const RECORD_BASE  = 'http://127.0.0.1:1133';
+
 
 // 建立 axios 實例，自動攜帶 Cookie（Session）
 const httpAuth   = axios.create({ baseURL: AUTH_BASE,    withCredentials: true });
@@ -186,7 +188,16 @@ const Dashboard = {
     },
     goToAllRecords(){ this.$router.push('/all-records'); },
     getRecordLabel(r){
-      const name = r.food_name || '未知';
+      let name='未知';
+      if(r.official_food_id){
+        const of=this.store.officialFoods.find(x=>x.id===r.official_food_id);
+        if(of) name=of.name;
+      } else if(r.custom_food_id){
+        const cf=this.store.customFoods.find(x=>x.id===r.custom_food_id);
+        if(cf) name=cf.name;
+      } else if(r.manual_name){
+        name=r.manual_name;
+      }
       return `${name} (${r.calorie_sum.toFixed(0)} kcal)`;
     },
     editRecord(r){ this.$router.push({path:'/add-record',query:{id:r.id}}); },
@@ -273,7 +284,7 @@ const AddRecord = {
         }
         else {
           this.inputMode        = 'manual';
-          this.form.manual_name = r.food_name;
+          this.form.manual_name = r.manual_name;
           this.form.calorie_sum = r.calorie_sum / r.qty;
           this.form.carb_sum    = r.carb_sum    / r.qty;
           this.form.protein_sum = r.protein_sum / r.qty;
@@ -366,21 +377,11 @@ const AddRecord = {
 // ------------------------------
 const AllRecords = {
   template: '#all-records-template',
-  inject: ['store'],
-  data() {
-    return {
-      // 在元件內部維護一個本地的紀錄列表，避免影響 Dashboard 的資料
-      localRecords: [],
-      // 用於 v-model 綁定日期輸入框
-      startDate: '',
-      endDate: '',
-    };
-  },
+  inject: ['store'], // 注入 store
   computed: {
     groupedRecords() {
       const groups = {};
-      // 注意：這裡改為遍歷 localRecords
-      this.localRecords.forEach(r => {
+      this.store.records.forEach(r => {
         const datePart = r.record_time.split(' ')[0];
         if (!groups[datePart]) {
           groups[datePart] = [];
@@ -392,34 +393,11 @@ const AllRecords = {
         return obj;
       }, {});
     },
-    // records 計算屬性現在也指向 localRecords
     records() {
-      return this.localRecords;
+      return this.store.records;
     }
   },
   methods: {
-    // 新增：根據日期範圍查詢紀錄
-    async applyFilter() {
-      try {
-        // 準備查詢參數，只有當日期被選中時才加入
-        const params = {};
-        if (this.startDate) params.start_date = this.startDate;
-        if (this.endDate) params.end_date = this.endDate;
-        
-        // 發送帶有參數的 GET 請求
-        const resp = await httpRecord.get('/diet-records', { params });
-        this.localRecords = resp.data; // 更新本地紀錄列表
-      } catch (err) {
-        console.error("Failed to fetch records by date range:", err);
-        alert('查詢紀錄失敗，請檢查網路或聯絡管理員。');
-      }
-    },
-    // 新增：清除篩選器並重新載入所有紀錄
-    async clearFilter() {
-      this.startDate = '';
-      this.endDate = '';
-      await this.applyFilter(); // 呼叫 applyFilter 會自動查詢所有紀錄
-    },
     formatTime(dtStr) {
       const dt = new Date(dtStr.replace(' ', 'T'));
       const hh = String(dt.getHours()).padStart(2, '0');
@@ -432,7 +410,16 @@ const AllRecords = {
       return `週${map[dt.getDay()]}`;
     },
     getRecordLabel(r) {
-      const name = r.food_name || '未知';
+      let name = '未知';
+      if (r.official_food_id) {
+        const of = this.store.officialFoods.find(x => x.id === r.official_food_id);
+        if (of) name = of.name;
+      } else if (r.custom_food_id) {
+        const cf = this.store.customFoods.find(x => x.id === r.custom_food_id);
+        if (cf) name = cf.name;
+      } else if (r.manual_name) {
+        name = r.manual_name;
+      }
       return `${name} (${r.calorie_sum.toFixed(0)} kcal)`;
     },
     editRecord(r) {
@@ -442,16 +429,14 @@ const AllRecords = {
       if (!confirm('確定要刪除此筆紀錄？')) return;
       try {
         await httpRecord.delete(`/diet-records/${id}`);
-        // 從本地列表中移除
-        this.localRecords = this.localRecords.filter(r => r.id !== id);
+        this.store.records = this.store.records.filter(r => r.id !== id);
       } catch {
         alert('刪除失敗');
       }
     },
     showFoodDetails(r) {
-      // ... (這個方法不需要改變) ...
       let details = {
-        name: r.food_name || '未知',
+        name: '未知',
         calories: r.calorie_sum,
         carbs: r.carb_sum,
         protein: r.protein_sum,
@@ -484,12 +469,10 @@ const AllRecords = {
     }
   },
   async mounted() {
-    // 確保基礎資料 (如食物列表) 已載入
     await this.store.fetchAllSharedData();
-    // 元件掛載後，將 store 中已有的紀錄複製到本地列表，或直接查詢一次
-    this.localRecords = this.store.records;
   }
 };
+
 
 // ------------------------------
 // 7. Custom Foods（自訂食物）組件

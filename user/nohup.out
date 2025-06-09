@@ -183,3 +183,238 @@ User '14' is creating a record. Raw JSON payload received:
 127.0.0.1 - - [09/Jun/2025 11:11:22] "DELETE /diet-records/24 HTTP/1.0" 204 -
 127.0.0.1 - - [09/Jun/2025 11:11:29] "GET /official-foods HTTP/1.0" 200 -
 127.0.0.1 - - [09/Jun/2025 11:11:29] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 11:48:07] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 11:48:07] "GET /diet-records HTTP/1.0" 200 -
+--- DEBUG [2025-06-09 11:48:25] ---
+[REQUEST] POST /diet-records: Received a request to create a new record.
+
+--- DEBUG [2025-06-09 11:48:25] ---
+User '13' is creating a record. Raw JSON payload received:
+{'record_time': '2025-06-09 19:48:00', 'qty': 1, 'calorie_sum': 194, 'carb_sum': 25.4, 'protein_sum': 4.4, 'fat_sum': 8.3, 'official_food_id': 5, 'custom_food_id': None, 'manual_name': None}
+
+--- DEBUG [2025-06-09 11:48:25] ---
+[SUCCESS] Record created with ID: 26
+
+127.0.0.1 - - [09/Jun/2025 11:48:25] "POST /diet-records HTTP/1.0" 201 -
+127.0.0.1 - - [09/Jun/2025 11:48:26] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 11:48:26] "GET /diet-records HTTP/1.0" 200 -
+ * Detected change in '/home/theone/using_web/calorie-web/user/diet_record.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 354-405-028
+ * Detected change in '/home/theone/using_web/calorie-web/user/diet_record.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 354-405-028
+ * Serving Flask app 'diet_record'
+ * Debug mode: on
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on http://127.0.0.1:1133
+Press CTRL+C to quit
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 758-017-224
+127.0.0.1 - - [09/Jun/2025 17:02:36] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:02:36] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:03:52] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:03:53] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:04:01] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:04:01] "GET /diet-records HTTP/1.0" 200 -
+/home/theone/using_web/calorie-web/user/diet_record.py:200: LegacyAPIWarning: The Query.get() method is considered legacy as of the 1.x series of SQLAlchemy and becomes a legacy construct in 2.0. The method is now available as Session.get() (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+  food = OfficialFood.query.get(ofid)
+127.0.0.1 - - [09/Jun/2025 17:04:26] "POST /diet-records HTTP/1.0" 201 -
+127.0.0.1 - - [09/Jun/2025 17:04:27] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:04:27] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:04:56] "GET /diet-records?start_date=2025-06-11&end_date=2025-06-03 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:05:01] "GET /diet-records?start_date=2025-06-11&end_date=2025-06-02 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:05:54] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:05:54] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:06:08] "POST /diet-records HTTP/1.0" 201 -
+127.0.0.1 - - [09/Jun/2025 17:06:08] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:06:08] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:06:50] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:06:50] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:07:01] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:07:01] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:07:34] "GET /diet-records HTTP/1.0" 401 -
+127.0.0.1 - - [09/Jun/2025 17:07:35] "POST /diet-records HTTP/1.0" 201 -
+127.0.0.1 - - [09/Jun/2025 17:07:35] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:07:35] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:07:40] "POST /diet-records HTTP/1.0" 201 -
+127.0.0.1 - - [09/Jun/2025 17:07:40] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:07:40] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:07:48] "POST /diet-records HTTP/1.0" 201 -
+127.0.0.1 - - [09/Jun/2025 17:07:48] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:07:48] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:10:28] "GET /diet-records?start_date=2025-06-10&end_date=2025-06-10 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:10:29] "GET /diet-records?start_date=2025-06-10&end_date=2025-06-10 HTTP/1.0" 200 -
+/home/theone/using_web/calorie-web/user/diet_record.py:262: LegacyAPIWarning: The Query.get() method is considered legacy as of the 1.x series of SQLAlchemy and becomes a legacy construct in 2.0. The method is now available as Session.get() (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+  food = OfficialFood.query.get(data["official_food_id"])
+127.0.0.1 - - [09/Jun/2025 17:10:38] "PUT /diet-records/39 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:10:38] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:10:38] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:10:55] "PUT /diet-records/40 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:10:55] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:10:55] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:10:55] "GET /diet-records?start_date=2025-06-08&end_date=2019-02-10 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:10:56] "GET /diet-records?start_date=2025-06-08&end_date=2019-02-10 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:10:56] "GET /diet-records?start_date=2025-06-08&end_date=2019-02-10 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:10:57] "GET /diet-records?start_date=2025-06-08&end_date=2019-02-10 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:10:58] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:10:59] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:11:01] "GET /diet-records?start_date=2025-06-24&end_date=2019-02-10 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:11:02] "GET /diet-records?start_date=2025-06-24&end_date=2019-02-10 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:11:03] "GET /diet-records?start_date=2025-06-24&end_date=2019-02-10 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:11:03] "GET /diet-records?start_date=2025-06-24&end_date=2019-02-10 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:11:04] "GET /diet-records?start_date=2025-06-24&end_date=2019-02-10 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:11:04] "GET /diet-records?start_date=2025-06-24&end_date=2019-02-10 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:11:05] "GET /diet-records?start_date=2025-06-24&end_date=2019-02-10 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:11:06] "GET /diet-records?start_date=2025-06-24&end_date=2019-02-10 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:11:11] "GET /diet-records?start_date=2025-06-10&end_date=2025-06-03 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:11:11] "GET /diet-records?start_date=2025-06-10&end_date=2025-06-02 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:11:12] "GET /diet-records?start_date=2025-06-24&end_date=2019-02-10 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:11:13] "GET /diet-records?start_date=2025-06-24&end_date=2019-02-10 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:11:13] "GET /diet-records?start_date=2025-06-24&end_date=2019-02-10 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:11:13] "GET /diet-records?start_date=2025-06-24&end_date=2019-02-10 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:11:14] "GET /diet-records?start_date=2025-06-24&end_date=2019-02-10 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:11:14] "GET /diet-records?start_date=2025-06-24&end_date=2019-02-10 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:11:14] "GET /diet-records?start_date=2025-06-24&end_date=2019-02-10 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:11:17] "GET /diet-records?start_date=2025-06-11&end_date=2025-06-02 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:11:19] "GET /diet-records?start_date=2025-06-10&end_date=2019-02-10 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:11:20] "GET /diet-records?start_date=2025-06-10&end_date=2019-02-10 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:11:20] "GET /diet-records?start_date=2025-06-03&end_date=2025-06-10 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:11:22] "GET /diet-records?start_date=2025-06-02&end_date=2025-06-11 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:11:55] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:11:57] "DELETE /diet-records/39 HTTP/1.0" 204 -
+127.0.0.1 - - [09/Jun/2025 17:12:17] "DELETE /diet-records/36 HTTP/1.0" 204 -
+127.0.0.1 - - [09/Jun/2025 17:12:19] "DELETE /diet-records/39 HTTP/1.0" 404 -
+127.0.0.1 - - [09/Jun/2025 17:12:22] "DELETE /diet-records/38 HTTP/1.0" 204 -
+127.0.0.1 - - [09/Jun/2025 17:12:24] "GET /diet-records?start_date=2025-06-02&end_date=2025-06-11 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:12:29] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:12:33] "GET /diet-records?start_date=2025-06-10&end_date=2025-06-10 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:12:34] "GET /diet-records?start_date=2025-06-10&end_date=2025-06-10 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:12:35] "GET /diet-records?start_date=2025-06-10&end_date=2025-06-10 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:12:35] "GET /diet-records?start_date=2025-06-10&end_date=2025-06-10 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:12:35] "GET /diet-records?start_date=2025-06-10&end_date=2025-06-10 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:12:35] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:12:36] "GET /diet-records?start_date=2025-06-10&end_date=2025-06-10 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:12:37] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:12:39] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:12:50] "DELETE /diet-records/39 HTTP/1.0" 404 -
+127.0.0.1 - - [09/Jun/2025 17:13:00] "DELETE /diet-records/40 HTTP/1.0" 204 -
+127.0.0.1 - - [09/Jun/2025 17:13:23] "POST /diet-records HTTP/1.0" 201 -
+127.0.0.1 - - [09/Jun/2025 17:13:23] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:13:23] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:13:29] "POST /diet-records HTTP/1.0" 201 -
+127.0.0.1 - - [09/Jun/2025 17:13:29] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:13:29] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:13:46] "DELETE /diet-records/41 HTTP/1.0" 204 -
+127.0.0.1 - - [09/Jun/2025 17:13:53] "DELETE /diet-records/42 HTTP/1.0" 204 -
+127.0.0.1 - - [09/Jun/2025 17:13:56] "DELETE /diet-records/41 HTTP/1.0" 404 -
+127.0.0.1 - - [09/Jun/2025 17:14:16] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:14:16] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:14:21] "GET /diet-records?start_date=2025-06-03&end_date=2025-06-04 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:14:22] "GET /diet-records?start_date=2025-06-03&end_date=2025-06-04 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:14:25] "GET /diet-records?start_date=2025-06-03&end_date=2025-06-03 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:14:25] "GET /diet-records?start_date=2025-06-03&end_date=2025-06-03 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:15:22] "POST /diet-records HTTP/1.0" 201 -
+127.0.0.1 - - [09/Jun/2025 17:15:23] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:15:23] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:15:38] "POST /diet-records HTTP/1.0" 201 -
+127.0.0.1 - - [09/Jun/2025 17:15:39] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:15:39] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:15:41] "POST /diet-records HTTP/1.0" 201 -
+127.0.0.1 - - [09/Jun/2025 17:15:41] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:15:41] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:15:53] "POST /diet-records HTTP/1.0" 201 -
+127.0.0.1 - - [09/Jun/2025 17:15:53] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:15:53] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:15:57] "POST /diet-records HTTP/1.0" 201 -
+127.0.0.1 - - [09/Jun/2025 17:15:57] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:15:57] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:16:03] "DELETE /diet-records/44 HTTP/1.0" 204 -
+127.0.0.1 - - [09/Jun/2025 17:16:05] "POST /diet-records HTTP/1.0" 201 -
+127.0.0.1 - - [09/Jun/2025 17:16:05] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:16:05] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:16:15] "POST /diet-records HTTP/1.0" 201 -
+127.0.0.1 - - [09/Jun/2025 17:16:15] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:16:15] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:16:24] "DELETE /diet-records/44 HTTP/1.0" 404 -
+127.0.0.1 - - [09/Jun/2025 17:16:29] "DELETE /diet-records/43 HTTP/1.0" 204 -
+127.0.0.1 - - [09/Jun/2025 17:16:32] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:16:32] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:16:44] "DELETE /diet-records/47 HTTP/1.0" 204 -
+127.0.0.1 - - [09/Jun/2025 17:16:58] "POST /diet-records HTTP/1.0" 201 -
+127.0.0.1 - - [09/Jun/2025 17:16:58] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:16:58] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:17:04] "DELETE /diet-records/50 HTTP/1.0" 204 -
+127.0.0.1 - - [09/Jun/2025 17:17:26] "POST /diet-records HTTP/1.0" 201 -
+127.0.0.1 - - [09/Jun/2025 17:17:26] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:17:26] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:17:32] "DELETE /diet-records/45 HTTP/1.0" 204 -
+127.0.0.1 - - [09/Jun/2025 17:17:48] "PUT /diet-records/48 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:17:48] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:17:48] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:17:56] "DELETE /diet-records/49 HTTP/1.0" 204 -
+127.0.0.1 - - [09/Jun/2025 17:19:36] "PUT /diet-records/48 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:19:36] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:19:36] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:19:42] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:19:42] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:20:13] "PUT /diet-records/48 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:20:13] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:20:13] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:20:34] "DELETE /diet-records/27 HTTP/1.0" 204 -
+127.0.0.1 - - [09/Jun/2025 17:20:42] "DELETE /diet-records/27 HTTP/1.0" 404 -
+127.0.0.1 - - [09/Jun/2025 17:20:47] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:20:47] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:22:45] "POST /diet-records HTTP/1.0" 201 -
+127.0.0.1 - - [09/Jun/2025 17:22:45] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:22:45] "GET /diet-records HTTP/1.0" 200 -
+/home/theone/using_web/calorie-web/user/diet_record.py:205: LegacyAPIWarning: The Query.get() method is considered legacy as of the 1.x series of SQLAlchemy and becomes a legacy construct in 2.0. The method is now available as Session.get() (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+  food = CustomerFood.query.get(cfid)
+127.0.0.1 - - [09/Jun/2025 17:24:06] "POST /diet-records HTTP/1.0" 201 -
+127.0.0.1 - - [09/Jun/2025 17:24:06] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:24:07] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:24:15] "DELETE /diet-records/53 HTTP/1.0" 204 -
+127.0.0.1 - - [09/Jun/2025 17:24:26] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:24:26] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:26:34] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:26:34] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:26:52] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:26:52] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:27:13] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:27:13] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:27:36] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:27:36] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:28:01] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:28:01] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:28:32] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:28:32] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:28:50] "POST /diet-records HTTP/1.0" 201 -
+127.0.0.1 - - [09/Jun/2025 17:28:50] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:28:50] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:29:33] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:29:33] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:29:50] "POST /diet-records HTTP/1.0" 201 -
+127.0.0.1 - - [09/Jun/2025 17:29:51] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:29:51] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:30:04] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:30:04] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:30:14] "POST /diet-records HTTP/1.0" 201 -
+127.0.0.1 - - [09/Jun/2025 17:30:14] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:30:14] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:30:25] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:30:25] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:30:33] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:30:33] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:31:00] "DELETE /diet-records/54 HTTP/1.0" 204 -
+127.0.0.1 - - [09/Jun/2025 17:31:01] "DELETE /diet-records/56 HTTP/1.0" 204 -
+127.0.0.1 - - [09/Jun/2025 17:31:03] "DELETE /diet-records/55 HTTP/1.0" 204 -
+127.0.0.1 - - [09/Jun/2025 17:58:20] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:58:21] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:58:43] "POST /diet-records HTTP/1.0" 201 -
+127.0.0.1 - - [09/Jun/2025 17:58:43] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 17:58:43] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 19:16:51] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 19:16:51] "GET /official-foods HTTP/1.0" 200 -
