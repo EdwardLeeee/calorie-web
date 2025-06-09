@@ -8,9 +8,17 @@ const httpFood = axios.create({ baseURL: API,  withCredentials: true });
 const store = Vue.reactive({
   isLoggedIn : false,
   foods      : [],
-  async fetchFoods(){
+  // 修改 fetchFoods，使其能接收查詢參數
+  async fetchFoods(name = ''){
     if (!this.isLoggedIn) return;
-    const r = await httpFood.get('/foods');
+    
+    // 建立查詢參數物件
+    const params = {};
+    if (name) {
+      params.name = name;
+    }
+
+    const r = await httpFood.get('/foods', { params });
     this.foods = r.data;
   },
   async checkLogin(){
@@ -49,6 +57,12 @@ const AdminLogin = {
 /* ================= 食品列表 ================= */
 const FoodsDash = {
   template:'#foods-dashboard-tmpl',
+  // 新增 data 屬性來存放查詢字串
+  data(){
+    return {
+      searchQuery: ''
+    };
+  },
   computed:{
     foods(){ return store.foods; }
   },
@@ -59,7 +73,11 @@ const FoodsDash = {
     async del(id){
       if(!confirm('確定刪除？')) return;
       await httpFood.delete(`/foods/${id}`);
-      await store.fetchFoods();
+      await store.fetchFoods(this.searchQuery);
+    },
+    // 新增 search 方法
+    async search(){
+      await store.fetchFoods(this.searchQuery);
     }
   },
   //async mounted(){ await store.fetchFoods(); }

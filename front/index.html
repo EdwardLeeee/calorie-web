@@ -68,6 +68,12 @@
         <button class="btn link-btn" @click="toAdd">新增</button>
       </div>
 
+      <div class="search-bar-container">
+        <form @submit.prevent="search" class="search-form">
+          <input v-model="searchQuery" type="text" placeholder="輸入食物名稱查詢..." class="search-input">
+          <button type="submit" class="btn primary">搜尋</button>
+        </form>
+      </div>
       <div v-if="foods.length" class="data-table">
         <div class="table-header">
           <div class="table-cell cell-name">名稱 (熱量)</div>
@@ -86,11 +92,10 @@
         </div>
       </div>
 
-      <div v-else class="no-data"><p>目前尚無官方食物</p></div>
+      <div v-else class="no-data"><p>找不到符合條件的食物，或目前尚無官方食物</p></div>
     </div>
   </div>
 </template>
-
 <!-- ======= 新增 / 編輯 食物卡片 ======= -->
 <template id="edit-food-tmpl">
   <div class="custom-foods-container">

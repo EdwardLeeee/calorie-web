@@ -40,10 +40,12 @@ class Admin(db.Model):
 def admin_login():
     data = request.get_json(force=True)
     u, p = data.get("username"), data.get("password")
+    print(f"Login attempt: username={u}, password={p}")
     if not u or not p:
         return jsonify({"msg": "缺少帳號或密碼"}), 400
 
     admin = Admin.query.filter_by(username=u).first()
+    print(f"Admin found: {admin is not None}")
     if not admin or not check_password_hash(admin.password_hash, p):
         return jsonify({"msg": "帳號或密碼錯誤"}), 401
 

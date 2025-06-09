@@ -563,6 +563,29 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
   width: 40%;
 }
 
+/* ------------ 搜尋框樣式 ------------ */
+.search-bar-container {
+  padding: 0.75rem 1rem;
+  background-color: #f8f9fa; /* 與列表頭部背景色一致 */
+  border-bottom: 1px solid var(--border-color);
+}
+.search-form {
+  display: flex;
+  gap: 0.5rem; /* 在輸入框和按鈕之間增加間距 */
+}
+.search-input {
+  flex-grow: 1; /* 讓輸入框佔據多數空間 */
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 0.95rem;
+}
+.search-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px var(--primary-color-light);
+}
+
 
 /* -------------------------------------- */
 /* ------------ 響應式設計 (Media Queries) ------------ */

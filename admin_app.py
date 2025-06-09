@@ -55,7 +55,19 @@ def admin_required(fn):
 @app.get("/foods")
 @admin_required
 def list_foods():
-    return jsonify([f.to_dict() for f in Food.query.order_by(Food.id).all()])
+    # 從 URL query string 取得 name 參數
+    query_name = request.args.get('name', '')
+    
+    query = Food.query
+    
+    # 如果 query_name 不是空的，就加入篩選條件
+    if query_name:
+        # 使用 ilike 進行不分大小寫的模糊查詢
+        query = query.filter(Food.name.ilike(f"%{query_name}%"))
+        
+    foods = query.order_by(Food.id).all()
+    
+    return jsonify([f.to_dict() for f in foods])
 
 @app.post("/foods")
 @admin_required
