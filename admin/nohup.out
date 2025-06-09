@@ -233,3 +233,5 @@ Press CTRL+C to quit
 127.0.0.1 - - [09/Jun/2025 19:34:00] "GET /whoami HTTP/1.0" 401 -
 127.0.0.1 - - [09/Jun/2025 19:34:02] "GET /whoami HTTP/1.0" 401 -
 127.0.0.1 - - [09/Jun/2025 19:34:02] "GET /whoami HTTP/1.0" 401 -
+127.0.0.1 - - [09/Jun/2025 21:48:18] "GET /whoami HTTP/1.0" 401 -
+127.0.0.1 - - [09/Jun/2025 21:48:18] "GET /whoami HTTP/1.0" 401 -

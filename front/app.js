@@ -4,18 +4,16 @@
 //const AUTH_BASE    = 'http://127.0.0.1:5001';
 //const API_BASE     = 'http://127.0.0.1:1122';
 //const RECORD_BASE  = 'http://127.0.0.1:1133';
-//const SETTINGS_BASE = 'http://127.0.0.1:1144'; // 設定服務的本地位址
-
+//const USER_SETTINGS= 'http://127.0.0.1:1144'; // 設定服務的本地位址
 const AUTH_BASE     = '/auth';
 const API_BASE      = '/customer_food';
 const RECORD_BASE   = '/diet_record';
-const SETTINGS_BASE = '/user_settings'; // 設定服務
-
+const USER_SETTINGS = '/user_settings'; // 設定服務
 // 建立 axios 實例，自動攜帶 Cookie（Session）
 const httpAuth   = axios.create({ baseURL: AUTH_BASE,    withCredentials: true });
 const httpFood   = axios.create({ baseURL: API_BASE,     withCredentials: true });
 const httpRecord = axios.create({ baseURL: RECORD_BASE, withCredentials: true });
-const httpSettings = axios.create({ baseURL: SETTINGS_BASE, withCredentials: true });
+const httpSettings = axios.create({ baseURL: USER_SETTINGS, withCredentials: true });
 // ------------------------------
 // 1. 中央狀態管理器 (Store)
 // ------------------------------
@@ -50,8 +48,8 @@ const store = Vue.reactive({
         } else if (r.custom_food_id) {
             const food = this.customFoods.find(f => f.id === r.custom_food_id);
             if (food) food_name = food.name;
-        } else if (r.manual_name) {
-            food_name = r.manual_name;
+        } else if (r.food_name) {
+            food_name = r.food_name;
         }
         return { ...r, food_name };
       });
@@ -172,7 +170,6 @@ const Signup = {
   }
 };
 
-
 // ------------------------------
 // 4. Dashboard 元件 (修正後)
 // ------------------------------
@@ -281,7 +278,9 @@ const Dashboard = {
     // 掛載後，確保本地資料與 store 同步
     this.targetKcal = this.store.targetKcal;
   }
-};// ------------------------------
+};
+
+// ------------------------------
 // 5. Add/Edit Record 元件
 // ------------------------------
 const AddRecord = {
@@ -293,7 +292,7 @@ const AddRecord = {
       form: {
         official_food_id: null,
         custom_food_id:   null,
-        manual_name:      '',
+        food_name:      '',
         record_time:      '',
         qty:              1,
         calorie_sum:      0,
@@ -342,7 +341,7 @@ const AddRecord = {
         }
         else {
           this.inputMode        = 'manual';
-          this.form.manual_name = r.food_name;
+          this.form.food_name = r.food_name;
           this.form.calorie_sum = r.calorie_sum / r.qty;
           this.form.carb_sum    = r.carb_sum    / r.qty;
           this.form.protein_sum = r.protein_sum / r.qty;
@@ -364,7 +363,7 @@ const AddRecord = {
         this.form.fat_sum     = of.fat;
       }
       this.form.custom_food_id = null;
-      this.form.manual_name    = '';
+      this.form.food_name    = '';
     },
     onCustomChange() {
       const cf = this.customFoods.find(x=>x.id===this.form.custom_food_id);
@@ -375,7 +374,7 @@ const AddRecord = {
         this.form.fat_sum     = cf.fat;
       }
       this.form.official_food_id = null;
-      this.form.manual_name      = '';
+      this.form.food_name      = '';
     },
     async submitRecord() {
       if (!this.form.record_time) {
@@ -391,15 +390,15 @@ const AddRecord = {
         fat_sum:           this.form.fat_sum     * this.form.qty,
         official_food_id:  null,
         custom_food_id:    null,
-        manual_name:       null
+        food_name:       null
       };
       if(this.inputMode==='official') payload.official_food_id=this.form.official_food_id;
       else if(this.inputMode==='custom') payload.custom_food_id=this.form.custom_food_id;
-      else payload.manual_name=this.form.manual_name;
+      else payload.food_name=this.form.food_name;
 
       if ((this.inputMode==='official'&&!payload.official_food_id) ||
           (this.inputMode==='custom'  &&!payload.custom_food_id)   ||
-          (this.inputMode==='manual'  &&!payload.manual_name)     ||
+          (this.inputMode==='manual'  &&!payload.food_name)     ||
           payload.calorie_sum===null ||
           payload.carb_sum===null    ||
           payload.protein_sum===null ||
@@ -545,8 +544,8 @@ const AllRecords = {
             details.protein = cf.protein;
             details.fat = cf.fat;
         }
-      } else if (r.manual_name) {
-        details.name = r.manual_name;
+      } else if (r.food_name) {
+        details.name = r.food_name;
       }
       
       this.$root.showModal(details);

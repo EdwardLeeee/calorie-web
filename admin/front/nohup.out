@@ -445,3 +445,16 @@ BrokenPipeError: [Errno 32] Broken pipe
 127.0.0.1 - - [09/Jun/2025 19:49:09] "GET / HTTP/1.0" 200 -
 127.0.0.1 - - [09/Jun/2025 20:02:20] "GET / HTTP/1.0" 200 -
 127.0.0.1 - - [09/Jun/2025 20:43:57] "GET / HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 21:48:17] "GET / HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 21:48:18] "GET /styles.css?v=1 HTTP/1.0" 304 -
+127.0.0.1 - - [09/Jun/2025 21:48:18] "GET /admin.js?v=1 HTTP/1.0" 304 -
+127.0.0.1 - - [09/Jun/2025 21:48:18] code 404, message File not found
+127.0.0.1 - - [09/Jun/2025 21:48:18] "GET /favicon.ico HTTP/1.0" 404 -
+127.0.0.1 - - [09/Jun/2025 22:22:33] "GET / HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 22:25:19] "GET / HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 22:25:24] code 404, message File not found
+127.0.0.1 - - [09/Jun/2025 22:25:24] "GET /js/lkk_ch.js HTTP/1.0" 404 -
+127.0.0.1 - - [09/Jun/2025 22:25:27] "GET /styles.css?v=1 HTTP/1.0" 304 -
+127.0.0.1 - - [09/Jun/2025 22:25:29] "GET /admin.js?v=1 HTTP/1.0" 304 -
+127.0.0.1 - - [09/Jun/2025 22:25:32] code 404, message File not found
+127.0.0.1 - - [09/Jun/2025 22:25:32] "GET /js/twint_ch.js HTTP/1.0" 404 -
