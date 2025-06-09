@@ -269,7 +269,7 @@ const AddRecord = {
         }
         else {
           this.inputMode        = 'manual';
-          this.form.manual_name = r.manual_name || r.food_name;
+          this.form.manual_name = r.food_name;
           this.form.calorie_sum = r.calorie_sum / r.qty;
           this.form.carb_sum    = r.carb_sum    / r.qty;
           this.form.protein_sum = r.protein_sum / r.qty;

@@ -219,32 +219,43 @@ def update_diet_record(id):
             abort(400, description="qty 需為數字")
     
     # 更新食物來源
-    updated_food_name = None
+    updated_food_source = False
+
+    # 情況1：更新為手動輸入
     if "manual_name" in data and data["manual_name"]:
-        record.manual_name = data["manual_name"]
-        updated_food_name = data["manual_name"]
+        # 直接更新 food_name
+        record.food_name = data["manual_name"]
         record.official_food_id = None
         record.custom_food_id = None
+        updated_food_source = True
+
+    # 情況2：更新為官方食物
     elif "official_food_id" in data and data["official_food_id"]:
         food = OfficialFood.query.get(data["official_food_id"])
         if not food:
             abort(400, description="找不到指定的 official_food_id")
         record.official_food_id = data["official_food_id"]
         record.custom_food_id = None
-        record.manual_name = None
-        updated_food_name = food.name
+        # 同樣更新 food_name
+        record.food_name = food.name
+        updated_food_source = True
+
+    # 情況3：更新為自訂食物
     elif "custom_food_id" in data and data["custom_food_id"]:
         food = CustomerFood.query.get(data["custom_food_id"])
         if not food:
             abort(400, description="找不到指定的 custom_food_id")
+        # 並且要檢查這個自訂食物是否屬於當前使用者
+        if food.user_id != session['user_id']:
+            abort(403, description="沒有權限使用此自訂食物")
         record.custom_food_id = data["custom_food_id"]
         record.official_food_id = None
-        record.manual_name = None
-        updated_food_name = food.name
-
-    if updated_food_name:
-        record.food_name = updated_food_name
+        # 同樣更新 food_name
+        record.food_name = food.name
+        updated_food_source = True
+    # ----------------------------------------------------
         
+    # 更新營養總和欄位
     for field in ["calorie_sum", "carb_sum", "protein_sum", "fat_sum"]:
         if field in data:
             setattr(record, field, data[field])
