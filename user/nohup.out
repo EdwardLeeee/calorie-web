@@ -172,3 +172,14 @@ User '14' is creating a record. Raw JSON payload received:
 127.0.0.1 - - [09/Jun/2025 10:48:16] "POST /diet-records HTTP/1.0" 201 -
 127.0.0.1 - - [09/Jun/2025 10:48:16] "GET /official-foods HTTP/1.0" 200 -
 127.0.0.1 - - [09/Jun/2025 10:48:16] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 11:11:13] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 11:11:13] "GET /diet-records HTTP/1.0" 200 -
+--- DEBUG [2025-06-09 11:11:22] ---
+[REQUEST] DELETE /diet-records/24: Received a request to delete record.
+
+--- DEBUG [2025-06-09 11:11:22] ---
+[SUCCESS] Record 24 deleted by user '12'.
+
+127.0.0.1 - - [09/Jun/2025 11:11:22] "DELETE /diet-records/24 HTTP/1.0" 204 -
+127.0.0.1 - - [09/Jun/2025 11:11:29] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 11:11:29] "GET /diet-records HTTP/1.0" 200 -
