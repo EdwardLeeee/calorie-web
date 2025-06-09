@@ -1,27 +1,24 @@
 // app.js
+// 先宣告後端三個服務的 base URL server
+const AUTH_BASE    = '/auth';
+const API_BASE     = '/customer_food';
+const RECORD_BASE  = '/diet_record';
 
 // 先宣告後端三個服務的 base URL
 //const AUTH_BASE    = 'http://127.0.0.1:5001';
 //const API_BASE     = 'http://127.0.0.1:1122';
 //const RECORD_BASE  = 'http://127.0.0.1:1133';
-//const SETTINGS_BASE = 'http://127.0.0.1:1144'; // 設定服務的本地位址
-
-const AUTH_BASE     = '/auth';
-const API_BASE      = '/customer_food';
-const RECORD_BASE   = '/diet_record';
-const SETTINGS_BASE = '/user_settings'; // 設定服務
 
 // 建立 axios 實例，自動攜帶 Cookie（Session）
 const httpAuth   = axios.create({ baseURL: AUTH_BASE,    withCredentials: true });
 const httpFood   = axios.create({ baseURL: API_BASE,     withCredentials: true });
 const httpRecord = axios.create({ baseURL: RECORD_BASE, withCredentials: true });
-const httpSettings = axios.create({ baseURL: SETTINGS_BASE, withCredentials: true });
+
 // ------------------------------
-// 1. 中央狀態管理器 (Store)
+// 1. 簡易中央狀態管理器 (Store)
 // ------------------------------
 const store = Vue.reactive({
   isLoggedIn: !!localStorage.getItem('username'),
-  targetKcal: 2000, // 提供一個初始預設值
   records: [],
   officialFoods: [],
   customFoods: [],
@@ -31,57 +28,18 @@ const store = Vue.reactive({
     if (!this.isLoggedIn || this.dataLoaded) return;
     try {
       const uid = localStorage.getItem('userId');
-      // 【修正】確保所有請求都被正確發送，包括使用者設定
-      const [ofResp, cfResp, recResp, settingsResp] = await Promise.all([
+      const [ofResp, cfResp, recResp] = await Promise.all([
         httpRecord.get('/official-foods'),
         httpFood.get('/customer-foods', { params: { user_id: uid } }),
-        httpRecord.get('/diet-records'),
-        httpSettings.get('/user-settings') // 獲取使用者設定
+        httpRecord.get('/diet-records')
       ]);
-      
       this.officialFoods = ofResp.data;
       this.customFoods   = cfResp.data;
-      
-      const recordsWithFoodName = recResp.data.map(r => {
-        let food_name = '未知項目';
-        if (r.official_food_id) {
-            const food = this.officialFoods.find(f => f.id === r.official_food_id);
-            if (food) food_name = food.name;
-        } else if (r.custom_food_id) {
-            const food = this.customFoods.find(f => f.id === r.custom_food_id);
-            if (food) food_name = food.name;
-        } else if (r.manual_name) {
-            food_name = r.manual_name;
-        }
-        return { ...r, food_name };
-      });
-      this.records = recordsWithFoodName.sort((a,b)=>new Date(b.record_time)-new Date(a.record_time));
-
-      // 從後端更新目標大卡
-      this.targetKcal = settingsResp.data.target_kcal;
-      this.dataLoaded = true;
+      this.records       = recResp.data.sort((a,b)=>new Date(b.record_time)-new Date(a.record_time));
+      this.dataLoaded    = true;
     } catch (e) {
       console.error("Failed to fetch shared data:", e);
-      if (e.response && e.response.status === 401) {
-          this.logoutCleanup();
-          router.replace('/login');
-      }
-    }
-  },
-
-  // 【新增】更新目標大卡到後端的方法
-  async setTargetKcal(kcal) {
-    const numericKcal = parseInt(kcal, 10);
-    if (isNaN(numericKcal) || numericKcal <= 0) {
-      console.error("無效的目標卡路里值");
-      return;
-    }
-    try {
-      await httpSettings.put('/user-settings', { target_kcal: numericKcal });
-      this.targetKcal = numericKcal;
-    } catch (error) {
-      console.error("更新目標卡路里失敗:", error);
-      alert('目標大卡更新失敗，請稍後再試。');
+      this.logoutCleanup();
     }
   },
 
@@ -98,9 +56,9 @@ const store = Vue.reactive({
     this.officialFoods= [];
     this.customFoods  = [];
     this.dataLoaded   = false;
-    this.targetKcal   = 2000;
   }
 });
+
 // ------------------------------
 // 2. Login 元件
 // ------------------------------
@@ -172,20 +130,14 @@ const Signup = {
   }
 };
 
-
 // ------------------------------
-// 4. Dashboard 元件 (修正後)
+// 4. Dashboard 元件
 // ------------------------------
 const Dashboard = {
   template: '#dashboard-template',
   inject: ['store'],
   data() {
-    return {
-      today: new Date(),
-      // 【修正】這個本地變數現在與輸入框綁定
-      targetKcal: this.store.targetKcal,
-      error: '',
-    };
+    return { today:new Date(), targetKcal:2000, error:'' };
   },
   computed: {
     todayFormatted() {
@@ -200,9 +152,8 @@ const Dashboard = {
     todayCarbs()   { return this.todayRecords.reduce((s,r)=>s+r.carb_sum,0); },
     todayProtein(){ return this.todayRecords.reduce((s,r)=>s+r.protein_sum,0); },
     todayFat()     { return this.todayRecords.reduce((s,r)=>s+r.fat_sum,0); },
-    // 計算時，永遠使用 store 中的值，以確保準確性
-    kcalRatio()    { return this.store.targetKcal ? Math.min(this.todayCalories / this.store.targetKcal, 1) : 0; },
-    circleColor()  { return this.todayCalories > this.store.targetKcal ? '#ef5350' : '#4caf50'; },
+    kcalRatio()    { return this.targetKcal ? Math.min(this.todayCalories/this.targetKcal,1) : 0; },
+    circleColor()  { return this.todayCalories>this.targetKcal? '#ef5350':'#4caf50'; },
     totalMacro()   { return this.todayCarbs + this.todayProtein + this.todayFat; },
     macroAngles() {
       if (this.totalMacro<=0) return { carbs:0,protein:0,fat:0 };
@@ -221,18 +172,6 @@ const Dashboard = {
     circumference(){ return 2*Math.PI*54; }
   },
   methods: {
-    // 儲存目標大卡的方法
-    async saveTargetKcal() {
-        if (this.targetKcal == this.store.targetKcal) {
-            return;
-        }
-        if (!this.targetKcal || this.targetKcal <= 0) {
-            this.targetKcal = this.store.targetKcal;
-            return;
-        }
-        // 直接呼叫注入的 store 物件上的方法
-        await this.store.setTargetKcal(this.targetKcal);
-    },
     formatTime(dtStr) {
       const dt=new Date(dtStr.replace(' ','T')), hh=String(dt.getHours()).padStart(2,'0'),
             mi=String(dt.getMinutes()).padStart(2,'0');
@@ -270,18 +209,10 @@ const Dashboard = {
       this.$root.showModal(details);
     }
   },
-  watch: {
-    // 監聽 store 的變化，以同步到本地的 targetKcal
-    'store.targetKcal'(newVal) {
-      this.targetKcal = newVal;
-    }
-  },
-  async mounted(){ 
-    await this.store.fetchAllSharedData();
-    // 掛載後，確保本地資料與 store 同步
-    this.targetKcal = this.store.targetKcal;
-  }
-};// ------------------------------
+  async mounted(){ await this.store.fetchAllSharedData(); }
+};
+
+// ------------------------------
 // 5. Add/Edit Record 元件
 // ------------------------------
 const AddRecord = {

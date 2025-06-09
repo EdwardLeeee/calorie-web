@@ -418,3 +418,82 @@ Press CTRL+C to quit
 127.0.0.1 - - [09/Jun/2025 17:58:43] "GET /official-foods HTTP/1.0" 200 -
 127.0.0.1 - - [09/Jun/2025 19:16:51] "GET /diet-records HTTP/1.0" 200 -
 127.0.0.1 - - [09/Jun/2025 19:16:51] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 19:39:22] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 19:39:22] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 19:39:23] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 19:39:23] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 19:45:08] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 19:45:08] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 19:45:08] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 19:45:08] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 19:45:57] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 19:45:57] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 19:45:57] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 19:45:57] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 19:46:08] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 19:46:08] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 19:46:08] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 19:46:08] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 19:46:45] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 19:46:45] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 19:46:45] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 19:46:45] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 20:00:44] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 20:00:44] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 20:00:45] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 20:00:45] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 20:01:10] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 20:01:10] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 20:01:11] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 20:01:11] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 20:09:24] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 20:09:24] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 20:12:50] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 20:12:51] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 20:13:04] "POST /diet-records HTTP/1.0" 201 -
+127.0.0.1 - - [09/Jun/2025 20:13:05] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 20:13:05] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 20:17:35] "POST /diet-records HTTP/1.0" 201 -
+127.0.0.1 - - [09/Jun/2025 20:17:36] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 20:17:36] "GET /official-foods HTTP/1.0" 200 -
+/home/theone/using_web/calorie-web/user/diet_record.py:273: LegacyAPIWarning: The Query.get() method is considered legacy as of the 1.x series of SQLAlchemy and becomes a legacy construct in 2.0. The method is now available as Session.get() (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+  food = CustomerFood.query.get(data["custom_food_id"])
+127.0.0.1 - - [09/Jun/2025 20:17:59] "PUT /diet-records/59 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 20:17:59] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 20:17:59] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 20:18:16] "PUT /diet-records/59 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 20:18:17] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 20:18:17] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 20:18:25] "DELETE /diet-records/59 HTTP/1.0" 204 -
+127.0.0.1 - - [09/Jun/2025 20:19:52] "DELETE /diet-records/52 HTTP/1.0" 204 -
+ * Serving Flask app 'calorie_save'
+ * Debug mode: on
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:1144
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 117-849-769
+127.0.0.1 - - [09/Jun/2025 20:38:51] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 20:38:51] "GET /diet-records HTTP/1.0" 200 -
+INFO:werkzeug:127.0.0.1 - - [09/Jun/2025 20:38:51] "GET /user-settings HTTP/1.0" 200 -
+INFO:werkzeug:127.0.0.1 - - [09/Jun/2025 20:38:59] "PUT /user-settings HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 20:42:47] "POST /diet-records HTTP/1.0" 201 -
+127.0.0.1 - - [09/Jun/2025 20:42:47] "GET /diet-records HTTP/1.0" 200 -
+INFO:werkzeug:127.0.0.1 - - [09/Jun/2025 20:42:48] "GET /user-settings HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 20:42:48] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 20:47:12] "GET /official-foods HTTP/1.0" 200 -
+INFO:werkzeug:127.0.0.1 - - [09/Jun/2025 20:47:13] "GET /user-settings HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 20:47:13] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 20:47:23] "GET /diet-records HTTP/1.0" 200 -
+INFO:werkzeug:127.0.0.1 - - [09/Jun/2025 20:47:23] "GET /user-settings HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 20:47:23] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 20:48:17] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 20:48:17] "GET /official-foods HTTP/1.0" 200 -
+INFO:werkzeug:127.0.0.1 - - [09/Jun/2025 20:48:17] "GET /user-settings HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 20:49:10] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 20:49:10] "GET /diet-records HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 21:20:20] "GET /official-foods HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 21:20:20] "GET /diet-records HTTP/1.0" 200 -
+INFO:werkzeug:127.0.0.1 - - [09/Jun/2025 21:20:20] "GET /user-settings HTTP/1.0" 200 -
+INFO:werkzeug:127.0.0.1 - - [09/Jun/2025 21:20:27] "PUT /user-settings HTTP/1.0" 200 -

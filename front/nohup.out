@@ -1,233 +1,31 @@
-127.0.0.1 - - [09/Jun/2025 11:59:48] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 11:59:48] "GET /styles.css?v=3 HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 11:59:48] "GET /app.js?v=3 HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 12:02:30] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 12:05:42] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 12:05:43] code 404, message File not found
-127.0.0.1 - - [09/Jun/2025 12:05:43] "GET /favicon.ico HTTP/1.0" 404 -
-127.0.0.1 - - [09/Jun/2025 12:06:01] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 12:06:31] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 12:06:48] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 12:16:22] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 12:16:23] "GET /styles.css?v=3 HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 12:16:23] "GET /app.js?v=3 HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 12:16:24] code 404, message File not found
-127.0.0.1 - - [09/Jun/2025 12:16:24] "GET /favicon.ico HTTP/1.0" 404 -
-127.0.0.1 - - [09/Jun/2025 12:23:19] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 12:23:26] "GET /app.js?v=3 HTTP/1.0" 200 -
-----------------------------------------
-Exception occurred during processing of request from ('127.0.0.1', 57822)
-Traceback (most recent call last):
-  File "/usr/lib/python3.12/socketserver.py", line 692, in process_request_thread
-    self.finish_request(request, client_address)
-  File "/usr/lib/python3.12/http/server.py", line 1311, in finish_request
-    self.RequestHandlerClass(request, client_address, self,
-  File "/usr/lib/python3.12/http/server.py", line 672, in __init__
-    super().__init__(*args, **kwargs)
-  File "/usr/lib/python3.12/socketserver.py", line 761, in __init__
-    self.handle()
-  File "/usr/lib/python3.12/http/server.py", line 436, in handle
-    self.handle_one_request()
-  File "/usr/lib/python3.12/http/server.py", line 424, in handle_one_request
-    method()
-  File "/usr/lib/python3.12/http/server.py", line 679, in do_GET
-    self.copyfile(f, self.wfile)
-  File "/usr/lib/python3.12/http/server.py", line 878, in copyfile
-    shutil.copyfileobj(source, outputfile)
-  File "/usr/lib/python3.12/shutil.py", line 204, in copyfileobj
-    fdst_write(buf)
-  File "/usr/lib/python3.12/socketserver.py", line 840, in write
-    self._sock.sendall(b)
-BrokenPipeError: [Errno 32] Broken pipe
-----------------------------------------
-127.0.0.1 - - [09/Jun/2025 12:23:26] code 404, message File not found
-127.0.0.1 - - [09/Jun/2025 12:23:26] "GET /js/lkk_ch.js HTTP/1.0" 404 -
-127.0.0.1 - - [09/Jun/2025 12:23:31] code 404, message File not found
-127.0.0.1 - - [09/Jun/2025 12:23:31] "GET /js/twint_ch.js HTTP/1.0" 404 -
-127.0.0.1 - - [09/Jun/2025 12:25:04] "GET / HTTP/1.0" 304 -
-127.0.0.1 - - [09/Jun/2025 12:33:41] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 12:33:41] "GET /app.js?v=3 HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 12:33:41] "GET /styles.css?v=3 HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 12:33:42] code 404, message File not found
-127.0.0.1 - - [09/Jun/2025 12:33:42] "GET /favicon.ico HTTP/1.0" 404 -
-127.0.0.1 - - [09/Jun/2025 12:33:43] code 404, message File not found
-127.0.0.1 - - [09/Jun/2025 12:33:43] "GET /.git/HEAD HTTP/1.0" 404 -
-127.0.0.1 - - [09/Jun/2025 12:33:43] code 404, message File not found
-127.0.0.1 - - [09/Jun/2025 12:33:43] "GET /.well-known/security.txt HTTP/1.0" 404 -
-127.0.0.1 - - [09/Jun/2025 12:33:43] code 404, message File not found
-127.0.0.1 - - [09/Jun/2025 12:33:43] "GET /.git/config HTTP/1.0" 404 -
-127.0.0.1 - - [09/Jun/2025 12:33:43] code 404, message File not found
-127.0.0.1 - - [09/Jun/2025 12:33:43] "GET /security.txt HTTP/1.0" 404 -
-127.0.0.1 - - [09/Jun/2025 12:33:44] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 12:33:44] code 404, message File not found
-127.0.0.1 - - [09/Jun/2025 12:33:44] "GET /favicon.ico HTTP/1.0" 404 -
-127.0.0.1 - - [09/Jun/2025 12:44:58] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 12:44:58] "GET /styles.css?v=3 HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 12:44:58] "GET /app.js?v=3 HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 12:44:59] code 404, message File not found
-127.0.0.1 - - [09/Jun/2025 12:44:59] "GET /favicon.ico HTTP/1.0" 404 -
-127.0.0.1 - - [09/Jun/2025 12:51:10] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 12:52:50] "GET / HTTP/1.0" 304 -
-127.0.0.1 - - [09/Jun/2025 12:54:15] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 12:54:16] code 404, message File not found
-127.0.0.1 - - [09/Jun/2025 12:54:16] "GET /favicon.ico HTTP/1.0" 404 -
-127.0.0.1 - - [09/Jun/2025 12:55:33] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 12:55:35] code 404, message File not found
-127.0.0.1 - - [09/Jun/2025 12:55:35] "GET /favicon.ico HTTP/1.0" 404 -
-127.0.0.1 - - [09/Jun/2025 12:55:44] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 12:55:45] "GET / HTTP/1.0" 200 -
-----------------------------------------
-Exception occurred during processing of request from ('127.0.0.1', 35578)
-Traceback (most recent call last):
-  File "/usr/lib/python3.12/socketserver.py", line 692, in process_request_thread
-    self.finish_request(request, client_address)
-  File "/usr/lib/python3.12/http/server.py", line 1311, in finish_request
-    self.RequestHandlerClass(request, client_address, self,
-  File "/usr/lib/python3.12/http/server.py", line 672, in __init__
-    super().__init__(*args, **kwargs)
-  File "/usr/lib/python3.12/socketserver.py", line 761, in __init__
-    self.handle()
-  File "/usr/lib/python3.12/http/server.py", line 436, in handle
-    self.handle_one_request()
-  File "/usr/lib/python3.12/http/server.py", line 424, in handle_one_request
-    method()
-  File "/usr/lib/python3.12/http/server.py", line 679, in do_GET
-    self.copyfile(f, self.wfile)
-  File "/usr/lib/python3.12/http/server.py", line 878, in copyfile
-    shutil.copyfileobj(source, outputfile)
-  File "/usr/lib/python3.12/shutil.py", line 204, in copyfileobj
-    fdst_write(buf)
-  File "/usr/lib/python3.12/socketserver.py", line 840, in write
-    self._sock.sendall(b)
-BrokenPipeError: [Errno 32] Broken pipe
-----------------------------------------
-127.0.0.1 - - [09/Jun/2025 12:56:04] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 12:56:24] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 13:02:59] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 13:18:31] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 13:18:33] code 404, message File not found
-127.0.0.1 - - [09/Jun/2025 13:18:33] "GET /favicon.ico HTTP/1.0" 404 -
-127.0.0.1 - - [09/Jun/2025 13:19:43] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 13:19:44] code 404, message File not found
-127.0.0.1 - - [09/Jun/2025 13:19:44] "GET /favicon.ico HTTP/1.0" 404 -
-127.0.0.1 - - [09/Jun/2025 13:19:46] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 13:20:42] "GET / HTTP/1.0" 304 -
-127.0.0.1 - - [09/Jun/2025 13:24:30] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 13:24:31] "GET /app.js?v=3 HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 13:24:31] "GET /styles.css?v=3 HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 13:24:32] code 404, message File not found
-127.0.0.1 - - [09/Jun/2025 13:24:32] "GET /favicon.ico HTTP/1.0" 404 -
-127.0.0.1 - - [09/Jun/2025 13:26:55] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 13:28:27] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 13:28:28] code 404, message File not found
-127.0.0.1 - - [09/Jun/2025 13:28:28] "GET /favicon.ico HTTP/1.0" 404 -
-127.0.0.1 - - [09/Jun/2025 13:31:00] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 13:32:47] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 13:33:00] "GET / HTTP/1.0" 304 -
-127.0.0.1 - - [09/Jun/2025 13:34:11] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 13:46:12] "GET / HTTP/1.0" 304 -
-127.0.0.1 - - [09/Jun/2025 13:46:15] code 404, message File not found
-127.0.0.1 - - [09/Jun/2025 13:46:15] "GET /favicon.ico HTTP/1.0" 404 -
-127.0.0.1 - - [09/Jun/2025 13:49:00] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 13:55:30] "GET / HTTP/1.0" 304 -
-127.0.0.1 - - [09/Jun/2025 13:57:48] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 13:57:49] code 404, message File not found
-127.0.0.1 - - [09/Jun/2025 13:57:49] "GET /favicon.ico HTTP/1.0" 404 -
-127.0.0.1 - - [09/Jun/2025 13:57:59] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 13:58:01] code 404, message File not found
-127.0.0.1 - - [09/Jun/2025 13:58:01] "GET /favicon.ico HTTP/1.0" 404 -
-127.0.0.1 - - [09/Jun/2025 14:00:00] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 14:00:00] "GET /styles.css?v=3 HTTP/1.0" 304 -
-127.0.0.1 - - [09/Jun/2025 14:00:00] "GET /app.js?v=3 HTTP/1.0" 304 -
-127.0.0.1 - - [09/Jun/2025 14:00:01] code 404, message File not found
-127.0.0.1 - - [09/Jun/2025 14:00:01] "GET /favicon.ico HTTP/1.0" 404 -
-127.0.0.1 - - [09/Jun/2025 14:18:32] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 14:18:33] code 404, message File not found
-127.0.0.1 - - [09/Jun/2025 14:18:33] "GET /favicon.ico HTTP/1.0" 404 -
-127.0.0.1 - - [09/Jun/2025 14:34:12] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 14:38:42] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 14:38:42] "GET /app.js?v=3 HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 14:38:42] "GET /styles.css?v=3 HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 14:38:43] code 404, message File not found
-127.0.0.1 - - [09/Jun/2025 14:38:43] "GET /favicon.ico HTTP/1.0" 404 -
-127.0.0.1 - - [09/Jun/2025 14:40:29] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 14:42:27] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 14:43:07] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 14:43:08] code 404, message File not found
-127.0.0.1 - - [09/Jun/2025 14:43:08] "GET /favicon.ico HTTP/1.0" 404 -
-127.0.0.1 - - [09/Jun/2025 14:48:15] "GET / HTTP/1.0" 304 -
-127.0.0.1 - - [09/Jun/2025 15:25:51] "GET / HTTP/1.0" 304 -
-127.0.0.1 - - [09/Jun/2025 15:37:17] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 15:37:18] code 404, message File not found
-127.0.0.1 - - [09/Jun/2025 15:37:18] "GET /favicon.ico HTTP/1.0" 404 -
-127.0.0.1 - - [09/Jun/2025 16:00:09] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 16:00:09] "GET /app.js?v=3 HTTP/1.0" 304 -
-127.0.0.1 - - [09/Jun/2025 16:00:09] "GET /styles.css?v=3 HTTP/1.0" 304 -
-127.0.0.1 - - [09/Jun/2025 16:00:10] code 404, message File not found
-127.0.0.1 - - [09/Jun/2025 16:00:10] "GET /favicon.ico HTTP/1.0" 404 -
-127.0.0.1 - - [09/Jun/2025 16:02:54] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 16:02:54] "GET /styles.css?v=3 HTTP/1.0" 304 -
-127.0.0.1 - - [09/Jun/2025 16:02:54] "GET /app.js?v=3 HTTP/1.0" 304 -
-127.0.0.1 - - [09/Jun/2025 16:03:01] code 404, message File not found
-127.0.0.1 - - [09/Jun/2025 16:03:01] "GET /favicon.ico HTTP/1.0" 404 -
-127.0.0.1 - - [09/Jun/2025 16:03:10] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 16:03:10] code 404, message File not found
-127.0.0.1 - - [09/Jun/2025 16:03:10] "GET /favicon.ico HTTP/1.0" 404 -
-127.0.0.1 - - [09/Jun/2025 16:40:53] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 16:42:02] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 16:42:02] "GET /app.js?v=3 HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 16:42:02] "GET /styles.css?v=3 HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 16:42:04] code 404, message File not found
-127.0.0.1 - - [09/Jun/2025 16:42:04] "GET /favicon.ico HTTP/1.0" 404 -
-127.0.0.1 - - [09/Jun/2025 16:42:13] "GET / HTTP/1.0" 304 -
-127.0.0.1 - - [09/Jun/2025 16:42:16] "GET / HTTP/1.0" 304 -
-127.0.0.1 - - [09/Jun/2025 16:50:02] "GET / HTTP/1.0" 304 -
-127.0.0.1 - - [09/Jun/2025 16:51:34] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 16:51:34] "GET /styles.css?v=3 HTTP/1.0" 304 -
-127.0.0.1 - - [09/Jun/2025 16:51:34] "GET /app.js?v=3 HTTP/1.0" 304 -
-127.0.0.1 - - [09/Jun/2025 16:52:17] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 16:52:17] "GET /styles.css?v=3 HTTP/1.0" 304 -
-127.0.0.1 - - [09/Jun/2025 16:52:17] "GET /app.js?v=3 HTTP/1.0" 304 -
-127.0.0.1 - - [09/Jun/2025 16:52:18] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 16:52:19] "GET /styles.css?v=3 HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 16:52:19] "GET /app.js?v=3 HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 16:52:21] code 404, message File not found
-127.0.0.1 - - [09/Jun/2025 16:52:21] "GET /favicon.ico HTTP/1.0" 404 -
-127.0.0.1 - - [09/Jun/2025 16:52:23] code 404, message File not found
-127.0.0.1 - - [09/Jun/2025 16:52:23] "GET /favicon.ico HTTP/1.0" 404 -
-127.0.0.1 - - [09/Jun/2025 16:52:51] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 16:56:27] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 16:56:29] code 404, message File not found
-127.0.0.1 - - [09/Jun/2025 16:56:29] "GET /favicon.ico HTTP/1.0" 404 -
-127.0.0.1 - - [09/Jun/2025 17:02:23] code 404, message File not found
-127.0.0.1 - - [09/Jun/2025 17:02:23] "GET /favicon.ico HTTP/1.0" 404 -
-127.0.0.1 - - [09/Jun/2025 17:03:06] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 17:03:07] code 404, message File not found
-127.0.0.1 - - [09/Jun/2025 17:03:07] "GET /favicon.ico HTTP/1.0" 404 -
-127.0.0.1 - - [09/Jun/2025 17:03:44] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 17:07:26] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 17:10:58] "GET / HTTP/1.0" 304 -
-127.0.0.1 - - [09/Jun/2025 17:16:31] "GET / HTTP/1.0" 304 -
-127.0.0.1 - - [09/Jun/2025 17:19:41] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 17:20:46] "GET / HTTP/1.0" 304 -
-127.0.0.1 - - [09/Jun/2025 17:24:25] "GET / HTTP/1.0" 304 -
-127.0.0.1 - - [09/Jun/2025 17:26:46] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 17:26:46] code 404, message File not found
-127.0.0.1 - - [09/Jun/2025 17:26:46] "GET /favicon.ico HTTP/1.0" 404 -
-127.0.0.1 - - [09/Jun/2025 17:27:35] "GET / HTTP/1.0" 304 -
-127.0.0.1 - - [09/Jun/2025 17:30:03] "GET / HTTP/1.0" 304 -
-127.0.0.1 - - [09/Jun/2025 17:30:04] code 404, message File not found
-127.0.0.1 - - [09/Jun/2025 17:30:04] "GET /favicon.ico HTTP/1.0" 404 -
-127.0.0.1 - - [09/Jun/2025 17:30:25] "GET / HTTP/1.0" 304 -
-127.0.0.1 - - [09/Jun/2025 17:57:54] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 17:57:55] code 404, message File not found
-127.0.0.1 - - [09/Jun/2025 17:57:55] "GET /favicon.ico HTTP/1.0" 404 -
-127.0.0.1 - - [09/Jun/2025 18:56:38] "GET / HTTP/1.0" 200 -
-127.0.0.1 - - [09/Jun/2025 18:56:39] "GET /app.js?v=3 HTTP/1.0" 304 -
-127.0.0.1 - - [09/Jun/2025 18:56:39] "GET /styles.css?v=3 HTTP/1.0" 304 -
-127.0.0.1 - - [09/Jun/2025 18:56:40] code 404, message File not found
-127.0.0.1 - - [09/Jun/2025 18:56:40] "GET /favicon.ico HTTP/1.0" 404 -
-127.0.0.1 - - [09/Jun/2025 18:57:58] code 404, message File not found
-127.0.0.1 - - [09/Jun/2025 18:57:58] "GET /robots.txt HTTP/1.0" 404 -
-127.0.0.1 - - [09/Jun/2025 18:58:39] "GET / HTTP/1.0" 304 -
-127.0.0.1 - - [09/Jun/2025 19:16:49] "GET / HTTP/1.0" 304 -
+Serving HTTP on 127.0.0.1 port 5000 (http://127.0.0.1:5000/) ...
+
+Keyboard interrupt received, exiting.
+127.0.0.1 - - [09/Jun/2025 19:39:13] "GET / HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 19:39:14] "GET /app.js?v=4 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 19:39:14] "GET /styles.css?v=4 HTTP/1.0" 200 -
+127.0.0.1 - - [09/Jun/2025 19:39:22] code 404, message File not found
+127.0.0.1 - - [09/Jun/2025 19:39:22] "GET /user_calroie_settings/user-settings HTTP/1.0" 404 -
+127.0.0.1 - - [09/Jun/2025 19:39:23] code 404, message File not found
+127.0.0.1 - - [09/Jun/2025 19:39:23] "GET /user_calroie_settings/user-settings HTTP/1.0" 404 -
+127.0.0.1 - - [09/Jun/2025 19:39:28] code 501, message Unsupported method ('PUT')
+127.0.0.1 - - [09/Jun/2025 19:39:28] "PUT /user_calroie_settings/user-settings HTTP/1.0" 501 -
+127.0.0.1 - - [09/Jun/2025 19:39:42] code 501, message Unsupported method ('PUT')
+127.0.0.1 - - [09/Jun/2025 19:39:42] "PUT /user_calroie_settings/user-settings HTTP/1.0" 501 -
+127.0.0.1 - - [09/Jun/2025 19:39:46] code 501, message Unsupported method ('PUT')
+127.0.0.1 - - [09/Jun/2025 19:39:46] "PUT /user_calroie_settings/user-settings HTTP/1.0" 501 -
+127.0.0.1 - - [09/Jun/2025 19:39:47] code 501, message Unsupported method ('PUT')
+127.0.0.1 - - [09/Jun/2025 19:39:47] "PUT /user_calroie_settings/user-settings HTTP/1.0" 501 -
+127.0.0.1 - - [09/Jun/2025 19:39:49] code 501, message Unsupported method ('PUT')
+127.0.0.1 - - [09/Jun/2025 19:39:49] "PUT /user_calroie_settings/user-settings HTTP/1.0" 501 -
+127.0.0.1 - - [09/Jun/2025 19:39:50] code 501, message Unsupported method ('PUT')
+127.0.0.1 - - [09/Jun/2025 19:39:50] "PUT /user_calroie_settings/user-settings HTTP/1.0" 501 -
+127.0.0.1 - - [09/Jun/2025 19:39:51] code 501, message Unsupported method ('PUT')
+127.0.0.1 - - [09/Jun/2025 19:39:51] "PUT /user_calroie_settings/user-settings HTTP/1.0" 501 -
+127.0.0.1 - - [09/Jun/2025 19:40:06] code 501, message Unsupported method ('PUT')
+127.0.0.1 - - [09/Jun/2025 19:40:06] "PUT /user_calroie_settings/user-settings HTTP/1.0" 501 -
+127.0.0.1 - - [09/Jun/2025 19:40:07] code 501, message Unsupported method ('PUT')
+127.0.0.1 - - [09/Jun/2025 19:40:07] "PUT /user_calroie_settings/user-settings HTTP/1.0" 501 -
+127.0.0.1 - - [09/Jun/2025 19:40:09] code 501, message Unsupported method ('PUT')
+127.0.0.1 - - [09/Jun/2025 19:40:09] "PUT /user_calroie_settings/user-settings HTTP/1.0" 501 -
+127.0.0.1 - - [09/Jun/2025 20:38:51] "GET / HTTP/1.0" 200 -

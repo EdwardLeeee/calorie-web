@@ -11,7 +11,7 @@
     rel="stylesheet"
   />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-  <link rel="stylesheet" href="styles.css?v=4" />
+  <link rel="stylesheet" href="styles.css?v=3" />
 
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
   <script src="https://unpkg.com/vue-router@4/dist/vue-router.global.js"></script>
@@ -134,22 +134,13 @@
               {{ todayCalories.toFixed(0) }}
             </text>
             <text x="60" y="80" text-anchor="middle" dominant-baseline="middle" class="chart-text-sm">
-              / {{ store.targetKcal }} kcal
+              / {{ targetKcal }} kcal
             </text>
           </svg>
-          <!-- 【修改】從這裡開始 -->
           <div class="target-input-group">
             <label for="target-kcal">目標大卡：</label>
-            <input 
-              id="target-kcal" 
-              type="number" 
-              v-model.number="targetKcal" 
-              class="target-input"
-              @keyup.enter="saveTargetKcal"
-              @blur="saveTargetKcal"
-            />
+            <input id="target-kcal" type="number" v-model.number="targetKcal" class="target-input"/>
           </div>
-          <!-- 【修改】到這裡結束 -->
         </div>
         <div class="chart-container">
           <!-- 1. 圓餅圖 -->
@@ -494,7 +485,7 @@
   </template>
 
   <!-- 引入 app.js -->
-  <script src="app.js?v=4.2"></script>
+  <script src="app.js?v=3.1"></script>
 </body>
 </html>
 
