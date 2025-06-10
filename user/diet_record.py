@@ -187,7 +187,7 @@ def create_diet_record():
 
     ofid = data.get("official_food_id")
     cfid = data.get("custom_food_id")
-    manual_name = data.get("manual_name")
+    manual_name = data.get("food_name")
 
     # 確保至少一個食物來源
     if not any([ofid, cfid, manual_name]):
@@ -250,9 +250,9 @@ def update_diet_record(id):
     updated_food_source = False
 
     # 情況1：更新為手動輸入
-    if "manual_name" in data and data["manual_name"]:
+    if "food_name" in data and data["food_name"]:
         # 直接更新 food_name
-        record.food_name = data["manual_name"]
+        record.food_name = data["food_name"]
         record.official_food_id = None
         record.custom_food_id = None
         updated_food_source = True
