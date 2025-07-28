@@ -1,4 +1,7 @@
 .env
-.venv/
-__pycache__/
 venv/
+__pycache__
+.venv
+venv
+nohup.out
+front.log

@@ -96,7 +96,7 @@ if __name__ == '__main__':
     # 初始化資料表 (第一次執行時註解)
     # with app.app_context():
     #     db.create_all()
-    app.run(debug=True,host='127.0.0.1',port=1111)
+    app.run(debug=False,host='127.0.0.1',port=1111)
 
 # requirements.txt
 # flask
